@@ -1,0 +1,29 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+html {
+  font-family: "Montserrat", sans-serif;
+}
+body {
+  background: #eee;
+  background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
+}
+
+/* ANIMATION */
+
+@keyframes grow {
+  from {
+    max-height: 0px;
+  }
+  to {
+    max-height: 100px;
+  }
+}
+form textarea {
+  animation-name: grow;
+  animation-duration: 1s;
+  animation-fill-mode: forwards;
+  animation-play-state: paused;
+}
