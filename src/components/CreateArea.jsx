@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => {
 
 function CreateArea(props) {
   // CreateNote state
-  const [note, setNote] = useState({
+  const [newNote, setNewNote] = useState({
     title: "",
     content: ""
   });
@@ -58,7 +58,7 @@ function CreateArea(props) {
   function handleChange(e) {
     const {name, value} = e.target;
     
-    setNote(prevNote => {
+    setNewNote(prevNote => {
       return {
         ...prevNote,
         [name] : value
@@ -79,14 +79,14 @@ function CreateArea(props) {
     e.preventDefault();
     console.log("submiteNote function triggered")
 
-    props.onAdd(note);
-    console.log(note);
+    props.onAdd(newNote);
+    console.log(newNote);
     
-    axios.post('http://localhost:5000/notes/add', note)
+    axios.post('http://localhost:5000/notes/add', newNote)
       .then(res => console.log(res.data))
       .catch(err => console.log("Error: " + err));
     
-    setNote({
+    setNewNote({
       title: "",
       content: ""
     });
@@ -95,8 +95,8 @@ function CreateArea(props) {
   return (
     <div>
       <form className={classes.createNote} onSubmit={submitNote}>
-        <input onClick={noteClick} className={classes.createContent}  onChange={handleChange} name="title" placeholder="Title" value={note.title} autoComplete="off"/>
-        <textarea hidden={!noteFocused} className={classes.createContent} onChange={handleChange} name="content" placeholder="Take a note..." rows="3" value={note.content} />
+        <input onClick={noteClick} className={classes.createContent}  onChange={handleChange} name="title" placeholder="Title" value={newNote.title} autoComplete="off"/>
+        <textarea hidden={!noteFocused} className={classes.createContent} onChange={handleChange} name="content" placeholder="Take a note..." rows="3" value={newNote.content} />
         <Zoom in={noteFocused}>
           <Fab className={classes.button} type="submit">
             <AddIcon />
