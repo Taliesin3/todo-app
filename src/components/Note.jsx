@@ -83,7 +83,7 @@ function Note(props) {
       <div className={classes.note}>
         <form onSubmit={submitUpdate}>
           <Typography variant="h6">
-            <input name="title" className={classes.editTitle} value={noteState.title} onChange={handleChange} onClick={noteClick} />
+            <span name="title" role="textbox" onClick={noteClick} onChange={handleChange} contentEditable>{noteState.title}</span>
           </Typography>
           <Typography variant="body1">
             <textarea name="content" value={noteState.content} className={classes.editContent} onChange={handleChange} onClick={noteClick} />

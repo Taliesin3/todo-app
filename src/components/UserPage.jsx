@@ -1,14 +1,18 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
-import Paper from "@material-ui/core/Paper";
+import Login from "./Login";
+import Register from "./Register";
 
 export default function UserPage() {
   return (
     <Route path="/user">
       <div>
-      <Paper>
-        <p>This is the User Page!</p>
-      </Paper>
+      <Router>
+        <Switch>
+          <Route path="/user" exact component={Login} />
+          <Route path="/user/register" component={Register} />
+        </Switch>
+      </Router>
       </div>
     </Route>
   )
