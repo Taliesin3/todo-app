@@ -55,21 +55,31 @@ export default function NotePage() {
 
   return (
     <Route path="/">
-    <CreateArea
-          onAdd={addNote}
-        />
-        <div className={classes.root}>
-        <Grid justify="flex-start" container spacing={0}>
-        {notes && notes.map((note, index) => { return (
-            <Note className={classes.note}
+    <div className={classes.root}>
+      <Grid container spacing={2}>
+        <Grid item xs={12}>
+          <Grid container justify="center" spacing={2}>
+            <CreateArea
+              onAdd={addNote}
+            />
+          </Grid>
+        </Grid>
+      <Grid item xs={12}>
+        <Grid container justify="flex-start" spacing={2}>
+        {notes && notes.map((note) => { return (
+            <Grid item key={note._id} xs={12} sm={6} md={4} lg={3} xl={2}>
+            <Note 
               key={note._id}
               id={note._id}
               title={note.title}
               content={note.content}
               onDelete={deleteNote}
             />
+            </Grid>
         )})}
         </Grid>
+      </Grid>
+      </Grid>
       </div>
     </Route>
 

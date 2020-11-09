@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from '@material-ui/icons/Add';
-import Fab from '@material-ui/core/Fab';
-import Zoom from '@material-ui/core/Zoom';
+import { Fab, Grid, Paper, Zoom } from '@material-ui/core';
 import axios from "axios";
 
 const useStyles = makeStyles(theme => {
@@ -10,11 +9,9 @@ const useStyles = makeStyles(theme => {
     {
       createNote: {
         position: "relative",
-        width: "30vw",
-        minWidth: "300px",
         margin: "30px auto 20px auto",
         background: "#fff",
-        padding: "15px",
+        padding: theme.spacing(2),
         borderRadius: "7px",
         boxShadow: "0 1px 5px rgb(138, 137, 137)",
       },
@@ -93,7 +90,7 @@ function CreateArea(props) {
   }
   
   return (
-    <div>
+    <Grid item xs={12} lg={4}>
       <form className={classes.createNote} onSubmit={submitNote}>
         <input onClick={noteClick} className={classes.createContent}  onChange={handleChange} name="title" placeholder="Title" value={note.title} autoComplete="off"/>
         <textarea hidden={!noteFocused} className={classes.createContent} onChange={handleChange} name="content" placeholder="Take a note..." rows="3" value={note.content} />
@@ -103,7 +100,7 @@ function CreateArea(props) {
           </Fab>
         </Zoom>
       </form>
-    </div>
+    </Grid>
   );
 }
 
