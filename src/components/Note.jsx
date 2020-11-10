@@ -1,24 +1,15 @@
 import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Grid } from "@material-ui/core";
+import { Grid, Paper } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 import Typography from "@material-ui/core/Typography";
 
 const useStyles = makeStyles(theme => {
   return ({
     note: {
-      background: "#fff",
-      float: "left",
-      borderRadius: "7px",
-      boxShadow: "0 2px 5px #ccc",
-      padding: "10px",
-      minWidth: "240px",
-      margin: "16px",
-      float: "left",
+      padding: theme.spacing(1),
     },
     button: {
-      position: "relative",
-      float: "right",
       color: "#f5ba13",
       border: "none",
       width: "36px",
@@ -79,20 +70,13 @@ function Note(props) {
   }
   
   return (
-    <Grid className={classes.gridNote} item xs={12} sm={6} md={4} lg={3} xl={2}>
-      <div className={classes.note}>
-        <form onSubmit={submitUpdate}>
-          <Typography variant="h6">
-            <span name="title" role="textbox" onClick={noteClick} onChange={handleChange} contentEditable>{noteState.title}</span>
-          </Typography>
-          <Typography variant="body1">
-            <textarea name="content" value={noteState.content} className={classes.editContent} onChange={handleChange} onClick={noteClick} />
-          </Typography>
-          <button type="submit" style={{float: "left"}} className={classes.button} hidden={!noteFocused}>SAVE</button>
-          <button className={classes.button} onClick={() => {props.onDelete(props.id)}}><DeleteIcon /></button>
-        </form>
-      </div>
-    </Grid>
+    <React.Fragment>
+      <Paper className={classes.note} >
+        <Typography variant="h6">{props.title}</Typography>
+        <Typography variant="body1">{props.content}</Typography>
+        <button className={classes.button} onClick={() => {props.onDelete(props.id)}}><DeleteIcon /></button>
+      </Paper>
+    </React.Fragment>
   )
 }
 

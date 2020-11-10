@@ -1,16 +1,13 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
+import { Grid, Typography } from "@material-ui/core";
 
 const useStyles = makeStyles(theme => {
   return (
     {
       footer: {
         position: "absolute",
-        textAlign: "center",
-        bottom: 0,
-        width: "100%",
-        height: "2.5rem",
+        bottom: 20,
         color: "#ccc",
       },
     }
@@ -24,9 +21,11 @@ function Footer() {
   const classes = useStyles();
 
   return (
-    <footer className={classes.footer}>
-      <Typography variant="body1">Copyright &#169; {year}</Typography>
-    </footer>
+    <Grid container item xs={12} justify="center">
+      <footer className={classes.footer}>
+        <Typography variant="body1">Copyright &#169; {year}</Typography>
+      </footer>
+    </Grid>
   )
 }
 
