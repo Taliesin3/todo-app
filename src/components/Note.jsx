@@ -7,7 +7,7 @@ import Typography from "@material-ui/core/Typography";
 const useStyles = makeStyles(theme => {
   return ({
     note: {
-      padding: theme.spacing(2),
+      padding: theme.spacing(1),
     },
     button: {
       color: "#f5ba13",
@@ -26,11 +26,13 @@ function Note(props) {
   const classes = useStyles();
 
   return (
-    <Paper className={classes.note} >
-      <Typography variant="h6">{props.title}</Typography>
-      <Typography variant="body1">{props.content}</Typography>
-      <button className={classes.button} onClick={() => {props.onDelete(props.id)}}><DeleteIcon /></button>
-    </Paper>
+    <React.Fragment>
+      <Paper className={classes.note} >
+        <Typography variant="h6">{props.title}</Typography>
+        <Typography variant="body1">{props.content}</Typography>
+        <button className={classes.button} onClick={() => {props.onDelete(props.id)}}><DeleteIcon /></button>
+      </Paper>
+    </React.Fragment>
   )
 }
 
