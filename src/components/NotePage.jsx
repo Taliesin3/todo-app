@@ -57,7 +57,7 @@ export default function NotePage() {
     <Route path="/">
     <div className={classes.root}>
       <Grid container spacing={2}>
-        <Grid container item xs={12} justify="center" spacing={2}>
+        <Grid container item xs={12} justify="center" spacing={0}>
             <CreateArea
               onAdd={addNote}
             />

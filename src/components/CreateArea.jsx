@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => {
     {
       createNote: {
         position: "relative",   // Need this to ensure button stays in place
-        //margin: "30px auto 20px auto",
+        marginBottom: "16px",
         background: "#fff",
         padding: theme.spacing(2),
         borderRadius: "7px",
@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => {
       createContent: {
         width: "100%",    // TODO: probably best to remove this, change to grid item
         border: "none",
-        padding: "4px",
+        padding: theme.spacing(1),
         outline: "none",
         fontSize: "1.2em",
         fontFamily: "inherit",
@@ -90,7 +90,7 @@ function CreateArea(props) {
   }
   
   return (
-    <Grid item xs={12} md={4}>
+    <Grid item xs={12} sm={4}>
       <form className={classes.createNote} onSubmit={submitNote}>
         <input onClick={noteClick} className={classes.createContent}  onChange={handleChange} name="title" placeholder="Title" value={note.title} autoComplete="off"/>
         <textarea hidden={!noteFocused} className={classes.createContent} onChange={handleChange} name="content" placeholder="Take a note..." rows="3" value={note.content} />

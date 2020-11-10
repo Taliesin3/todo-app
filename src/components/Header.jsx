@@ -12,7 +12,7 @@ const useStyles = makeStyles(theme => {
       },
       header: {
         backgroundColor: "#f5ba13",
-        //padding: "16px 32px",
+        padding: theme.spacing(2),
         color: "#fff",
         marginBottom: "16px",
       },
