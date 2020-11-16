@@ -7,12 +7,10 @@ export default function UserPage() {
   return (
     <Route path="/user">
       <div>
-      <Router>
         <Switch>
           <Route path="/user/login" component={Login} />
           <Route path="/user/register" component={Register} />
         </Switch>
-      </Router>
       </div>
     </Route>
   )
