@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import UserContext from "../context/UserContext";
+import NotificationContext from "../context/NotificationContext";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 import HomePage from "./pages/HomePage";
-import NotePage from "./pages/NotePage";
+import NotesPage from "./pages/NotesPage";
 import UserPage from "./pages/UserPage";
 import ErrorPage from "./pages/ErrorPage";
+import Notification from "./misc/Notification";
 import axios from "axios";
 
 export default function App() {
@@ -15,8 +17,12 @@ export default function App() {
     token: undefined,
     user: undefined,
   });
+  const [notification, setNotification] = useState({
+    severity: undefined,
+    message: undefined,
+  });
 
-  // On mount, set context as logged in user data
+  // Check if user is logged in
   useEffect(() => {
     // useEffect cannot be asynchronous, so we must define our
     // async function here and then call it at the end of our effect
@@ -57,12 +63,16 @@ export default function App() {
     <div>
       <Router>
         <UserContext.Provider value={{userData, setUserData}}>
+        <NotificationContext.Provider value={{notification, setNotification}}>
           <Header />
+          <Notification />
           <Switch>
             <Route path="/" exact component={HomePage} />
+            <Route path="/notes" exact component={NotesPage} />
             <Route path="/user" component={UserPage} />
             <Route path="*" component={ErrorPage} />
           </Switch>
+        </NotificationContext.Provider>
         </UserContext.Provider>
       </Router>
       <Footer />

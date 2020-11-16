@@ -42,9 +42,7 @@ function Header() {
               Keeper
             </Link>
           </Typography>
-          <Typography variant="h6">
-            <AuthOptions />
-          </Typography>
+          <AuthOptions />
         </Toolbar>
       </AppBar>
     </div>

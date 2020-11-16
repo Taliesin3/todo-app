@@ -1,7 +1,9 @@
 import React, {useState, useContext} from 'react';
 import {useHistory} from "react-router-dom";
 import UserContext from "../../context/UserContext";
+import NotificationContext from "../../context/NotificationContext";
 import Avatar from '@material-ui/core/Avatar';
+import Box from "@material-ui/core/Box";
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
@@ -40,6 +42,7 @@ export default function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const {setUserData} = useContext(UserContext);
+  const {setNotification} = useContext(NotificationContext);
 
   // Other hooks
   const classes = useStyles();
@@ -48,17 +51,22 @@ export default function Login() {
   // Login form submit function
   const submitLogin = async (e) => {
     e.preventDefault();
-    const loginUser = {email, password}
-    const loginRes = await Axios.post(
-      "http://localhost:5000/user/login",
-      loginUser
-    );
-    setUserData({
-      token: loginRes.data.token,
-      user: loginRes.data.user,
-    });
-    localStorage.setItem("auth-token", loginRes.data.token);
-    history.push("/");
+    try {
+      const loginUser = {email, password}
+      const loginRes = await Axios.post(
+        "http://localhost:5000/user/login",
+        loginUser
+        );
+        setUserData({
+          token: loginRes.data.token,
+          user: loginRes.data.user,
+        });
+        localStorage.setItem("auth-token", loginRes.data.token);
+        history.push("/")
+        setNotification({severity: "success", message: "Logged in"});
+      } catch (err) {
+        setNotification({severity: "error", message: err.response.data.msg});
+      }
   }
 
   return (
@@ -96,10 +104,12 @@ export default function Login() {
             autoComplete="current-password"
             onChange={(e) => {setPassword(e.target.value)}}
           />
-          <FormControlLabel
-            control={<Checkbox value="remember" color="primary" />}
-            label="Remember me"
-          />
+          <Box display="none">
+            <FormControlLabel
+              control={<Checkbox value="remember" color="primary" />}
+              label="Remember me"
+            />
+          </Box>
           <Button
             type="submit"
             fullWidth
@@ -110,14 +120,9 @@ export default function Login() {
             Login
           </Button>
           <Grid container>
-            <Grid item xs>
-              <Link href="#" variant="body2">
-                Forgot password?
-              </Link>
-            </Grid>
             <Grid item>
               <Link href="/user/register" variant="body2">
-                {"Don't have an account? Sign Up"}
+                {"Don't have an account? Register here"}
               </Link>
             </Grid>
           </Grid>

@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react';
 import {useHistory} from "react-router-dom";
 import Axios from "axios";
 import UserContext from "../../context/UserContext";
+import NotificationContext from "../../context/NotificationContext";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -42,27 +43,32 @@ export default function Register() {
 
   // Other hooks
   const {setUserData} = useContext(UserContext);
+  const {setNotification} = useContext(NotificationContext);
   const history = useHistory();
   const classes = useStyles();
 
   // Submit register form function
   const submitRegister = async (e) => {
     e.preventDefault();
-    const newUser = { username, email, password, passwordCheck };
-    await Axios.post(
-      "http://localhost:5000/user/register", 
-      newUser
-    );
-    const loginRes = await Axios.post(
-      "http://localhost:5000/user/login",
-      {email, password}
-    );
-    setUserData({
-      token: loginRes.data.token,
-      user: loginRes.data.user,
-    });
-    localStorage.setItem("auth-token", loginRes.data.token);
-    history.push("/");
+    try {
+      const newUser = { username, email, password, passwordCheck };
+      await Axios.post(
+        "http://localhost:5000/user/register", 
+        newUser
+        );
+        const loginRes = await Axios.post(
+          "http://localhost:5000/user/login",
+          {email, password}
+          );
+          setUserData({
+            token: loginRes.data.token,
+            user: loginRes.data.user,
+          });
+          localStorage.setItem("auth-token", loginRes.data.token);
+          history.push("/");
+    } catch (err) {
+      setNotification({severity: "error", message: err.response.data.msg});
+    }
   };
   
   return (
@@ -138,7 +144,7 @@ export default function Register() {
           <Grid container justify="flex-end">
             <Grid item>
               <Link href="/user/login" variant="body2">
-                Already have an account? Sign in
+                Already have an account? Login here
               </Link>
             </Grid>
           </Grid>

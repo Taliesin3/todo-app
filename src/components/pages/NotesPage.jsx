@@ -53,7 +53,7 @@ export default function NotePage() {
   }
 
   return (
-    <Route path="/">
+    <Route path="/notes">
     <div className={classes.root}>
       <Grid container spacing={2}>
         <Grid container item xs={12} justify="center" spacing={0}>
