@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
+import {useHistory} from "react-router-dom";
+import UserContext from "../../context/UserContext";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -11,6 +13,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import Axios from 'axios';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -32,20 +35,43 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignIn() {
+export default function Login() {
+  // State hooks
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const {setUserData} = useContext(UserContext);
+
+  // Other hooks
   const classes = useStyles();
+  const history = useHistory();
+
+  // Login form submit function
+  const submitLogin = async (e) => {
+    e.preventDefault();
+    const loginUser = {email, password}
+    const loginRes = await Axios.post(
+      "http://localhost:5000/user/login",
+      loginUser
+    );
+    setUserData({
+      token: loginRes.data.token,
+      user: loginRes.data.user,
+    });
+    localStorage.setItem("auth-token", loginRes.data.token);
+    history.push("/");
+  }
 
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
+      
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Login
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={submitLogin} className={classes.form} noValidate>
           <TextField
             variant="outlined"
             margin="normal"
@@ -56,6 +82,7 @@ export default function SignIn() {
             name="email"
             autoComplete="email"
             autoFocus
+            onChange={(e) => {setEmail(e.target.value)}}
           />
           <TextField
             variant="outlined"
@@ -67,6 +94,7 @@ export default function SignIn() {
             type="password"
             id="password"
             autoComplete="current-password"
+            onChange={(e) => {setPassword(e.target.value)}}
           />
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
@@ -79,7 +107,7 @@ export default function SignIn() {
             color="primary"
             className={classes.submit}
           >
-            Sign In
+            Login
           </Button>
           <Grid container>
             <Grid item xs>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import CreateArea from "./CreateArea";
-import Note from "./Note";
+import CreateArea from "../layout/CreateArea";
+import Note from "../layout/Note";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";

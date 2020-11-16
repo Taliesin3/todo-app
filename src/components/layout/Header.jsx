@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import {AppBar, Button, Grid, Paper, Toolbar, Typography } from "@material-ui/core";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
+import AuthOptions from "../auth/AuthOptions";
 
 const useStyles = makeStyles(theme => {
   return (
@@ -42,9 +43,7 @@ function Header() {
             </Link>
           </Typography>
           <Typography variant="h6">
-            <Link className={classes.headerLink} to="/user">
-              <Button color="inherit">Account</Button>
-            </Link>
+            <AuthOptions />
           </Typography>
         </Toolbar>
       </AppBar>

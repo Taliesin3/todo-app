@@ -4,11 +4,14 @@ const jwt = require("jsonwebtoken");
 const auth = require("../middleware/auth");
 const User = require("../models/user.model");
 
-// GET all Users
-router.route("/").get((req, res) => {
-  User.find()
-    .then(users => res.json(users))  // returns json of users
-    .catch(err => res.status(400).json("GET Error: " + err));
+// GET current Users
+router.get("/", auth, async (req, res) => {
+  const user = User.findById(req.user)
+  res.json({
+    id: user._id,
+    username: user.username,
+  });
+    //.catch(err => res.status(400).json("GET Error: " + err));
 });
 
 // POST endpoint for url/users/add
@@ -71,6 +74,8 @@ router.post("/register", async (req, res) => {
 // Login route
 router.post("/login", async (req, res) => {
   try {
+    console.log("email is " + req.body.email);
+    
     const { email, password } = req.body;
 
     // Validate
@@ -97,7 +102,6 @@ router.post("/login", async (req, res) => {
       user: {
         id: user._id,
         username: user.username,
-        email: user.email,
       },
     });
 

@@ -1,4 +1,7 @@
-import React from 'react';
+import React, {useState, useContext} from 'react';
+import {useHistory} from "react-router-dom";
+import Axios from "axios";
+import UserContext from "../../context/UserContext";
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -30,42 +33,59 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SignUp() {
+export default function Register() {
+  // State hooks
+  const [username, setUsername] = useState();
+  const [email, setEmail] = useState();
+  const [password, setPassword] = useState();
+  const [passwordCheck, setPasswordCheck] = useState();
+
+  // Other hooks
+  const {setUserData} = useContext(UserContext);
+  const history = useHistory();
   const classes = useStyles();
 
+  // Submit register form function
+  const submitRegister = async (e) => {
+    e.preventDefault();
+    const newUser = { username, email, password, passwordCheck };
+    await Axios.post(
+      "http://localhost:5000/user/register", 
+      newUser
+    );
+    const loginRes = await Axios.post(
+      "http://localhost:5000/user/login",
+      {email, password}
+    );
+    setUserData({
+      token: loginRes.data.token,
+      user: loginRes.data.user,
+    });
+    localStorage.setItem("auth-token", loginRes.data.token);
+    history.push("/");
+  };
+  
   return (
     <Container component="main" maxWidth="xs">
-      <CssBaseline />
+      
       <div className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign up
+          Register
         </Typography>
-        <form className={classes.form} noValidate>
+        <form onSubmit={submitRegister} className={classes.form} noValidate>
           <Grid container spacing={2}>
-            <Grid item xs={12} sm={6}>
+            <Grid item xs={12}>
               <TextField
-                autoComplete="fname"
-                name="firstName"
+                name="username"
                 variant="outlined"
-                required
                 fullWidth
-                id="firstName"
-                label="First Name"
+                id="username"
+                label="Username"
                 autoFocus
-              />
-            </Grid>
-            <Grid item xs={12} sm={6}>
-              <TextField
-                variant="outlined"
-                required
-                fullWidth
-                id="lastName"
-                label="Last Name"
-                name="lastName"
-                autoComplete="lname"
+                onChange={(e) => {setUsername(e.target.value)}}
               />
             </Grid>
             <Grid item xs={12}>
@@ -77,6 +97,7 @@ export default function SignUp() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
+                onChange={(e) => {setEmail(e.target.value)}}
               />
             </Grid>
             <Grid item xs={12}>
@@ -89,6 +110,19 @@ export default function SignUp() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={(e) => {setPassword(e.target.value)}}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                variant="outlined"
+                required
+                fullWidth
+                name="passwordCheck"
+                label="Password Check"
+                type="password"
+                id="passwordCheck"
+                onChange={(e) => {setPasswordCheck(e.target.value)}}
               />
             </Grid>
           </Grid>
@@ -99,11 +133,11 @@ export default function SignUp() {
             color="primary"
             className={classes.submit}
           >
-            Sign Up
+            Register
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/user" variant="body2">
+              <Link href="/user/login" variant="body2">
                 Already have an account? Sign in
               </Link>
             </Grid>

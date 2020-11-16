@@ -23,11 +23,11 @@ mongoose.connect(uri, {
   .catch(err => console.log(err));
 
 // Database Routes
-const usersRouter = require("./routes/users");
-const notesRouter = require("./routes/notes");
+const userRoute = require("./routes/userRoute");
+const notesRoute = require("./routes/notesRoute");
 
-app.use("/users", usersRouter);  // visiting url/users will show usersRouter
-app.use("/notes", notesRouter);  // visiting url/notes will show notesRouter
+app.use("/user", userRoute);  // visiting url/users will show usersRouter
+app.use("/notes", notesRoute);  // visiting url/notes will show notesRouter
 
 // Start server
 app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`));

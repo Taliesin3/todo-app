@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => {
         position: "absolute",
         right: "18px",
         bottom: "-18px",
-        background: "#f5ba13",
+        backgroundColor: theme.palette.primary.main,
         color: "#fff",
         border: "none",
         borderRadius: "50%",
