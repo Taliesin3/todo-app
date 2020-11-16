@@ -65,7 +65,6 @@ function Note(props) {
   // Update note
   function submitUpdate(e) {
     e.preventDefault();
-    console.log("Update button clicked")
     setNoteFocused(false);
   }
   

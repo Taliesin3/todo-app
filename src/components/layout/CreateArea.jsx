@@ -66,7 +66,6 @@ function CreateArea(props) {
   // Respond to clicking on the create note area
   function noteClick(e) {
     const element = e.target;
-    console.log(element);
     setNoteFocused(true);
     document.querySelector("textarea").style.animationPlayState = "running";
   }
@@ -74,10 +73,8 @@ function CreateArea(props) {
   // Send new note to App's addNote function
   function submitNote(e) {
     e.preventDefault();
-    console.log("submiteNote function triggered")
-
+    
     props.onAdd(newNote);
-    console.log(newNote);
     
     axios.post('http://localhost:5000/notes/add', newNote)
       .then(res => console.log(res.data))

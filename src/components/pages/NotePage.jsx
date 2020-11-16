@@ -25,7 +25,6 @@ export default function NotePage() {
     axios.get("http://localhost:5000/notes/")
       .then((res) => {
         const dbNotes = res.data;
-        console.log(dbNotes);
         setNotes(dbNotes);
       })
       .catch(err => console.log("Error: " + err));
