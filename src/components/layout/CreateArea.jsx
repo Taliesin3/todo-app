@@ -9,7 +9,7 @@ const useStyles = makeStyles(theme => {
     {
       createNote: {
         position: "relative",   // Need this to ensure button stays in place
-        marginBottom: "16px",
+        marginBottom: "16px",   // Need this to ensure enough space for button
         background: "#fff",
         padding: theme.spacing(2),
         borderRadius: "7px",

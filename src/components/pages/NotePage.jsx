@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     flexgrow: 1,
   },
   note: {
-    padding: theme.spacing(0),
+    padding: theme.spacing(2),
   }
 }));
 
@@ -69,7 +69,6 @@ export default function NotePage() {
   return (
     <Route path="/notes">
     <div className={classes.root}>
-      <Grid container spacing={2}>
         <Grid container justify="center" spacing={2}>
             <CreateArea
               onAdd={addNote}
@@ -86,7 +85,6 @@ export default function NotePage() {
           />
         )})}
         </Grid>
-      </Grid>
       </div>
     </Route>
 
