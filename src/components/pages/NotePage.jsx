@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import CreateArea from "../layout/CreateArea";
 import Note from "../layout/Note";
 import { makeStyles } from "@material-ui/core/styles";
@@ -20,19 +20,25 @@ export default function NotePage() {
   // Keeps track of all saved notes
   const [notes, setNotes] = useState();
   const token = localStorage.getItem("auth-token");
-  
-  // Load all notes from DB on mount
+
+  // Load all notes from DB on mount + when notes/token update
   useEffect(() => {
-    axios.get("http://localhost:5000/notes/", 
-      {headers: {"x-auth-token": token }})
-      .then((res) => {
-        const dbNotes = res.data;
-        setNotes(dbNotes);
-      })
-      .catch(err => console.log("Error: " + err));
-  }, [notes]);
+    // Using an IIFE to carry out an async func within useEffect
+    (async function getNotes() {
+      try {
+        const dbNotes = await axios.get(
+          "http://localhost:5000/notes/", 
+          {headers: {"x-auth-token": token }}
+        );
+        setNotes(dbNotes.data);
+      } catch(err) {
+        console.log("Error: " + err);
+      }
+    })();
+  }, [notes, token]);
 
   // Add new note from the Create Area
+  // TODO: remove this redundant function
   function addNote(newNote) {
     setNotes(prevNotes => {
       return (
@@ -42,17 +48,22 @@ export default function NotePage() {
   }
 
   // Delete note from the saved notes
-  function deleteNote(id) {
+  async function deleteNote(id) {
+    try {
+      // Delete note from database
+      const deletedNote = await axios.delete(
+        `http://localhost:5000/notes/${id}`, 
+        {headers: {"x-auth-token": token}}
+      );
+      console.log(deletedNote.data);
+    } catch(err) { 
+      console.log("Error: " + err);
+    }
+
     // Delete note from state
     setNotes(prevNotes => {
       return prevNotes.filter(note => note._id !== id);
     });
-
-    // Delete note from database
-    axios.delete(`http://localhost:5000/notes/${id}`, 
-      {headers: {"x-auth-token": token}})
-      .then(res => console.log(res.data))
-      .catch(err => console.log("Error: " + err));
   }
 
   return (

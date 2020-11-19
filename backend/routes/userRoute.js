@@ -22,7 +22,7 @@ router.post("/register", async (req, res) => {
   if (!username) username = email;
 
   // Validation
-  try{    // TODO: unsure about use of try/catch vs .then .catch
+  try{
     if (!email || !password || !passwordCheck) 
       return res
         .status(400)
@@ -62,12 +62,10 @@ router.post("/register", async (req, res) => {
       username
     });
     
-    newUser.save()
-      .then((savedUser) => res.json(savedUser))
-      .catch(err => res.status(400).json("POST Error: " + err));
-      
+    const savedUser = await newUser.save();
+    res.json(savedUser);  
   } catch (err) {
-    res.status(500).json({error: err.message});
+    res.status(500).json({msg: err.message});
   }
 });
 

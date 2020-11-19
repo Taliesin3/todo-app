@@ -5,7 +5,7 @@ import NotificationContext from "../context/NotificationContext";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
 import HomePage from "./pages/HomePage";
-import NotesPage from "./pages/NotesPage";
+import NotePage from "./pages/NotePage";
 import UserPage from "./pages/UserPage";
 import ErrorPage from "./pages/ErrorPage";
 import Notification from "./misc/Notification";
@@ -68,7 +68,7 @@ export default function App() {
           <Notification />
           <Switch>
             <Route path="/" exact component={HomePage} />
-            <Route path="/notes" exact component={NotesPage} />
+            <Route path="/notes" exact component={NotePage} />
             <Route path="/user" component={UserPage} />
             <Route path="*" component={ErrorPage} />
           </Switch>

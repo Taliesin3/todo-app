@@ -1,13 +1,16 @@
 const router = require("express").Router();
-const { default: Axios } = require("axios");
 const auth = require("../middleware/auth");
 const Note = require("../models/note.model");
 
 // GET all notes via url/notes/
-router.get("/", auth, (req, res) => {
-  Note.find({userId: req.userId})
-    .then(notes => res.json(notes))
-    .catch(err => res.status(400).json("Error: " + err));
+router.get("/", auth, async (req, res) => {
+  try {
+    const userNotes = await Note.find({userId: req.userId})
+    res.json(userNotes);
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({msg: "Could not get user notes."});
+  } 
 });
 
 // POST a note via url/notes/add
@@ -26,24 +29,25 @@ router.post("/add", auth, async (req, res) => {
       // date,  // TODO: uncomment when date implemented
     });
     
-    newNote.save()
-      .then(() => res.json("New note saved!"))
-      .catch(err => res.status(400).json("Error: " + err));
+    await newNote.save()
+    res.json("New note saved!");
+
   } catch (err) {
-    res.status(400).json({msg: "Error when creating new note."})
+    console.log(err);
+    res.status(400).json({msg: "Error when creating new note."});
   }
 });
   
 // GET specific note
 router.get("/:id", auth, async (req, res) => {  // :id is Mongo's auto-made object id
   try {
-
     const getNote = await Note.findOne({_id: req.params.id, userId: req.userId});
     if (!getNote)
       return res.status(400).json({msg: "Could not match note/user id to an existing note."})
     res.json(getNote);
   } catch(err) {
-    res.status(400).json("Error: " + err);
+    console.log(err);
+    res.status(400).json({msg: "Could not get that note."});
   } 
 });
 
@@ -58,26 +62,25 @@ router.delete("/:id", auth, async (req, res) => {
     await Note.findByIdAndDelete(req.params.id);
     res.json("Note deleted.");
   } catch(err) {
-   res.status(400).json("Error: " + err);
+    console.log(err);
+    res.status(400).json({msg: "Could not delete note."});
   }
 });
 
 // Update specific note using id
 router.post("/update/:id", auth, async (req, res) => {
   try {
-    Note.findOne({_id: req.params.id, userId: req.userId})
-    .then(note => {
-      note.username = req.body.username;
-      note.title = req.body.title;
-      note.content = req.body.content;
-      note.date = Date.parse(req.body.date);
+    const updatedNote = await Note.findOne({_id: req.params.id, userId: req.userId})
+    updatedNote.username = req.body.username;
+    updatedNote.title = req.body.title;
+    updatedNote.content = req.body.content;
+    updatedNote.date = Date.parse(req.body.date);
       
-      note.save()
-      .then(() => res.json("Note updated!"))
-      .catch(err => res.status(400).json("Error: " + err));
-    })
-  } catch(err) {
-    res.status(400).json("Error: " + err);
+    await updatedNote.save();
+    res.json("Note updated!");
+  } catch (err) {
+    console.log(err);
+    res.status(400).json({msg: "Could not update note."});
   } 
 })
 

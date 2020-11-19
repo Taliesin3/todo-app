@@ -72,21 +72,24 @@ function CreateArea(props) {
   }
 
   // Send new note to App's addNote function
-  function submitNote(e) {
+  async function submitNote(e) {
     e.preventDefault();
     
-    props.onAdd(newNote);
-    
-    axios.post('http://localhost:5000/notes/add', 
-      newNote,
-      {headers: {"x-auth-token": token }})
-      .then(res => console.log(res.data))
-      .catch(err => console.log("Error: " + err));
-    
-    setNewNote({
-      title: "",
-      content: ""
-    });
+    try {
+      const addedNote = await axios.post(
+        'http://localhost:5000/notes/add', 
+        newNote,
+        {headers: {"x-auth-token": token }}
+      );
+      console.log(addedNote.data);
+
+      setNewNote({
+        title: "",
+        content: ""
+      });
+    } catch(err) {
+      console.log("Error: " + err);
+    }
   }
   
   return (
