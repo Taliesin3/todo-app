@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from '@material-ui/icons/Add';
 import { Fab, Grid, Paper, Zoom } from '@material-ui/core';
@@ -49,6 +49,7 @@ function CreateArea(props) {
     content: ""
   });
   const [noteFocused, setNoteFocused] = useState(false);
+  const token = localStorage.getItem("auth-token");
   const classes = useStyles();
   
   // Capture state when typing new note
@@ -76,7 +77,9 @@ function CreateArea(props) {
     
     props.onAdd(newNote);
     
-    axios.post('http://localhost:5000/notes/add', newNote)
+    axios.post('http://localhost:5000/notes/add', 
+      newNote,
+      {headers: {"x-auth-token": token }})
       .then(res => console.log(res.data))
       .catch(err => console.log("Error: " + err));
     

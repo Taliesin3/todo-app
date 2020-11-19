@@ -19,16 +19,18 @@ export default function NotePage() {
   const classes = useStyles();
   // Keeps track of all saved notes
   const [notes, setNotes] = useState();
+  const token = localStorage.getItem("auth-token");
   
   // Load all notes from DB on mount
   useEffect(() => {
-    axios.get("http://localhost:5000/notes/")
+    axios.get("http://localhost:5000/notes/", 
+      {headers: {"x-auth-token": token }})
       .then((res) => {
         const dbNotes = res.data;
         setNotes(dbNotes);
       })
       .catch(err => console.log("Error: " + err));
-  }, []);
+  }, [notes]);
 
   // Add new note from the Create Area
   function addNote(newNote) {
@@ -47,7 +49,8 @@ export default function NotePage() {
     });
 
     // Delete note from database
-    axios.delete(`http://localhost:5000/notes/${id}`)
+    axios.delete(`http://localhost:5000/notes/${id}`, 
+      {headers: {"x-auth-token": token}})
       .then(res => console.log(res.data))
       .catch(err => console.log("Error: " + err));
   }

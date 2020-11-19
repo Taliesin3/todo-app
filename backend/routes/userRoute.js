@@ -6,7 +6,7 @@ const User = require("../models/user.model");
 
 // GET current Users
 router.get("/", auth, async (req, res) => {
-  const user = User.findById(req.user)
+  const user = User.findById(req.userId)
   res.json({
     id: user._id,
     username: user.username,
@@ -111,7 +111,7 @@ router.post("/login", async (req, res) => {
 // Delete logged in user
 router.delete("/delete", auth, async (req, res) => {
   try {
-    const deletedUser = await User.findByIdAndDelete(req.user);
+    const deletedUser = await User.findByIdAndDelete(req.userId);
     res.json(deletedUser);
   } catch (err) {
     res.status(500).json({ error: err.message });

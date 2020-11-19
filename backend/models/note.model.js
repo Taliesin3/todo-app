@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
 const noteSchema = new Schema({
-  // username: {type: String, required: true},  // TODO: uncomment when username implemented
+  userId: {type: String, required: true},  // TODO: uncomment when username implemented
   title: {type: String},
   content: {type: String},
   // date: {type: Date, required: true},    // TODO: uncomment when date implemented

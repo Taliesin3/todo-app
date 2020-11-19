@@ -19,7 +19,7 @@ const auth = (req, res, next) => {
         .json({msg: "Token verification failed, authorisation denied."});
 
       // Add verified user id to the request for next operation
-      req.user = verifiedUser.id;
+      req.userId = verifiedUser.id;
       next();
   } catch (err) {
     res.status(500).json({error: err.message});
