@@ -77,7 +77,6 @@ export default function NotePage() {
         </Grid>
       <Grid container item xs={12} justify="flex-start" spacing={2}>
         {notes && notes.map((note) => { return (
-            <Grid item key={note._id} xs={12} sm={6} md={4} lg={3} xl={2}>
               <Note 
                 key={note._id}
                 id={note._id}
@@ -85,7 +84,6 @@ export default function NotePage() {
                 content={note.content}
                 onDelete={deleteNote}
               />
-            </Grid>
         )})}
         </Grid>
       </Grid>
