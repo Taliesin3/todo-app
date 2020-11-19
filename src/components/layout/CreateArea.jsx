@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from '@material-ui/icons/Add';
 import { Fab, Grid, Paper, Zoom } from '@material-ui/core';
@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => {
         position: "absolute",
         right: "18px",
         bottom: "-18px",
-        background: "#f5ba13",
+        backgroundColor: theme.palette.primary.main,
         color: "#fff",
         border: "none",
         borderRadius: "50%",
@@ -44,18 +44,19 @@ const useStyles = makeStyles(theme => {
 
 function CreateArea(props) {
   // CreateNote state
-  const [note, setNote] = useState({
+  const [newNote, setNewNote] = useState({
     title: "",
     content: ""
   });
   const [noteFocused, setNoteFocused] = useState(false);
+  const token = localStorage.getItem("auth-token");
   const classes = useStyles();
   
   // Capture state when typing new note
   function handleChange(e) {
     const {name, value} = e.target;
     
-    setNote(prevNote => {
+    setNewNote(prevNote => {
       return {
         ...prevNote,
         [name] : value
@@ -66,7 +67,6 @@ function CreateArea(props) {
   // Respond to clicking on the create note area
   function noteClick(e) {
     const element = e.target;
-    console.log(element);
     setNoteFocused(true);
     document.querySelector("textarea").style.animationPlayState = "running";
   }
@@ -74,16 +74,16 @@ function CreateArea(props) {
   // Send new note to App's addNote function
   function submitNote(e) {
     e.preventDefault();
-    console.log("submiteNote function triggered")
-
-    props.onAdd(note);
-    console.log(note);
     
-    axios.post('http://localhost:5000/notes/add', note)
+    props.onAdd(newNote);
+    
+    axios.post('http://localhost:5000/notes/add', 
+      newNote,
+      {headers: {"x-auth-token": token }})
       .then(res => console.log(res.data))
       .catch(err => console.log("Error: " + err));
     
-    setNote({
+    setNewNote({
       title: "",
       content: ""
     });
@@ -92,8 +92,8 @@ function CreateArea(props) {
   return (
     <Grid item xs={12} sm={4}>
       <form className={classes.createNote} onSubmit={submitNote}>
-        <input onClick={noteClick} className={classes.createContent}  onChange={handleChange} name="title" placeholder="Title" value={note.title} autoComplete="off"/>
-        <textarea hidden={!noteFocused} className={classes.createContent} onChange={handleChange} name="content" placeholder="Take a note..." rows="3" value={note.content} />
+        <input onClick={noteClick} className={classes.createContent}  onChange={handleChange} name="title" placeholder="Title" value={newNote.title} autoComplete="off"/>
+        <textarea hidden={!noteFocused} className={classes.createContent} onChange={handleChange} name="content" placeholder="Take a note..." rows="3" value={newNote.content} />
         <Zoom in={noteFocused}>
           <Fab className={classes.button} type="submit">
             <AddIcon />

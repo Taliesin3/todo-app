@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route } from "react-router-dom";
-import CreateArea from "./CreateArea";
-import Note from "./Note";
+import CreateArea from "../layout/CreateArea";
+import Note from "../layout/Note";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
@@ -19,17 +19,18 @@ export default function NotePage() {
   const classes = useStyles();
   // Keeps track of all saved notes
   const [notes, setNotes] = useState();
+  const token = localStorage.getItem("auth-token");
   
   // Load all notes from DB on mount
   useEffect(() => {
-    axios.get("http://localhost:5000/notes/")
+    axios.get("http://localhost:5000/notes/", 
+      {headers: {"x-auth-token": token }})
       .then((res) => {
         const dbNotes = res.data;
-        console.log(dbNotes);
         setNotes(dbNotes);
       })
       .catch(err => console.log("Error: " + err));
-  }, []);
+  }, [notes]);
 
   // Add new note from the Create Area
   function addNote(newNote) {
@@ -48,13 +49,14 @@ export default function NotePage() {
     });
 
     // Delete note from database
-    axios.delete(`http://localhost:5000/notes/${id}`)
+    axios.delete(`http://localhost:5000/notes/${id}`, 
+      {headers: {"x-auth-token": token}})
       .then(res => console.log(res.data))
       .catch(err => console.log("Error: " + err));
   }
 
   return (
-    <Route path="/">
+    <Route path="/notes">
     <div className={classes.root}>
       <Grid container spacing={2}>
         <Grid container item xs={12} justify="center" spacing={0}>
