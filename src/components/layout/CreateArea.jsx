@@ -93,7 +93,7 @@ function CreateArea(props) {
   }
   
   return (
-    <Grid item xs={12} sm={4}>
+    <Grid item xs={12} sm={8} md={6} lg={4}>
       <form className={classes.createNote} onSubmit={submitNote}>
         <input onClick={noteClick} className={classes.createContent}  onChange={handleChange} name="title" placeholder="Title" value={newNote.title} autoComplete="off"/>
         <textarea hidden={!noteFocused} className={classes.createContent} onChange={handleChange} name="content" placeholder="Take a note..." rows="3" value={newNote.content} />
