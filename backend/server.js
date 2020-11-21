@@ -34,10 +34,10 @@ app.use("/notes", notesRoute);  // visiting url/notes will show notesRouter
 
 // proxy front-backend requests for Heroku
 // Serve static files from the React frontend
-app.use(express.static(path.join(__dirname, '../src')));
+app.use(express.static(path.join(__dirname, '../frontend/src/public')));
 // Anything that doesn't match the above, send back index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '../src/public/index.html'));
+  res.sendFile(path.join(__dirname + '/../frontend/src/public/index.html'));
 });
 
 // Start server
