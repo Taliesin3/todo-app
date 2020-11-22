@@ -27,32 +27,37 @@ export default function App() {
     // useEffect cannot be asynchronous, so we must define our
     // async function here and then call it at the end of our effect
     const checkLoggedIn = async () => {
-      let token = localStorage.getItem("auth-token");
-      
-      // error thrown if token does not exist, so we must set
-      // an empty token
-      if (token === null) {
-        localStorage.setItem("auth-token", "");
-        token = "";
-      }
-      // check if token is valid
-      const tokenRes = await axios.post(
-        "http://localhost:5000/user/isTokenValid",
-        null,      
-        { headers: { "x-auth-token": token } }
-      );
-      
-      // if a user is logged in, get user data
-      if (tokenRes.data) {
-        const userRes = await axios.get(
-          "http://localhost:5000/user/",  
-          {headers: { "x-auth-token": token } },
-        );
-        // set state as logged in user data, which is passed to context
-        setUserData({
-          token, 
-          user: userRes.data,
-        });
+      try {
+
+        let token = localStorage.getItem("auth-token");
+        
+        // error thrown if token does not exist, so we must set
+        // an empty token
+        if (token === null) {
+          localStorage.setItem("auth-token", "");
+          token = "";
+        }
+        // check if token is valid
+        const tokenRes = await axios.post(
+          "/api/user/isTokenValid",
+          null,      
+          { headers: { "x-auth-token": token } }
+          );
+          
+          // if a user is logged in, get user data
+          if (tokenRes.data) {
+            const userRes = await axios.get(
+              "/api/user/",  
+              {headers: { "x-auth-token": token } },
+              );
+              // set state as logged in user data, which is passed to context
+              setUserData({
+                token, 
+                user: userRes.data,
+              });
+            } 
+      } catch (err) {
+        console.log(err);
       }
     };
 

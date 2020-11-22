@@ -54,7 +54,7 @@ export default function Login() {
     try {
       const loginUser = {email, password}
       const loginRes = await Axios.post(
-        "http://localhost:5000/user/login",
+        "/api/user/login",
         loginUser
         );
         setUserData({
@@ -65,7 +65,7 @@ export default function Login() {
         history.push("/")
         setNotification({severity: "success", message: "Logged in"});
       } catch (err) {
-        setNotification({severity: "error", message: err.response.data.msg});
+        setNotification({severity: "error", message: err});
       }
   }
 

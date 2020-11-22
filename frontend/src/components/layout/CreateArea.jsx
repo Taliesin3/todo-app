@@ -77,7 +77,7 @@ function CreateArea(props) {
     
     try {
       const addedNote = await axios.post(
-        'http://localhost:5000/notes/add', 
+        '/api/notes/add', 
         newNote,
         {headers: {"x-auth-token": token }}
       );
