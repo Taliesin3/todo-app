@@ -15,8 +15,6 @@ app.use(cors());        // applies cors middleware
 app.use(express.json());  // allows us to parse JSON
 app.use(bodyParser.json()); // TODO: prob dont need this, using express.json already
 
-
-
 // Database Routes
 const userRoute = require("./routes/userRoute");
 const notesRoute = require("./routes/notesRoute");
@@ -26,10 +24,10 @@ app.use("/notes", notesRoute);  // visiting url/notes will show notesRouter
 
 // proxy front-backend requests for Heroku
 // Serve static files from the React frontend
-app.use(express.static(path.join(__dirname, '../build')));
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 // Anything that doesn't match the above, send back index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../build'));
+  res.sendFile(path.join(__dirname + '/../frontend/build'));
 });
 
 // Start server
