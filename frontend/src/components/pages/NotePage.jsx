@@ -27,7 +27,7 @@ export default function NotePage() {
     (async function getNotes() {
       try {
         const dbNotes = await axios.get(
-          "/notes/", 
+          "/api/notes/", 
           {headers: {"x-auth-token": token }}
         );
         setNotes(dbNotes.data);
@@ -52,7 +52,7 @@ export default function NotePage() {
     try {
       // Delete note from database
       const deletedNote = await axios.delete(
-        `/notes/${id}`, 
+        `/api/notes/${id}`, 
         {headers: {"x-auth-token": token}}
       );
       console.log(deletedNote.data);

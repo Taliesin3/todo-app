@@ -39,7 +39,7 @@ export default function App() {
         }
         // check if token is valid
         const tokenRes = await axios.post(
-          "/user/isTokenValid",
+          "/api/user/isTokenValid",
           null,      
           { headers: { "x-auth-token": token } }
           );
@@ -47,7 +47,7 @@ export default function App() {
           // if a user is logged in, get user data
           if (tokenRes.data) {
             const userRes = await axios.get(
-              "/user/",  
+              "/api/user/",  
               {headers: { "x-auth-token": token } },
               );
               // set state as logged in user data, which is passed to context
