@@ -1,29 +1,21 @@
 // Requires
 const express = require("express");
+const bodyParser = require("body-parser");
 const cors = require("cors");
-const mongoose = require("mongoose");
+const path = require("path"); // need proxy front-backend requests for Heroku
 require("dotenv").config();   // allows us to use a .env file
+require("./database");
 
-// need proxy front-backend requests for Heroku
-const path = require("path");   
 
-// Set up server
-const app = express();        // creates express server
-const PORT = process.env.PORT || 5000;  // assign server to port
+// Create express server
+const app = express();        
 
 // Middleware
 app.use(cors());        // applies cors middleware
 app.use(express.json());  // allows us to parse JSON
+app.use(bodyParser.json()); // TODO: prob dont need this, using express.json already
 
-// Mongoose DB connection
-const uri = process.env.ATLAS_URI;  // get from Atlas dashboard
-mongoose.connect(uri, { 
-  useNewUrlParser: true, 
-  useCreateIndex: true, 
-  useUnifiedTopology: true 
-})
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.log(err));
+
 
 // Database Routes
 const userRoute = require("./routes/userRoute");
@@ -34,11 +26,12 @@ app.use("/notes", notesRoute);  // visiting url/notes will show notesRouter
 
 // proxy front-backend requests for Heroku
 // Serve static files from the React frontend
-app.use(express.static(path.join(__dirname, '../frontend/src/public')));
+app.use(express.static(path.join(__dirname, '../build')));
 // Anything that doesn't match the above, send back index.html
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/../frontend/src/public/index.html'));
+  res.sendFile(path.join(__dirname + '../build'));
 });
 
 // Start server
+const PORT = process.env.PORT || 5000;  // assign server to port
 app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`));
