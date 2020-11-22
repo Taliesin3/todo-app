@@ -6,7 +6,6 @@ const path = require("path"); // need proxy front-backend requests for Heroku
 require("dotenv").config();   // allows us to use a .env file
 require("./database");
 
-
 // Create express server
 const app = express();        
 
