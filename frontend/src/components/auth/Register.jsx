@@ -52,11 +52,11 @@ export default function Register() {
     try {
       const newUser = { username, email, password, passwordCheck };
       await Axios.post(
-        "http://localhost:5000/user/register", 
+        "/api/user/register", 
         newUser
         );
         const loginRes = await Axios.post(
-          "http://localhost:5000/user/login",
+          "/api/user/login",
           {email, password}
           );
           setUserData({

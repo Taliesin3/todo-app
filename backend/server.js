@@ -1,33 +1,36 @@
 // Requires
 const express = require("express");
+const bodyParser = require("body-parser");
 const cors = require("cors");
-const mongoose = require("mongoose");
+const path = require("path"); // need proxy front-backend requests for Heroku
 require("dotenv").config();   // allows us to use a .env file
+require("./database");
 
-// Set up server
-const app = express();        // creates express server
-const PORT = process.env.PORT || 5000;  // assign server to port
+// Create express server
+const app = express();        
 
 // Middleware
 app.use(cors());        // applies cors middleware
 app.use(express.json());  // allows us to parse JSON
-
-// Mongoose DB connection
-const uri = process.env.ATLAS_URI;  // get from Atlas dashboard
-mongoose.connect(uri, { 
-  useNewUrlParser: true, 
-  useCreateIndex: true, 
-  useUnifiedTopology: true 
-})
-  .then(() => console.log("MongoDB connected"))
-  .catch(err => console.log(err));
+app.use(bodyParser.json()); // TODO: prob dont need this, using express.json already
 
 // Database Routes
 const userRoute = require("./routes/userRoute");
 const notesRoute = require("./routes/notesRoute");
 
-app.use("/user", userRoute);  // visiting url/users will show usersRouter
-app.use("/notes", notesRoute);  // visiting url/notes will show notesRouter
+app.use("/api/user", userRoute);  // visiting url/users will show usersRouter
+app.use("/api/notes", notesRoute);  // visiting url/notes will show notesRouter
+
+if (process.env.NODE_ENV === "production") {
+  // proxy front-backend requests for Heroku
+  // Serve static files from the React frontend
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
+  // Anything that doesn't match the above, send back index.html
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname + '/../frontend/build/index.html'));
+  });
+}
 
 // Start server
+const PORT = process.env.PORT || 5000;  // assign server to port
 app.listen(PORT, () => console.log(`Server is running on port: ${PORT}`));

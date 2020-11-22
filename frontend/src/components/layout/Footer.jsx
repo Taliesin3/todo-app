@@ -6,9 +6,10 @@ const useStyles = makeStyles(theme => {
   return (
     {
       footer: {
-        position: "absolute",
-        bottom: 20,
+        position: "sticky",
+        bottom: 0,
         color: "#ccc",
+        height: "2.5rem",
       },
     }
   )
