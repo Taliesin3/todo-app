@@ -47,7 +47,7 @@ export default function App() {
           // if a user is logged in, get user data
           if (tokenRes.data) {
             const userRes = await axios.get(
-              "http://localhost:5000/user/",  
+              "/user/",  
               {headers: { "x-auth-token": token } },
               );
               // set state as logged in user data, which is passed to context
