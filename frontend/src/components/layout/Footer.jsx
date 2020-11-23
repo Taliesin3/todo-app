@@ -10,6 +10,7 @@ const useStyles = makeStyles(theme => {
         bottom: 0,
         color: "#ccc",
         height: "2.5rem",
+        paddingTop: "50px",
       },
     }
   )

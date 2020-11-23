@@ -30,9 +30,10 @@ const useStyles = makeStyles(theme => {
     editTitle: {
         border: "none",
         outline: "none",
-        fontSize: "1em",
+        fontSize: "1.3em",
         fontFamily: "inherit",
         resize: "none",
+        fontWeight: "bold",
     },
     editContent: {
       border: "none",
@@ -82,29 +83,25 @@ function Note(props) {
       <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
       <Paper className={classes.note} >
         <form onSubmit={submitUpdate} noValidate autoComplete="off">
-          <Typography variant="h6">
-            <InputBase 
-              id="title" 
-              name="title" 
-              fullWidth 
-              className={classes.editTitle} 
-              value={noteState.title} 
-              onChange={handleChange} 
-              onClick={noteClick}   
-            />
-          </Typography>
-          <Typography variant="body1">
-            <InputBase 
-              id="content" 
-              name="content" 
-              multiline 
-              fullWidth 
-              value={noteState.content} 
-              className={classes.editContent} 
-              onChange={handleChange} 
-              onClick={noteClick} 
-            />
-          </Typography>
+          <InputBase 
+            id="title" 
+            name="title" 
+            fullWidth 
+            className={classes.editTitle} 
+            value={noteState.title} 
+            onChange={handleChange} 
+            onClick={noteClick}   
+          />
+          <InputBase 
+            id="content" 
+            name="content" 
+            multiline 
+            fullWidth 
+            value={noteState.content} 
+            className={classes.editContent} 
+            onChange={handleChange} 
+            onClick={noteClick} 
+          />
           <Grid container>
             <Grid container item justify="flex-start" xs={6}>
               <button type="submit" className={classes.saveButton} hidden={!noteFocused}>SAVE</button>

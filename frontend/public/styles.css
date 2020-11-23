@@ -6,7 +6,7 @@ body {
   background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
 }
 
-/* ANIMATION
+/* ANIMATION */
 
 @keyframes grow {
   from {
@@ -22,4 +22,4 @@ form textarea {
   animation-fill-mode: forwards;
   animation-play-state: paused;
 }
-*/
+
