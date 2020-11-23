@@ -35,7 +35,7 @@ export default function NotePage() {
         console.log("Error: " + err);
       }
     })();
-  }, [notes, token]);
+  }, [token]);
 
   // Add new note from the Create Area
   // TODO: remove this redundant function
