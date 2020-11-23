@@ -97,7 +97,8 @@ export default function CreateArea(props) {
         {headers: {"x-auth-token": token }}
       );
       console.log(addedNote.data);
-
+      
+      // Clear text in create area
       setNewNote({
         title: "",
         content: ""
