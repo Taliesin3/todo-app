@@ -6,8 +6,6 @@ body {
   background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
 }
 
-/* ANIMATION */
-
 @keyframes grow {
   from {
     max-height: 0px;
