@@ -65,7 +65,8 @@ export default function Login() {
         history.push("/")
         setNotification({severity: "success", message: "Logged in"});
       } catch (err) {
-        setNotification({severity: "error", message: err});
+        console.log(err);
+        setNotification({severity: "error", message: err.msg});
       }
   }
 
