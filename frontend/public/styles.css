@@ -6,18 +6,3 @@ body {
   background-image: url("https://www.transparenttextures.com/patterns/cubes.png");
 }
 
-@keyframes grow {
-  from {
-    max-height: 0px;
-  }
-  to {
-    max-height: 100px;
-  }
-}
-form textarea {
-  animation-name: grow;
-  animation-duration: 1s;
-  animation-fill-mode: forwards;
-  animation-play-state: paused;
-}
-

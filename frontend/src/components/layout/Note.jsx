@@ -66,11 +66,6 @@ function Note(props) {
     });
   }
 
-  // Respond to clicking on the note area
-  function noteClick(e) {
-    setNoteFocused(true);
-  }
-
   // Update note
   function submitUpdate(e) {
     e.preventDefault();
@@ -89,7 +84,8 @@ function Note(props) {
             className={classes.editTitle} 
             value={noteState.title} 
             onChange={handleChange} 
-            onClick={noteClick}   
+            onFocus={() => setNoteFocused(true)}
+            onBlur={() => {setNoteFocused(false)}}   
           />
           <InputBase 
             id="content" 
@@ -99,7 +95,8 @@ function Note(props) {
             value={noteState.content} 
             className={classes.editContent} 
             onChange={handleChange} 
-            onClick={noteClick} 
+            onFocus={() => setNoteFocused(true)}
+            onBlur={() => {setNoteFocused(false)}}
           />
           <Grid container>
             <Grid container item justify="flex-start" xs={6}>
