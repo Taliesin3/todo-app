@@ -1,7 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import AddIcon from '@material-ui/icons/Add';
-import { Fab, Grid, Paper, Zoom } from '@material-ui/core';
+import { Fab, Grid, Zoom } from '@material-ui/core';
 import axios from "axios";
 
 const useStyles = makeStyles(theme => {

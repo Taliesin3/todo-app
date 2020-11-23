@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { Grid, Paper } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
-import {InputBase, TextField} from "@material-ui/core/";
-import Typography from "@material-ui/core/Typography";
+import { InputBase } from "@material-ui/core/";
 
 const useStyles = makeStyles(theme => {
   return ({
