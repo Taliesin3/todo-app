@@ -38,7 +38,6 @@ export default function NotePage() {
   }, [token]);
 
   // Add new note from the Create Area
-  // TODO: remove this redundant function
   function addNote(newNote) {
     setNotes(prevNotes => {
       return (

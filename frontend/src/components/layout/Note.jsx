@@ -94,7 +94,7 @@ function Note(props) {
     <React.Fragment>
       <Grid item xs={12} sm={6} md={4} lg={3} xl={2}>
       <Paper className={classes.note} >
-        <form onSubmit={(e) => {submitUpdate(e, props.id)}} noValidate autoComplete="off">
+        <form onSubmit={(e) => {submitUpdate(e, props.id)}} autoComplete="off">
           <InputBase 
             id="title" 
             name="title" 

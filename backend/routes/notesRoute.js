@@ -29,8 +29,8 @@ router.post("/add", auth, async (req, res) => {
       // date,  // TODO: uncomment when date implemented
     });
     
-    await newNote.save()
-    res.json("New note saved!");
+    const savedNote = await newNote.save();
+    res.json(savedNote);
 
   } catch (err) {
     console.log(err);
