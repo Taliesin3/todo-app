@@ -11,7 +11,7 @@ const useStyles = makeStyles(theme => ({
     flexgrow: 1,
   },
   note: {
-    padding: theme.spacing(0),
+    padding: theme.spacing(2),
   }
 }));
 
@@ -38,7 +38,6 @@ export default function NotePage() {
   }, [token]);
 
   // Add new note from the Create Area
-  // TODO: remove this redundant function
   function addNote(newNote) {
     setNotes(prevNotes => {
       return (
@@ -69,26 +68,22 @@ export default function NotePage() {
   return (
     <Route path="/notes">
     <div className={classes.root}>
-      <Grid container spacing={2}>
-        <Grid container item xs={12} justify="center" spacing={0}>
+        <Grid container justify="center" spacing={2}>
             <CreateArea
               onAdd={addNote}
             />
         </Grid>
-      <Grid container item xs={12} justify="flex-start" spacing={2}>
+      <Grid container spacing={2}>
         {notes && notes.map((note) => { return (
-            <Grid item key={note._id} xs={12} sm={6} md={4} lg={3} xl={2}>
-              <Note 
-                key={note._id}
-                id={note._id}
-                title={note.title}
-                content={note.content}
-                onDelete={deleteNote}
-              />
-            </Grid>
+          <Note 
+            key={note._id}
+            id={note._id}
+            title={note.title}
+            content={note.content}
+            onDelete={deleteNote}
+          />
         )})}
         </Grid>
-      </Grid>
       </div>
     </Route>
 

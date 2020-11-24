@@ -4,16 +4,16 @@ import UserContext from "../../context/UserContext";
 
 export default function HomePage() {
   // Hooks
-  const { userData, setUserData } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
   const history = useHistory();
-
+  
   // Send to notes or login page
   // depending on login status
   useEffect(() => {
     userData.user ? 
       (history.push("/notes")) : 
       (history.push("/user/login"));
-  }, []);
+  }, [userData, history]);
 
   // Currently empty - may implement
   // proper landing page in future

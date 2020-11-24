@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import {AppBar, Button, Grid, Paper, Toolbar, Typography } from "@material-ui/core";
+import {AppBar, Toolbar, Typography } from "@material-ui/core";
 import AccessTimeIcon from '@material-ui/icons/AccessTime';
 import AuthOptions from "../auth/AuthOptions";
 
@@ -39,6 +39,7 @@ function Header() {
         <Toolbar>
           <Typography variant="h4" className={classes.title}>
             <Link className={classes.headerLink} to="/">
+              <AccessTimeIcon />
               Keeper
             </Link>
           </Typography>
