@@ -7,7 +7,7 @@ const User = require("../models/user.model");
 // GET current Users
 router.get("/", auth, async (req, res) => {
   try {
-    const user = User.findById(req.userId)
+    const user = await User.findById(req.userId)
     res.json({
       id: user._id,
       username: user.username,
