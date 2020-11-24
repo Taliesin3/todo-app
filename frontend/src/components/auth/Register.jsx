@@ -54,17 +54,17 @@ export default function Register() {
       await Axios.post(
         "/api/user/register", 
         newUser
-        );
-        const loginRes = await Axios.post(
-          "/api/user/login",
-          {email, password}
-          );
-          setUserData({
-            token: loginRes.data.token,
-            user: loginRes.data.user,
-          });
-          localStorage.setItem("auth-token", loginRes.data.token);
-          history.push("/");
+      );
+      const loginRes = await Axios.post(
+        "/api/user/login",
+        {email, password}
+      );
+      setUserData({
+        token: loginRes.data.token,
+        user: loginRes.data.user,
+      });
+      localStorage.setItem("auth-token", loginRes.data.token);
+      history.push("/");
     } catch (err) {
       setNotification({severity: "error", message: err.response.data.msg});
     }

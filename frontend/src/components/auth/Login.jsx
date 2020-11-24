@@ -56,17 +56,17 @@ export default function Login() {
       const loginRes = await Axios.post(
         "/api/user/login",
         loginUser
-        );
-        setUserData({
-          token: loginRes.data.token,
-          user: loginRes.data.user,
-        });
-        localStorage.setItem("auth-token", loginRes.data.token);
-        history.push("/")
-        setNotification({severity: "success", message: "Logged in"});
-      } catch (err) {
-        setNotification({severity: "error", message: err});
-      }
+      );
+      setUserData({
+        token: loginRes.data.token,
+        user: loginRes.data.user,
+      });
+      localStorage.setItem("auth-token", loginRes.data.token);
+      history.push("/")
+      setNotification({severity: "success", message: "Logged in"});
+    } catch (err) {
+      setNotification({severity: "error", message: err});
+    }
   }
 
   return (
