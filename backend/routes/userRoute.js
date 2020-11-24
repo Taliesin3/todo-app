@@ -6,12 +6,15 @@ const User = require("../models/user.model");
 
 // GET current Users
 router.get("/", auth, async (req, res) => {
-  const user = User.findById(req.userId)
-  res.json({
-    id: user._id,
-    username: user.username,
-  });
-    //.catch(err => res.status(400).json("GET Error: " + err));
+  try {
+    const user = User.findById(req.userId)
+    res.json({
+      id: user._id,
+      username: user.username,
+    });
+  } catch(err) {
+    res.status(400).json("GET Error: " + err);
+  } 
 });
 
 // POST endpoint for url/users/add
@@ -77,7 +80,7 @@ router.post("/login", async (req, res) => {
     // Validate
     // email and password are provided
     if (!email || !password) 
-      res.status(400).json({ msg: "Please ensure all required fields are submitted." })
+      return res.status(400).json({ msg: "Please ensure all required fields are submitted." })
     
     // user is registered
     const user = await User.findOne({email: email});
