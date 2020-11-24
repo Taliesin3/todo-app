@@ -16,21 +16,20 @@ router.get("/", auth, async (req, res) => {
 // POST a note via url/notes/add
 router.post("/add", auth, async (req, res) => {
   try{
-    // const username = req.body.username;  // TODO: uncomment when users implemented
     const userId = req.userId;
     const title = req.body.title;
     const content = req.body.content;
     // const date = Date.parse(req.body.date);  // body content is String by default // TODO: uncomment when data is implemented
     
     const newNote = new Note({
-      userId,  // TODO: uncomment when users implemented
+      userId,
       title,
       content,
       // date,  // TODO: uncomment when date implemented
     });
     
     const savedNote = await newNote.save();
-    res.json(savedNote);
+    res.json(savedNote);  // TODO: userId is also returned, filter that out?
 
   } catch (err) {
     console.log(err);

@@ -74,7 +74,6 @@ function Note(props) {
   async function submitUpdate(e, id) {
     e.preventDefault();
     try {
-
       setNoteFocused(false);
       
       const updateRes = await Axios.post(
@@ -83,7 +82,7 @@ function Note(props) {
         {headers: {"x-auth-token": token }}
       );
       
-      console.log(updateRes);
+      console.log(updateRes.data);
         
     } catch (err) {
       console.log(err);
