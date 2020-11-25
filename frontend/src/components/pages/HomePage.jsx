@@ -9,6 +9,7 @@ export default function HomePage() {
   
   // Send to notes or login page
   // depending on login status
+  // TODO: think there's a better way of doing this - redirect?
   useEffect(() => {
     userData.user ? 
       (history.push("/notes")) : 

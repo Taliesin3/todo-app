@@ -40,7 +40,7 @@ export default function Login() {
   // State hooks
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const {setUserData} = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
   const {setNotification} = useContext(NotificationContext);
 
   // Other hooks
@@ -50,19 +50,22 @@ export default function Login() {
   // Login form submit function
   const submitLogin = async (e) => {
     e.preventDefault();
+    
     try {
       const loginUser = {email, password}
       const loginRes = await Axios.post(
         "/api/user/login",
         loginUser
       );
+    
       setUserData({
         token: loginRes.data.token,
         user: loginRes.data.user,
       });
       localStorage.setItem("auth-token", loginRes.data.token);
-      history.push("/")
       setNotification({severity: "success", message: "Logged in"});
+      history.push("/")
+
     } catch (err) {
       console.log(err.response.data.msg);
       setNotification({severity: "error", message: err.response.data.msg});

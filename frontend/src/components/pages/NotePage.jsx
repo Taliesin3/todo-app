@@ -5,8 +5,6 @@ import Note from "../layout/Note";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
-import UserContext from "../../context/UserContext";
-import NotificationContext from "../../context/NotificationContext";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -21,19 +19,12 @@ export default function NotePage() {
   const classes = useStyles();
   // Keeps track of all saved notes
   const [notes, setNotes] = useState();
-  const { userData } = useContext(UserContext);
-  const {notification, setNotification} = useContext(NotificationContext);
   const token = localStorage.getItem("auth-token");
-  const history = useHistory();
-
+  
   // Load all notes from DB on mount + when notes/token update
   useEffect(() => {
-    // Send user to login if not logged in
-    if (!userData.user) {
-      setNotification({severity: "error", message: "Please login"});
-      history.push("/");
-    } 
-
+    let isUnmounted = false;
+    
     // Using an IIFE to carry out an async func within useEffect
     (async function getNotes() {
       try {
@@ -41,12 +32,16 @@ export default function NotePage() {
           "/api/notes/", 
           {headers: {"x-auth-token": token }}
         );
-        setNotes(dbNotes.data);
+        if (!isUnmounted) {
+          setNotes(dbNotes.data);
+        }
       } catch(err) {
         console.log("Error: " + err);
       }
     })();
-  }, [token, userData, history]);
+    
+    return () => {isUnmounted = true}
+  }, [token]);
 
   // Add new note from the Create Area
   function addNote(newNote) {

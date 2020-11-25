@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import UserContext from "../context/UserContext";
 import NotificationContext from "../context/NotificationContext";
@@ -22,61 +22,65 @@ export default function App() {
     message: undefined,
   });
 
+  const providerUserData = useMemo(() => ({ userData, setUserData }), [userData, setUserData]);
+  const providerNotification = useMemo(() => ({notification, setNotification}), [notification, setNotification]);
+  
   // Check if user is logged in
-  useEffect(() => {
-    // useEffect cannot be asynchronous, so we must define our
-    // async function here and then call it at the end of our effect
-    const checkLoggedIn = async () => {
-      try {
-        let token = localStorage.getItem("auth-token");
-        
-        // error thrown if token does not exist, so we must set
-        // an empty token
-        if (token === null) {
-          localStorage.setItem("auth-token", "");
-          token = "";
-        }
-        // check if token is valid
-        const tokenRes = await axios.post(
-          "/api/user/isTokenValid",
-          null,      
-          { headers: { "x-auth-token": token } }
-        );
+  useEffect(() => {    
+      
+      // useEffect cannot be asynchronous, so we must define our
+      // async function here and then call it at the end of our effect
+      const checkLoggedIn = async () => {
+        try {
+          let token = localStorage.getItem("auth-token");
           
-        // if a user is logged in, get user data
-        if (tokenRes.data) {
-          const userRes = await axios.get(
-            "/api/user/",  
-            {headers: { "x-auth-token": token } },
+          // error thrown if token does not exist, so we must set
+          // an empty token
+          if (token === null) {
+            localStorage.setItem("auth-token", "");
+            token = "";
+          } else {
+            // check if token is valid
+            const tokenRes = await axios.post(
+              "/api/user/isTokenValid",
+            null,      
+            { headers: { "x-auth-token": token } }
           );
+          console.log("Token check is: " + tokenRes.data);
 
-          // set state as logged in user data, which is passed to context
-          setUserData({
-            token, 
-            user: userRes.data,
-          });
+          // if a user is logged in, get user data
+          if (tokenRes.data) {
+            const userRes = await axios.get(
+              "/api/user/",  
+              {headers: { "x-auth-token": token } },
+            );
+  
+            // set state as logged in user data, which is passed to context
+            setUserData({
+              token, 
+              user: userRes.data,
+            });
+          }
         }
-
-        return console.log("Login check successful!");
         
-      } catch (err) {
-        console.log(err);
-      }
-    };
-
-    checkLoggedIn();    
+        } catch (err) {
+          console.log(err);
+        }
+      };
+    
+    checkLoggedIn();
   }, []);
   
   return (
     <div>
       <Router>
-        <UserContext.Provider value={{userData, setUserData}}>
-        <NotificationContext.Provider value={{notification, setNotification}}>
+        <UserContext.Provider value={providerUserData}>
+        <NotificationContext.Provider value={providerNotification}>
           <Header />
           <Notification />
           <Switch>
             <Route path="/" exact component={HomePage} />
-            <Route path="/notes" exact component={NotePage} />
+            <Route path="/notes" component={NotePage} />
             <Route path="/user" component={UserPage} />
             <Route path="*" component={ErrorPage} />
           </Switch>

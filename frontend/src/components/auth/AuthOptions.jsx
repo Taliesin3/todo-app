@@ -15,7 +15,7 @@ const useStyles = makeStyles(theme => {
 })
 
 export default function AuthOptions() {
-  const { userData, setUserData }   = useContext(UserContext);
+  const { userData, setUserData } = useContext(UserContext);
   const classes = useStyles();
   const history = useHistory();
   
