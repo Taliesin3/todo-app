@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Route, useHistory } from "react-router-dom";
+import { Redirect, Route, useHistory } from "react-router-dom";
 import CreateArea from "../layout/CreateArea";
 import Note from "../layout/Note";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import axios from "axios";
+import UserContext from "../../context/UserContext";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -16,10 +17,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function NotePage() {
-  const classes = useStyles();
+  const { userData } = useContext(UserContext);
   // Keeps track of all saved notes
   const [notes, setNotes] = useState();
   const token = localStorage.getItem("auth-token");
+  const classes = useStyles();
+  
+
   
   // Load all notes from DB on mount + when notes/token update
   useEffect(() => {
@@ -72,27 +76,30 @@ export default function NotePage() {
   }
 
   return (
-    <Route path="/notes">
-    <div className={classes.root}>
+    <div>
+    {userData.user ? (
+      <Route path="/notes">
+      <div className={classes.root}>
         <Grid container justify="center" spacing={2}>
             <CreateArea
               onAdd={addNote}
             />
         </Grid>
-      <Grid container spacing={2}>
-        {notes && notes.map((note) => { return (
-          <Note 
-            key={note._id}
-            id={note._id}
-            title={note.title}
-            content={note.content}
-            onDelete={deleteNote}
-          />
-        )})}
-        </Grid>
-      </div>
-    </Route>
-
+        <Grid container spacing={2}>
+          {notes && notes.map((note) => { return (
+            <Note 
+              key={note._id}
+              id={note._id}
+              title={note.title}
+              content={note.content}
+              onDelete={deleteNote}
+            />
+          )})}
+          </Grid>
+        </div>
+      </Route>
+    ) : (<Redirect to="/" />)}
+    </div>
   )
 }
 

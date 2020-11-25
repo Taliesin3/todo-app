@@ -22,9 +22,6 @@ export default function App() {
     message: undefined,
   });
 
-  const providerUserData = useMemo(() => ({ userData, setUserData }), [userData, setUserData]);
-  const providerNotification = useMemo(() => ({notification, setNotification}), [notification, setNotification]);
-  
   // Check if user is logged in
   useEffect(() => {    
       
@@ -74,8 +71,8 @@ export default function App() {
   return (
     <div>
       <Router>
-        <UserContext.Provider value={providerUserData}>
-        <NotificationContext.Provider value={providerNotification}>
+        <UserContext.Provider value={{userData, setUserData}}>
+        <NotificationContext.Provider value={{notification, setNotification}}>
           <Header />
           <Notification />
           <Switch>
