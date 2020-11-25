@@ -2,7 +2,7 @@ import React, {useState, useContext} from 'react';
 import {useHistory} from "react-router-dom";
 import Axios from "axios";
 import UserContext from "../../context/UserContext";
-import NotificationContext from "../../context/NotificationContext";
+
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
@@ -42,7 +42,7 @@ export default function Register() {
 
   // Other hooks
   const {setUserData} = useContext(UserContext);
-  const {setNotification} = useContext(NotificationContext);
+  
   const history = useHistory();
   const classes = useStyles();
 
@@ -66,7 +66,7 @@ export default function Register() {
       localStorage.setItem("auth-token", loginRes.data.token);
       history.push("/");
     } catch (err) {
-      setNotification({severity: "error", message: err.response.data.msg});
+      console.log(err);
     }
   };
   

@@ -1,7 +1,6 @@
 import React, {useState, useContext} from 'react';
 import {useHistory} from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import NotificationContext from "../../context/NotificationContext";
 import Avatar from '@material-ui/core/Avatar';
 import Box from "@material-ui/core/Box";
 import Button from '@material-ui/core/Button';
@@ -41,7 +40,7 @@ export default function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
   const { userData, setUserData } = useContext(UserContext);
-  const {setNotification} = useContext(NotificationContext);
+  
 
   // Other hooks
   const classes = useStyles();
@@ -63,12 +62,10 @@ export default function Login() {
         user: loginRes.data.user,
       });
       localStorage.setItem("auth-token", loginRes.data.token);
-      setNotification({severity: "success", message: "Logged in"});
       history.push("/")
 
     } catch (err) {
       console.log(err.response.data.msg);
-      setNotification({severity: "error", message: err.response.data.msg});
     }
   }
 
