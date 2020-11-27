@@ -39,8 +39,7 @@ export default function Login() {
   // State hooks
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const { userData, setUserData } = useContext(UserContext);
-  
+  const { userData, setUserData } = useContext(UserContext);  
 
   // Other hooks
   const classes = useStyles();
@@ -60,14 +59,19 @@ export default function Login() {
       setUserData({
         token: loginRes.data.token,
         user: loginRes.data.user,
+        isLoggedIn: true,
       });
+
       localStorage.setItem("auth-token", loginRes.data.token);
+
       history.push("/")
 
     } catch (err) {
       console.log(err.response.data.msg);
     }
   }
+
+  
 
   return (
     <Container component="main" maxWidth="xs">

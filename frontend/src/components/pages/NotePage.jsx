@@ -23,8 +23,6 @@ export default function NotePage() {
   const token = localStorage.getItem("auth-token");
   const classes = useStyles();
   
-
-  
   // Load all notes from DB on mount + when notes/token update
   useEffect(() => {
     let isUnmounted = false;
@@ -77,8 +75,7 @@ export default function NotePage() {
 
   return (
     <div>
-    {userData.user ? (
-      <Route path="/notes">
+    <Route path="/notes">
       <div className={classes.root}>
         <Grid container justify="center" spacing={2}>
             <CreateArea
@@ -96,10 +93,10 @@ export default function NotePage() {
             />
           )})}
           </Grid>
-        </div>
-      </Route>
-    ) : (<Redirect to="/" />)}
-    </div>
+          </div>
+    
+    </Route>
+      </div>
   )
 }
 

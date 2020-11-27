@@ -23,6 +23,7 @@ export default function AuthOptions() {
     setUserData({
       token: undefined,
       user: undefined,
+      isLoggedIn: false,
     });
     localStorage.setItem("auth-token", "");
     history.push("/");
@@ -30,7 +31,7 @@ export default function AuthOptions() {
 
   return (
     <nav>
-    {userData.user ? (
+    {userData.isLoggedIn ? (
       <Button onClick={logout}>
         <Typography className={classes.headerButton} variant="h6">Log Out</Typography>
       </Button>

@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import axios from "axios";
 import UserContext from "../context/UserContext";
 import Header from "./layout/Header";
 import Footer from "./layout/Footer";
@@ -7,13 +8,15 @@ import HomePage from "./pages/HomePage";
 import NotePage from "./pages/NotePage";
 import UserPage from "./pages/UserPage";
 import ErrorPage from "./pages/ErrorPage";
-import axios from "axios";
+import {ProtectedRoute} from "./auth/ProtectedRoute";
+
 
 export default function App() {
   // user state, passed to context below
   const [userData, setUserData] = useState({
     token: undefined,
     user: undefined,
+    isLoggedIn: false,
   });
 
   // Check if user is logged in
@@ -50,6 +53,7 @@ export default function App() {
             setUserData({
               token, 
               user: userRes.data,
+              isLoggedIn: true,
             });
           }
         }
@@ -69,9 +73,9 @@ export default function App() {
           <Header />
           <Switch>
             <Route path="/" exact component={HomePage} />
-            <Route path="/notes" component={NotePage} />
+            <ProtectedRoute path="/notes" component={NotePage} />
             <Route path="/user" component={UserPage} />
-            <Route path="*" component={ErrorPage} />
+            <Route path="*" component={() => "404 Not Found"} />
           </Switch>
         </UserContext.Provider>
       </Router>

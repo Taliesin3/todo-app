@@ -10,7 +10,7 @@ export default function HomePage() {
   // proper landing page in future
   return (
     <div>
-      {userData.user ? <Redirect to="/notes" /> : <Redirect to="/user/login" />}
+      {userData.isLoggedIn ? <Redirect to="/notes" /> : <Redirect to="/user/login" />}
     </div>
     
   )
