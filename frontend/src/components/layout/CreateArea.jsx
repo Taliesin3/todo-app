@@ -140,7 +140,7 @@ export default function CreateArea(props) {
           value={newNote.content} 
         />
         <Zoom in={focused}>
-          <Fab className={classes.button} type="submit">
+          <Fab className={classes.button} type="submit" disabled={!(newNote.title || newNote.content)}>
             <AddIcon />
           </Fab>
         </Zoom>
