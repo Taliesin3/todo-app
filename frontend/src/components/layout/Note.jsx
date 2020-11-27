@@ -97,7 +97,8 @@ function Note(props) {
           <InputBase 
             id="title" 
             name="title" 
-            fullWidth 
+            fullWidth
+            multiline 
             className={classes.editTitle} 
             value={noteState.title} 
             onChange={handleChange}  
