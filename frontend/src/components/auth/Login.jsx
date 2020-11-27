@@ -1,14 +1,17 @@
 import React, {useState, useContext} from 'react';
 import {useHistory} from "react-router-dom";
 import UserContext from "../../context/UserContext";
-import Avatar from '@material-ui/core/Avatar';
-import Box from "@material-ui/core/Box";
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
+import {
+  Avatar,
+  Box,
+  Button,
+  TextField,
+  FormControlLabel,
+  Checkbox,
+  Link,
+  Grid,
+  Paper
+} from '@material-ui/core/';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    padding: theme.spacing(2),
   },
   avatar: {
     margin: theme.spacing(1),
@@ -76,7 +80,7 @@ export default function Login() {
   return (
     <Container component="main" maxWidth="xs">
       
-      <div className={classes.paper}>
+      <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -131,7 +135,7 @@ export default function Login() {
             </Grid>
           </Grid>
         </form>
-      </div>
+      </Paper>
     </Container>
   );
 }

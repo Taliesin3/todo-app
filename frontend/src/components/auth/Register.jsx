@@ -2,16 +2,18 @@ import React, {useState, useContext} from 'react';
 import {useHistory} from "react-router-dom";
 import Axios from "axios";
 import UserContext from "../../context/UserContext";
-
-import Avatar from '@material-ui/core/Avatar';
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
+import {
+  Avatar,
+  Button,
+  TextField,
+   Link,
+  Grid,
+  Typography,
+  Container,
+  Paper
+} from '@material-ui/core';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 
 const useStyles = makeStyles((theme) => ({
   paper: {
@@ -19,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    padding: theme.spacing(2),
   },
   avatar: {
     margin: theme.spacing(1),
@@ -74,7 +77,7 @@ export default function Register() {
   return (
     <Container component="main" maxWidth="xs">
       
-      <div className={classes.paper}>
+      <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
         </Avatar>
@@ -149,7 +152,7 @@ export default function Register() {
             </Grid>
           </Grid>
         </form>
-      </div>
+      </Paper>
     </Container>
   );
 }
