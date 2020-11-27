@@ -35,7 +35,7 @@ export default function NotePage() {
           {headers: {"x-auth-token": token }}
         );
         if (!isUnmounted) {
-          setNotes(dbNotes.data);
+          setNotes(dbNotes.data.reverse());
         }
       } catch(err) {
         console.log("Error: " + err);
@@ -49,7 +49,7 @@ export default function NotePage() {
   function addNote(newNote) {
     setNotes(prevNotes => {
       return (
-        [...prevNotes, newNote]
+        [newNote, ...prevNotes]
       )
     })
   }
