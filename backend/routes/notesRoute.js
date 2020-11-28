@@ -2,10 +2,10 @@ const router = require("express").Router();
 const auth = require("../middleware/auth");
 const Note = require("../models/note.model");
 
-// GET all notes via url/notes/
+// GET all notes
 router.get("/", auth, async (req, res) => {
   try {
-    const userNotes = await Note.find({userId: req.userId})
+    const userNotes = await Note.find({userId: req.userId}).sort({ createdAt: -1 });
     res.json(userNotes);
   } catch (err) {
     console.log(err);
@@ -13,7 +13,7 @@ router.get("/", auth, async (req, res) => {
   } 
 });
 
-// POST a note via url/notes/add
+// Add a note
 router.post("/add", auth, async (req, res) => {
   try{
     const userId = req.userId;
