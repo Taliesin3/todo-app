@@ -117,7 +117,9 @@ function Note(props) {
               <button type="submit" className={classes.saveButton} hidden={!noteFocused}>SAVE</button>
             </Grid>
             <Grid container item justify="flex-end" xs={6}>
-              <button type="button" className={classes.deleteButton} onClick={() => {props.onDelete(props.id)}}><DeleteIcon /></button>
+              <button type="button" className={classes.deleteButton} onClick={() => {props.onDelete(props.id)}}>
+                <DeleteIcon />
+              </button>
             </Grid>
           </Grid>
         </form>

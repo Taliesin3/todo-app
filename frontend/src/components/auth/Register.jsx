@@ -70,7 +70,7 @@ export default function Register() {
       localStorage.setItem("auth-token", loginRes.data.token);
       history.push("/");
     } catch (err) {
-      console.log(err);
+      console.log(err.msg);
     }
   };
   

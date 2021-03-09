@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path"); // need proxy front-backend requests for Heroku
-require("dotenv").config();   // allows us to use a .env file
+require("dotenv").config({ path: path.resolve(__dirname, '../.env') });   // allows us to use a .env file
 require("./database");
 
 // Create express server
@@ -12,7 +12,6 @@ const app = express();
 // Middleware
 app.use(cors());        // applies cors middleware
 app.use(express.json());  // allows us to parse JSON
-app.use(bodyParser.json()); // TODO: prob dont need this, using express.json already
 
 // Database Routes
 const userRoute = require("./routes/userRoute");

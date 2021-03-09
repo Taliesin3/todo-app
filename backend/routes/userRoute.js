@@ -30,10 +30,6 @@ router.post("/register", async (req, res) => {
       return res
         .status(400)
         .json({msg: "Please ensure all required fields are submitted."});
-    if (password.length < 5)
-      return res
-        .status(400)
-        .json({msg: "The password must be at least 5 characters long."});
     if (password !== passwordCheck)
       return res
         .status(400)
