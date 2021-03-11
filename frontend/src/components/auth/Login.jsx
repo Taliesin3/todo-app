@@ -134,6 +134,14 @@ export default function Login() {
               </Link>
             </Grid>
           </Grid>
+          <br/>
+          <Grid container>
+            <Grid item>
+              <Link href="/notes" variant="body2">
+                {"Click here to try the app without creating an account"}
+              </Link>
+            </Grid>
+          </Grid>
         </form>
       </Paper>
     </Container>

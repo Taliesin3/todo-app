@@ -73,7 +73,7 @@ export default function App() {
           <Header />
           <Switch>
             <Route path="/" exact component={HomePage} />
-            <ProtectedRoute path="/notes" component={NotePage} />
+            <Route path="/notes" component={NotePage} />
             <Route path="/user" component={UserPage} />
             <Route path="*" component={() => "404 Not Found"} />
           </Switch>

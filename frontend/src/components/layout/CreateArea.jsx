@@ -91,20 +91,32 @@ export default function CreateArea(props) {
     e.preventDefault();
     
     try {
-      const addedNote = await axios.post(
-        '/api/notes/add', 
-        newNote,
-        {headers: {"x-auth-token": token }}
-      );
-      props.onAdd(addedNote.data);
-      
+      // Submit to database if logged in
+      if (token !== "") {
+        console.log(token)
+        const addedNote = await axios.post(
+          '/api/notes/add', 
+          newNote,
+          {headers: {"x-auth-token": token }}
+          );
+          props.onAdd(addedNote.data);
+          
+      // Allow note taking to still work even if not logged in
+      // just store notes in memory, not in database   
+      } else {
+        let d = new Date();
+        newNote['_id'] = d.getMilliseconds();
+        console.log(newNote)
+        props.onAdd(newNote);
+      }
+        
       // Clear text in create area
       setNewNote({
         title: "",
         content: ""
       });
     } catch(err) {
-      console.log("Error: " + err);
+      console.log(err);
     }
   }
 

@@ -19,7 +19,7 @@ const useStyles = makeStyles(theme => ({
 export default function NotePage() {
   const { userData } = useContext(UserContext);
   // Keeps track of all saved notes
-  const [notes, setNotes] = useState();
+  const [notes, setNotes] = useState([]);
   const token = localStorage.getItem("auth-token");
   const classes = useStyles();
   
@@ -58,11 +58,10 @@ export default function NotePage() {
   async function deleteNote(id) {
     try {
       // Delete note from database
-      const deletedNote = await axios.delete(
+      await axios.delete(
         `/api/notes/${id}`, 
         {headers: {"x-auth-token": token}}
       );
-      console.log(deletedNote.data);
     } catch(err) { 
       console.log("Error: " + err);
     }

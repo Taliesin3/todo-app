@@ -38,7 +38,7 @@ function Header() {
       <AppBar position="static" square className={classes.header}>
         <Toolbar>
           <Typography variant="h4" className={classes.title}>
-            <Link className={classes.headerLink} to="/">
+            <Link className={classes.headerLink} to="/notes">
               <AccessTimeIcon />
               Keeper
             </Link>
