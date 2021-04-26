@@ -13,6 +13,7 @@ import DeleteListModal from "./components/DeleteListModal";
 import EditListNameModal from "./components/EditListNameModal";
 import Footer from "./components/Footer";
 import Overlay from "./components/Overlay";
+import Register from "./components/Register";
 
 export default function App() {
   // user state, passed to context below
@@ -262,6 +263,7 @@ export default function App() {
         activeList={activeList}
         listName={lists[activeList].title}
       />
+      <Register />
       <Footer clearCompleted={clearCompleted} />
     </div>
   );
