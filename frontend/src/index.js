@@ -1,20 +1,12 @@
 // React imports
-import React from 'react';
-import ReactDOM from 'react-dom';
-import { createMuiTheme, ThemeProvider } from "@material-ui/core/styles";
-import { blue } from "@material-ui/core/colors";
-import App from './components/App';
-
-const theme = createMuiTheme({
-  palette: {
-    primary: blue,
-  }
-});
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./App";
 
 // Render React components
 ReactDOM.render(
-  <ThemeProvider theme={theme}>
+  <React.StrictMode>
     <App />
-  </ThemeProvider>,
-  document.getElementById('root')
+  </React.StrictMode>,
+  document.getElementById("root")
 );
