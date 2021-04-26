@@ -17,7 +17,7 @@ router.get("/", auth, async (req, res) => {
   } 
 });
 
-// POST endpoint for url/users/add
+// POST endpoint to register a new user
 router.post("/register", async (req, res) => {  
   const { email, password, passwordCheck } = req.body;
   let username = req.body.username;
