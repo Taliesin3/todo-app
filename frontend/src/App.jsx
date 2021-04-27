@@ -14,6 +14,7 @@ import EditListNameModal from "./components/EditListNameModal";
 import Footer from "./components/Footer";
 import Overlay from "./components/Overlay";
 import Register from "./components/Register";
+import Login from "./components/Login";
 
 export default function App() {
   // user state, passed to context below
@@ -264,6 +265,7 @@ export default function App() {
         listName={lists[activeList].title}
       />
       <Register />
+      <Login />
       <Footer clearCompleted={clearCompleted} />
     </div>
   );

@@ -475,7 +475,7 @@ button:focus {
 
 /* When the checkbox is checked, add a blue background */
 .checkbox-container input:checked ~ .checkmark {
-  background-color: var(--low-green);
+  background-color: rgb(73, 182, 215, 0.64);
 }
 
 /* Create the checkmark/indicator (hidden when not checked) */
@@ -521,51 +521,10 @@ button:focus {
   display: block !important;
 }
 
-/* MEDIA QUERY FOR WHEN PHONE IS SIDEWAYS */
-
-@media screen and (min-width: 320px) and (max-width: 767px) and (orientation: landscape) {
-  .task-card {
-    height: 200px;
-    width: 180px;
-  }
-  .navbar {
-    display: none !important;
-  }
-  .current-list-container {
-    padding: 1rem;
-  }
-  .complete-label {
+/* Media queries for mobile devices */
+@media (max-width: 360px) {
+  #navbar-register,
+  #navbar-login {
     display: none;
-  }
-  .task-card-btns-container {
-    position: absolute;
-    right: 0.5rem;
-    bottom: 0.1rem;
-  }
-  .task-notes {
-    max-height: 40%;
-    overflow: scroll;
-  }
-  .task-card-header {
-    padding: 0.5rem;
-  }
-
-  .new-task-form,
-  .edit-task-form {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    grid-gap: 0.6rem;
-  }
-  .form-radio,
-  .form-notes {
-    order: -1;
-  }
-  .deadline-label,
-  .priority-label {
-    display: none;
-  }
-  .modal-header,
-  .modal-footer {
-    padding: 0.5rem 1rem;
   }
 }

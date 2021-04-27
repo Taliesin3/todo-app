@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import $ from "jquery";
 
-function Register(props) {
-  const [registerForm, setRegisterForm] = useState({
+function Login(props) {
+  const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
   });
@@ -10,7 +10,7 @@ function Register(props) {
   function handleChange(e) {
     const { name, value } = e.target;
     console.log(e);
-    setRegisterForm((prevNote) => {
+    setLoginForm((prevNote) => {
       return {
         ...prevNote,
         [name]: value,
@@ -20,7 +20,7 @@ function Register(props) {
 
   function submitUpdate(e) {
     e.preventDefault();
-    props.updateNote(registerForm);
+    props.updateNote(loginForm);
   }
 
   // Allow user to press Enter instead of clicking submit button
@@ -28,17 +28,17 @@ function Register(props) {
     const key = e.charCode || e.keyCode || 0;
     if (key === 13) {
       e.preventDefault();
-      document.querySelector("#submit-register-form").click();
+      document.querySelector("#submit-login-form").click();
     }
   }
 
   return (
-    <div className="modal fade" id="registerModal">
+    <div className="modal fade" id="loginModal">
       <div className="modal-dialog modal-dialog-centered">
         <div className="modal-content">
           {/* Header */}
           <div className="modal-header">
-            <h5 className="modal-title">Register</h5>
+            <h5 className="modal-title">Login</h5>
             <button
               type="button"
               className="close"
@@ -53,17 +53,9 @@ function Register(props) {
           <form
             onSubmit={submitUpdate}
             onKeyPress={(e) => pressEnterSubmit(e)}
-            className="register-form"
+            className="login-form"
           >
             <div className="modal-body">
-              <p>
-                You can use Taski without registering, however your notes will
-                be deleted when you close or refresh the page.
-              </p>
-              <p>
-                If you want your notes to be saved for later use, please
-                register below.
-              </p>
               {/* Username */}
               <div className="form-group">
                 <input
@@ -71,9 +63,9 @@ function Register(props) {
                   type="text"
                   name="username"
                   placeholder="Username"
-                  id="register-username"
+                  id="login-username"
                   maxLength="15"
-                  value={registerForm.username}
+                  value={loginForm.username}
                   onChange={handleChange}
                   autoComplete="off"
                 />
@@ -86,9 +78,9 @@ function Register(props) {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  id="register-password"
+                  id="login-password"
                   minLength="8"
-                  value={registerForm.password}
+                  value={loginForm.password}
                   onChange={handleChange}
                   autoComplete="off"
                 />
@@ -102,7 +94,7 @@ function Register(props) {
                 className="btn btn-danger"
                 data-dismiss="modal"
                 onClick={() => {
-                  setRegisterForm({
+                  setLoginForm({
                     username: "",
                     email: "",
                     password: "",
@@ -114,9 +106,9 @@ function Register(props) {
               <button
                 type="submit"
                 className="btn btn-success commit-task-btn"
-                id="submit-register-form"
+                id="submit-login-form"
                 data-toggle="modal"
-                data-target="#registerModal"
+                data-target="#loginModal"
               >
                 Submit
               </button>
@@ -128,4 +120,4 @@ function Register(props) {
   );
 }
 
-export default Register;
+export default Login;

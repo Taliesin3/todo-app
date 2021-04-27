@@ -13,12 +13,20 @@ function Navbar() {
       <div id="navbar-buttons">
         <button
           className="text-muted"
+          id="navbar-register"
           data-toggle="modal"
           data-target="#registerModal"
         >
           register
         </button>
-        <button className="text-muted">login</button>
+        <button
+          id="navbar-login"
+          className="text-muted"
+          data-toggle="modal"
+          data-target="#loginModal"
+        >
+          login
+        </button>
         <button
           onClick={helper.openAndCloseSideMenu}
           className="navbar-toggler menu-toggle text-muted"

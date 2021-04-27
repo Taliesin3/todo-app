@@ -6,7 +6,7 @@ function NewTaskForm(props) {
   const [newNote, setNewNote] = useState({
     title: "",
     content: "",
-    date: "0000-00-00",
+    deadline: "0000-00-00",
     created: "",
     priority: "4",
     completed: false,
@@ -40,7 +40,7 @@ function NewTaskForm(props) {
       setNewNote({
         title: "",
         content: "",
-        date: "0000-00-00",
+        deadline: "0000-00-00",
         created: "",
         priority: "4",
         completed: false,
@@ -116,17 +116,17 @@ function NewTaskForm(props) {
                 </div>
               </div>
 
-              {/* Date field */}
+              {/* Deadline field */}
               <div className="form-group">
-                <label htmlFor="task-date" className="deadline-label">
+                <label htmlFor="task-deadline" className="deadline-label">
                   Deadline Date
                   <input
                     onChange={handleChange}
                     className="form-control task-field"
                     type="date"
-                    name="date"
-                    id="task-date"
-                    value={newNote.date}
+                    name="deadline"
+                    id="task-deadline"
+                    value={newNote.deadline}
                   />
                 </label>
                 <div className="invalid-feedback">
@@ -203,7 +203,7 @@ function NewTaskForm(props) {
                       setNewNote({
                         title: "",
                         content: "",
-                        date: "0000-00-00",
+                        deadline: "0000-00-00",
                         priority: "0",
                       }),
                     1000

@@ -84,6 +84,23 @@ function SideMenu(props) {
             Please enter list name
           </small>
         </form>
+
+        <button
+          className="text-muted"
+          id="navbar-register"
+          data-toggle="modal"
+          data-target="#registerModal"
+        >
+          register
+        </button>
+        <button
+          id="navbar-login"
+          className="text-muted"
+          data-toggle="modal"
+          data-target="#loginModal"
+        >
+          login
+        </button>
       </div>
     </div>
   );
