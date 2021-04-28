@@ -13,8 +13,10 @@ import DeleteListModal from "./components/DeleteListModal";
 import EditListNameModal from "./components/EditListNameModal";
 import Footer from "./components/Footer";
 import Overlay from "./components/Overlay";
-import Register from "./components/Register";
-import Login from "./components/Login";
+import RegisterModal from "./components/RegisterModal";
+import LoginModal from "./components/LoginModal.js";
+
+import UserContext from "./context/UserContext";
 
 export default function App() {
   // user state, passed to context below
@@ -23,6 +25,18 @@ export default function App() {
     user: undefined,
     isLoggedIn: false,
   });
+
+  // TODO: separate notes into own state, just use id to link lists to notes?
+  const [lists, setLists] = useState([
+    {
+      id: 0,
+      title: "Default List",
+      notes: [],
+    },
+  ]);
+  const [activeList, setActiveList] = useState(0);
+  const [editNote, setEditNote] = useState(null);
+  let token = localStorage.getItem("auth-token");
 
   // Check if user is logged in
   useEffect(() => {
@@ -66,17 +80,6 @@ export default function App() {
     checkLoggedIn();
   }, []);
 
-  // TODO: separate notes into own state, just use id to link lists to notes?
-  const [lists, setLists] = useState([
-    {
-      id: 0,
-      title: "Default List",
-      notes: [],
-    },
-  ]);
-  const [activeList, setActiveList] = useState(0);
-  const [editNote, setEditNote] = useState(null);
-
   function addList(newList) {
     setLists((prevLists) => {
       return [...prevLists, newList];
@@ -107,12 +110,26 @@ export default function App() {
     });
   }
 
-  function deleteNote(id) {
+  async function deleteNote(noteId) {
+    // Delete from backend if logged in
+    if (token !== "") {
+      try {
+        await axios.delete(`/api/notes/${noteId}`, {
+          headers: { "x-auth-token": token },
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    // Delete from frontend
     setLists((prevLists) => {
       let newLists = Array.from(prevLists);
       newLists[activeList] = {
         ...prevLists[activeList],
-        notes: prevLists[activeList].notes.filter((note) => note._id !== id),
+        notes: prevLists[activeList].notes.filter(
+          (note) => note._id !== noteId
+        ),
       };
       return newLists;
     });
@@ -229,44 +246,46 @@ export default function App() {
 
   return (
     <div id="main">
-      <Overlay />
-      <header>
-        <Navbar />
-        <SubNavbar
-          listTitle={lists[activeList].title}
+      <UserContext.Provider value={{ userData, setUserData }}>
+        <Overlay />
+        <header>
+          <Navbar />
+          <SubNavbar
+            listTitle={lists[activeList].title}
+            activeList={activeList}
+            sortNotes={sortNotes}
+          />
+        </header>
+        <Main
+          lists={lists}
           activeList={activeList}
-          sortNotes={sortNotes}
+          notes={lists[activeList].notes}
+          addNote={addNote}
+          deleteNote={deleteNote}
+          setComplete={setComplete}
+          setEditNote={setEditNote}
         />
-      </header>
-      <Main
-        lists={lists}
-        activeList={activeList}
-        notes={lists[activeList].notes}
-        addNote={addNote}
-        deleteNote={deleteNote}
-        setComplete={setComplete}
-        setEditNote={setEditNote}
-      />
-      <SideMenu
-        lists={lists}
-        submitNewList={addList}
-        activeList={activeList}
-        setActiveList={setActiveList}
-      />
-      <NewTaskForm onAdd={addNote} />
-      <EditTaskForm
-        noteData={lists[activeList].notes[editNote]}
-        updateNote={updateNote}
-      />
-      <DeleteListModal deleteList={deleteList} />
-      <EditListNameModal
-        editListName={editListName}
-        activeList={activeList}
-        listName={lists[activeList].title}
-      />
-      <Register />
-      <Login />
-      <Footer clearCompleted={clearCompleted} />
+        <SideMenu
+          lists={lists}
+          submitNewList={addList}
+          activeList={activeList}
+          setActiveList={setActiveList}
+        />
+        <NewTaskForm onAdd={addNote} />
+        <EditTaskForm
+          noteData={lists[activeList].notes[editNote]}
+          updateNote={updateNote}
+        />
+        <DeleteListModal deleteList={deleteList} />
+        <EditListNameModal
+          editListName={editListName}
+          activeList={activeList}
+          listName={lists[activeList].title}
+        />
+        <RegisterModal />
+        <LoginModal />
+        <Footer clearCompleted={clearCompleted} />
+      </UserContext.Provider>
     </div>
   );
 }

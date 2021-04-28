@@ -1,11 +1,16 @@
 import React, { useState, useEffect } from "react";
 import $ from "jquery";
+import axios from "axios";
+import { useContext } from "react";
+import UserContext from "../context/UserContext";
 
-function Login(props) {
+function LoginModal(props) {
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
   });
+
+  const { userData, setUserData } = useContext(UserContext);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -18,10 +23,24 @@ function Login(props) {
     });
   }
 
-  function submitUpdate(e) {
+  // Login form submit function
+  const submitLogin = async (e) => {
     e.preventDefault();
-    props.updateNote(loginForm);
-  }
+
+    try {
+      const loginRes = await axios.post("/api/user/login", loginForm);
+
+      setUserData({
+        token: loginRes.data.token,
+        user: loginRes.data.user,
+        isLoggedIn: true,
+      });
+
+      localStorage.setItem("auth-token", loginRes.data.token);
+    } catch (err) {
+      console.log(err.response.data.msg);
+    }
+  };
 
   // Allow user to press Enter instead of clicking submit button
   function pressEnterSubmit(e) {
@@ -51,7 +70,7 @@ function Login(props) {
 
           {/* Body & Form */}
           <form
-            onSubmit={submitUpdate}
+            onSubmit={submitLogin}
             onKeyPress={(e) => pressEnterSubmit(e)}
             className="login-form"
           >
@@ -120,4 +139,4 @@ function Login(props) {
   );
 }
 
-export default Login;
+export default LoginModal;

@@ -35,7 +35,26 @@ function SideMenu(props) {
       <div
         onClick={helper.openAndCloseSideMenu}
         className="close-btn text-muted"
+        id="sidemenu-header"
       >
+        <div>
+          <button
+            className="text-muted"
+            id="sidemenu-register"
+            data-toggle="modal"
+            data-target="#registerModal"
+          >
+            register
+          </button>
+          <button
+            id="sidemenu-login"
+            className="text-muted"
+            data-toggle="modal"
+            data-target="#loginModal"
+          >
+            login
+          </button>
+        </div>
         <i className="fas fa-times"></i>
       </div>
 
@@ -84,23 +103,6 @@ function SideMenu(props) {
             Please enter list name
           </small>
         </form>
-
-        <button
-          className="text-muted"
-          id="navbar-register"
-          data-toggle="modal"
-          data-target="#registerModal"
-        >
-          register
-        </button>
-        <button
-          id="navbar-login"
-          className="text-muted"
-          data-toggle="modal"
-          data-target="#loginModal"
-        >
-          login
-        </button>
       </div>
     </div>
   );

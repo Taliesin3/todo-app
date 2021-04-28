@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
 import $ from "jquery";
 import TaskCard from "./TaskCard";
@@ -6,9 +7,30 @@ import TaskCard from "./TaskCard";
 function Main(props) {
   const token = localStorage.getItem("auth-token");
 
-  const toggleSearchBox = () => {
-    $(".search-box").toggleClass("focus-border");
-  };
+  // Load all notes from DB on mount + when notes/token update
+  useEffect(() => {
+    let isUnmounted = false;
+    // Using an IIFE to carry out an async func within useEffect
+
+    if (token !== "") {
+      (async function getNotes() {
+        try {
+          const dbNotes = await axios.get("/api/notes/", {
+            headers: { "x-auth-token": token },
+          });
+          if (isUnmounted === false) {
+            //setNotes(dbNotes.data);
+          }
+        } catch (err) {
+          console.log("Error: " + err);
+        }
+      })();
+    }
+
+    return () => {
+      isUnmounted = true;
+    };
+  }, [token]);
 
   return (
     <>
@@ -30,8 +52,8 @@ function Main(props) {
 
         <div style={{ display: "none" }} className="search-box border-muted">
           <input
-            onFocus={toggleSearchBox}
-            onBlur={toggleSearchBox}
+            onFocus={() => $(".search-box").toggleClass("focus-border")}
+            onBlur={() => $(".search-box").toggleClass("focus-border")}
             className="search-txt"
             type="text"
             placeholder="Type to Search"

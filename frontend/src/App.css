@@ -56,11 +56,13 @@ button:focus {
 
 /* SIDE MENU STYLING */
 
+#sidemenu-header {
+  display: flex;
+  justify-content: space-between;
+}
+
 /* close btn */
 .fa-times {
-  position: absolute;
-  top: 1.5rem;
-  right: 1.5rem;
   font-size: 1.3rem;
   cursor: pointer;
   transition: 0.3s;
@@ -113,6 +115,11 @@ button:focus {
 
 .lists li.active {
   font-weight: 500;
+}
+
+#sidemenu-register,
+#sidemenu-login {
+  display: none;
 }
 
 /* Form to add new task */
@@ -526,5 +533,10 @@ button:focus {
   #navbar-register,
   #navbar-login {
     display: none;
+  }
+
+  #sidemenu-register,
+  #sidemenu-login {
+    display: inline-block;
   }
 }
