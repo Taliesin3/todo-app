@@ -1,7 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import $ from "jquery";
+import UserContext from "../context/UserContext";
+import Axios from "axios";
 
 function NewTaskForm(props) {
+  const { userData } = useContext(UserContext);
+
   // TODO: handle date more intelligently, currently just storing as a string - use date-fns?
   const [newNote, setNewNote] = useState({
     title: "",
@@ -27,27 +31,34 @@ function NewTaskForm(props) {
   // Submit task form and create new task
   async function submitTask(e) {
     e.preventDefault();
-    console.log(newNote);
 
-    try {
-      // TODO: Submit note to database if logged in
-      // Allow note taking to work even if not logged in
-      const d = new Date();
-      newNote.created = d.getTime();
-      props.onAdd(newNote);
+    // Set created time
+    const d = new Date();
+    newNote.created = d.getTime();
 
-      // Clear text in form
-      setNewNote({
-        title: "",
-        content: "",
-        deadline: "0000-00-00",
-        created: "",
-        priority: "4",
-        completed: false,
-      });
-    } catch (err) {
-      console.log(err);
+    // Submit note to database if logged in
+    if (token !== "") {
+      try {
+        const addedNote = Axios.post("api/notes/add", newNote, {
+          headers: { "x-auth-token": token },
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
+
+    // Add to frontend
+    props.onAdd(newNote);
+
+    // Reset text in new task form
+    setNewNote({
+      title: "",
+      content: "",
+      deadline: "0000-00-00",
+      created: "",
+      priority: "4",
+      completed: false,
+    });
   }
 
   // Allow user to press Enter instead of clicking submit button

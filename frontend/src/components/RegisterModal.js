@@ -1,15 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import $ from "jquery";
+import Axios from "axios";
+import UserContext from "../context/UserContext";
 
 function Register(props) {
+  const { userData, setUserData } = useContext(UserContext);
   const [registerForm, setRegisterForm] = useState({
     username: "",
     password: "",
+    passwordCheck: "",
   });
 
   function handleChange(e) {
     const { name, value } = e.target;
-    console.log(e);
     setRegisterForm((prevNote) => {
       return {
         ...prevNote,
@@ -18,9 +21,23 @@ function Register(props) {
     });
   }
 
-  function submitUpdate(e) {
+  async function submitRegister(e) {
     e.preventDefault();
-    props.updateNote(registerForm);
+    try {
+      await Axios.post("api/user/register", registerForm);
+      const loginRes = await Axios.post("api/user/login", {
+        username: registerForm.username,
+        password: registerForm.password,
+      });
+      setUserData({
+        token: loginRes.data.token,
+        user: loginRes.data.user,
+        isLoggedIn: true,
+      });
+      localStorage.setItem("auth-token", loginRes.data.token);
+    } catch (err) {
+      console.log(err);
+    }
   }
 
   // Allow user to press Enter instead of clicking submit button
@@ -51,8 +68,8 @@ function Register(props) {
 
           {/* Body & Form */}
           <form
-            onSubmit={submitUpdate}
-            onKeyPress={(e) => pressEnterSubmit(e)}
+            onSubmit={submitRegister}
+            onKeyPress={pressEnterSubmit}
             className="register-form"
           >
             <div className="modal-body">
@@ -89,6 +106,21 @@ function Register(props) {
                   id="register-password"
                   minLength="8"
                   value={registerForm.password}
+                  onChange={handleChange}
+                  autoComplete="off"
+                />
+              </div>
+
+              {/* Password Check */}
+              <div className="form-group">
+                <input
+                  className="form-control task-field"
+                  type="password"
+                  name="passwordCheck"
+                  placeholder="Please re-enter password"
+                  id="password-check"
+                  minLength="8"
+                  value={registerForm.passwordCheck}
                   onChange={handleChange}
                   autoComplete="off"
                 />

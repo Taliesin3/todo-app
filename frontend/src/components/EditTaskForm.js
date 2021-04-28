@@ -11,7 +11,6 @@ function EditTaskForm(props) {
   });
 
   useEffect(() => {
-    console.log("useEffect triggered");
     if (props.noteData !== undefined && editNote._id !== props.noteData._id) {
       setEditNote({
         _id: props.noteData._id,
@@ -30,7 +29,6 @@ function EditTaskForm(props) {
 
   function handleChange(e) {
     const { name, value } = e.target;
-    console.log(e);
     setEditNote((prevNote) => {
       return {
         ...prevNote,

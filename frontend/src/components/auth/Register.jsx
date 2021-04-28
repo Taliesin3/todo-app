@@ -1,26 +1,26 @@
-import React, {useState, useContext} from 'react';
-import {useHistory} from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import Axios from "axios";
 import UserContext from "../../context/UserContext";
 import {
   Avatar,
   Button,
   TextField,
-   Link,
+  Link,
   Grid,
   Typography,
   Container,
-  Paper
-} from '@material-ui/core';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { makeStyles } from '@material-ui/core/styles';
+  Paper,
+} from "@material-ui/core";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     padding: theme.spacing(2),
   },
   avatar: {
@@ -28,7 +28,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(3),
   },
   submit: {
@@ -44,39 +44,38 @@ export default function Register() {
   const [passwordCheck, setPasswordCheck] = useState();
 
   // Other hooks
-  const {setUserData} = useContext(UserContext);
-  
+  const { setUserData } = useContext(UserContext);
+
   const history = useHistory();
   const classes = useStyles();
 
   // Submit register form function
-  const submitRegister = async (e) => {
-    e.preventDefault();
-    try {
-      const newUser = { username, email, password, passwordCheck };
-      await Axios.post(
-        "/api/user/register", 
-        newUser
-      );
-      const loginRes = await Axios.post(
-        "/api/user/login",
-        {email, password}
-      );
-      setUserData({
-        token: loginRes.data.token,
-        user: loginRes.data.user,
-        isLoggedIn: true,
-      });
-      localStorage.setItem("auth-token", loginRes.data.token);
-      history.push("/");
-    } catch (err) {
-      console.log(err.msg);
-    }
-  };
-  
+  // const submitRegister = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const newUser = { username, email, password, passwordCheck };
+  //     await Axios.post(
+  //       "/api/user/register",
+  //       newUser
+  //     );
+  //     const loginRes = await Axios.post(
+  //       "/api/user/login",
+  //       {email, password}
+  //     );
+  //     setUserData({
+  //       token: loginRes.data.token,
+  //       user: loginRes.data.user,
+  //       isLoggedIn: true,
+  //     });
+  //     localStorage.setItem("auth-token", loginRes.data.token);
+  //     history.push("/");
+  //   } catch (err) {
+  //     console.log(err.msg);
+  //   }
+  // };
+
   return (
     <Container component="main" maxWidth="xs">
-      
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -94,7 +93,9 @@ export default function Register() {
                 id="username"
                 label="Username"
                 autoFocus
-                onChange={(e) => {setUsername(e.target.value)}}
+                onChange={(e) => {
+                  setUsername(e.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -106,7 +107,9 @@ export default function Register() {
                 label="Email Address"
                 name="email"
                 autoComplete="email"
-                onChange={(e) => {setEmail(e.target.value)}}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -119,7 +122,9 @@ export default function Register() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
-                onChange={(e) => {setPassword(e.target.value)}}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
               />
             </Grid>
             <Grid item xs={12}>
@@ -131,7 +136,9 @@ export default function Register() {
                 label="Password Check"
                 type="password"
                 id="passwordCheck"
-                onChange={(e) => {setPasswordCheck(e.target.value)}}
+                onChange={(e) => {
+                  setPasswordCheck(e.target.value);
+                }}
               />
             </Grid>
           </Grid>

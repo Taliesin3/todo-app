@@ -4,21 +4,21 @@ import $ from "jquery";
 import UserContext from "../context/UserContext";
 
 function SideMenu(props) {
+  const { userData, setUserData } = useContext(UserContext);
   const [newList, setNewList] = useState({
     id: props.lists.length,
     title: "",
     notes: [],
   });
-  const { userData, setUserData } = useContext(UserContext);
 
-  const logout = () => {
+  function logout() {
     setUserData({
       token: undefined,
       user: undefined,
       isLoggedIn: false,
     });
     localStorage.setItem("auth-token", "");
-  };
+  }
 
   function handleChange(e) {
     const { name, value } = e.target;

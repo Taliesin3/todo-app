@@ -56,7 +56,11 @@ export default function App() {
           const tokenRes = await axios.post("/api/user/isTokenValid", null, {
             headers: { "x-auth-token": token },
           });
-          console.log("Token check is: " + tokenRes.data);
+          console.log(
+            `Token check is: ${tokenRes.data}, user is ${
+              tokenRes.data === false ? "not " : ""
+            }logged in`
+          );
 
           // if a user is logged in, get user data
           if (tokenRes.data) {

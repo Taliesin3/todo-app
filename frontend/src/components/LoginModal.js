@@ -14,7 +14,6 @@ function LoginModal(props) {
 
   function handleChange(e) {
     const { name, value } = e.target;
-    console.log(e);
     setLoginForm((prevNote) => {
       return {
         ...prevNote,
@@ -24,7 +23,7 @@ function LoginModal(props) {
   }
 
   // Login form submit function
-  const submitLogin = async (e) => {
+  async function submitLogin(e) {
     e.preventDefault();
 
     try {
@@ -40,7 +39,7 @@ function LoginModal(props) {
     } catch (err) {
       console.log(err.response.data.msg);
     }
-  };
+  }
 
   // Allow user to press Enter instead of clicking submit button
   function pressEnterSubmit(e) {
@@ -71,7 +70,7 @@ function LoginModal(props) {
           {/* Body & Form */}
           <form
             onSubmit={submitLogin}
-            onKeyPress={(e) => pressEnterSubmit(e)}
+            onKeyPress={pressEnterSubmit}
             className="login-form"
           >
             <div className="modal-body">
