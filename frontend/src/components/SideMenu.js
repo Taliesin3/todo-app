@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import helper from "../helper";
 import $ from "jquery";
+import UserContext from "../context/UserContext";
 
 function SideMenu(props) {
   const [newList, setNewList] = useState({
@@ -8,6 +9,16 @@ function SideMenu(props) {
     title: "",
     notes: [],
   });
+  const { userData, setUserData } = useContext(UserContext);
+
+  const logout = () => {
+    setUserData({
+      token: undefined,
+      user: undefined,
+      isLoggedIn: false,
+    });
+    localStorage.setItem("auth-token", "");
+  };
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -38,22 +49,35 @@ function SideMenu(props) {
         id="sidemenu-header"
       >
         <div>
-          <button
-            className="text-muted"
-            id="sidemenu-register"
-            data-toggle="modal"
-            data-target="#registerModal"
-          >
-            register
-          </button>
-          <button
-            id="sidemenu-login"
-            className="text-muted"
-            data-toggle="modal"
-            data-target="#loginModal"
-          >
-            login
-          </button>
+          {userData.isLoggedIn === true ? (
+            // TODO: Create a logout modal to confirm the user wants to logout?
+            <button
+              id="sidemenu-logout"
+              className="text-muted"
+              onClick={logout}
+            >
+              logout
+            </button>
+          ) : (
+            <>
+              <button
+                className="text-muted"
+                id="sidemenu-register"
+                data-toggle="modal"
+                data-target="#registerModal"
+              >
+                register
+              </button>
+              <button
+                id="sidemenu-login"
+                className="text-muted"
+                data-toggle="modal"
+                data-target="#loginModal"
+              >
+                login
+              </button>
+            </>
+          )}
         </div>
         <i className="fas fa-times"></i>
       </div>

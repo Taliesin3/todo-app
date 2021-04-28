@@ -1,7 +1,20 @@
 import React from "react";
+import { useContext } from "react";
+import UserContext from "../context/UserContext";
 import helper from "../helper";
 
 function Navbar() {
+  const { userData, setUserData } = useContext(UserContext);
+
+  const logout = () => {
+    setUserData({
+      token: undefined,
+      user: undefined,
+      isLoggedIn: false,
+    });
+    localStorage.setItem("auth-token", "");
+  };
+
   return (
     <nav className="navbar py-3">
       <p className="brand text-muted m-0">
@@ -11,22 +24,32 @@ function Navbar() {
         <i className="fas fa-bullseye green px-1"></i>
       </p>
       <div id="navbar-buttons">
-        <button
-          className="text-muted"
-          id="navbar-register"
-          data-toggle="modal"
-          data-target="#registerModal"
-        >
-          register
-        </button>
-        <button
-          id="navbar-login"
-          className="text-muted"
-          data-toggle="modal"
-          data-target="#loginModal"
-        >
-          login
-        </button>
+        {userData.isLoggedIn === true ? (
+          // TODO: Create a logout modal to confirm the user wants to logout?
+          <button id="navbar-logout" className="text-muted" onClick={logout}>
+            logout
+          </button>
+        ) : (
+          <>
+            <button
+              className="text-muted"
+              id="navbar-register"
+              data-toggle="modal"
+              data-target="#registerModal"
+            >
+              register
+            </button>
+            <button
+              id="navbar-login"
+              className="text-muted"
+              data-toggle="modal"
+              data-target="#loginModal"
+            >
+              login
+            </button>
+          </>
+        )}
+
         <button
           onClick={helper.openAndCloseSideMenu}
           className="navbar-toggler menu-toggle text-muted"

@@ -78,6 +78,11 @@ export default function App() {
     };
 
     checkLoggedIn();
+
+    // Cleanup local storage on unmount
+    return () => {
+      localStorage.removeItem("auth-token");
+    };
   }, []);
 
   function addList(newList) {
