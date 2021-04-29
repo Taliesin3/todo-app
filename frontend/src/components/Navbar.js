@@ -6,15 +6,6 @@ import helper from "../helper";
 function Navbar() {
   const { userData, setUserData } = useContext(UserContext);
 
-  const logout = () => {
-    setUserData({
-      token: undefined,
-      user: undefined,
-      isLoggedIn: false,
-    });
-    localStorage.setItem("auth-token", "");
-  };
-
   return (
     <nav className="navbar py-3">
       <p className="brand text-muted m-0">
@@ -26,7 +17,12 @@ function Navbar() {
       <div id="navbar-buttons">
         {userData.isLoggedIn === true ? (
           // TODO: Create a logout modal to confirm the user wants to logout?
-          <button id="navbar-logout" className="text-muted" onClick={logout}>
+          <button
+            id="navbar-logout"
+            className="text-muted"
+            data-toggle="modal"
+            data-target="#logoutModal"
+          >
             logout
           </button>
         ) : (

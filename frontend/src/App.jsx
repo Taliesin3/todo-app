@@ -17,6 +17,7 @@ import RegisterModal from "./components/RegisterModal";
 import LoginModal from "./components/LoginModal.js";
 
 import UserContext from "./context/UserContext";
+import LogoutModal from "./components/LogoutModal";
 
 export default function App() {
   // user state, passed to context below
@@ -293,6 +294,7 @@ export default function App() {
         />
         <RegisterModal />
         <LoginModal />
+        <LogoutModal />
         <Footer clearCompleted={clearCompleted} />
       </UserContext.Provider>
     </div>
