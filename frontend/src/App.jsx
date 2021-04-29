@@ -202,23 +202,34 @@ export default function App() {
     const sortType = e.target.value;
 
     if (sortType === "priority") {
-      setLists((prevLists) => {
-        let newLists = Array.from(prevLists);
-        newLists[activeList].notes = prevLists[activeList].notes.sort(
-          (a, b) => parseInt(a.priority) - parseInt(b.priority)
-        );
-        return newLists;
+      setNotes((prevNotes) => {
+        return {
+          ...prevNotes,
+          [activeList]: prevNotes[activeList].sort(
+            (a, b) => parseInt(a.priority) - parseInt(b.priority)
+          ),
+        };
       });
     } else if (sortType === "deadline") {
-      setLists((prevLists) => {
-        let newLists = Array.from(prevLists);
-        newLists[activeList].notes = prevLists[activeList].notes.sort(
-          (a, b) => {
-            return Date.parse(a.date) - Date.parse(b.date);
-          }
-        );
-        return newLists;
+      setNotes((prevNotes) => {
+        let newNotes = prevNotes[activeList].sort((a, b) => {
+          return Date.parse(a.date) - Date.parse(b.date);
+        });
+        return {
+          ...prevNotes,
+          [activeList]: newNotes,
+        };
       });
+
+      // setLists((prevLists) => {
+      //   let newLists = Array.from(prevLists);
+      //   newLists[activeList].notes = prevLists[activeList].notes.sort(
+      //     (a, b) => {
+      //       return Date.parse(a.date) - Date.parse(b.date);
+      //     }
+      //   );
+      //   return newLists;
+      // });
     } else if (sortType === "title") {
       setLists((prevLists) => {
         let newLists = Array.from(prevLists);
