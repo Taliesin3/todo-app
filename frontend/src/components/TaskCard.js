@@ -7,6 +7,7 @@ function TaskCard(props) {
     1: "high-priority",
     2: "mid-priority",
     3: "low-priority",
+    4: "",
   };
 
   return (
@@ -15,13 +16,12 @@ function TaskCard(props) {
       id={props.id}
       className={`task-card card ${
         props.priority && priorityClass[props.priority]
-      } ${props.completed && "completed"}`}
+      } ${props.completed ? "completed" : ""}`}
     >
       {/* Header - Title & Date */}
       <div className="task-card-header text-center mt-3">{props.title}</div>
       <button
         onClick={() => props.setEditNote(props.id)}
-        href=""
         className="editBtn"
         data-noteid={props.id}
       >
@@ -33,7 +33,7 @@ function TaskCard(props) {
         ></i>
       </button>
       <p className="date-deadline text-muted text-center">
-        {props.date !== "0000-00-00" && `Due by ${props.deadline}`}
+        {props.deadline !== "0000-00-00" && `Due by ${props.deadline}`}
       </p>
 
       {/* Content */}

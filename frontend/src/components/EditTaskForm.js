@@ -6,8 +6,9 @@ function EditTaskForm(props) {
     _id: "",
     title: "",
     content: "",
-    date: "",
+    deadline: "",
     priority: "",
+    completed: false,
   });
 
   useEffect(() => {
@@ -16,8 +17,9 @@ function EditTaskForm(props) {
         _id: props.noteData._id,
         title: props.noteData.title,
         content: props.noteData.content,
-        date: props.noteData.date,
+        deadline: props.noteData.deadline,
         priority: props.noteData.priority,
+        completed: props.noteData.completed,
       });
 
       $("#editModal").find(".radio-edit").removeAttr("checked");
@@ -110,17 +112,17 @@ function EditTaskForm(props) {
                 </div>
               </div>
 
-              {/* Date */}
+              {/* Deadline */}
               <div className="form-group">
-                <label htmlFor="task-date-edit" className="deadline-label">
+                <label htmlFor="task-deadline-edit" className="deadline-label">
                   Deadline Date
                 </label>
                 <input
                   className="form-control task-field"
                   type="date"
-                  name="date"
-                  id="task-date-edit"
-                  value={editNote.date}
+                  name="deadline"
+                  id="task-deadline-edit"
+                  value={editNote.deadline}
                   onChange={handleChange}
                 />
               </div>
@@ -136,6 +138,7 @@ function EditTaskForm(props) {
                     name="priority"
                     id="high-priority-edit"
                     value="1"
+                    onChange={handleChange}
                   />
                   <label
                     className="ml-2 form-check-label border-red"
@@ -151,6 +154,7 @@ function EditTaskForm(props) {
                     name="priority"
                     id="mid-priority-edit"
                     value="2"
+                    onChange={handleChange}
                   />
                   <label
                     className="ml-2 form-check-label border-yellow"
@@ -166,6 +170,7 @@ function EditTaskForm(props) {
                     name="priority"
                     id="low-priority-edit"
                     value="3"
+                    onChange={handleChange}
                   />
                   <label
                     className="ml-2 form-check-label border-green"
@@ -188,7 +193,7 @@ function EditTaskForm(props) {
                     _id: props.noteData._id,
                     title: props.noteData.title,
                     content: props.noteData.content,
-                    date: props.noteData.date,
+                    deadline: props.noteData.deadline,
                     priority: props.noteData.priority,
                   });
                 }}

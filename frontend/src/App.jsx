@@ -32,9 +32,11 @@ export default function App() {
     {
       id: 0,
       title: "Default List",
-      notes: [],
     },
   ]);
+  const [notes, setNotes] = useState({
+    0: [],
+  });
   const [activeList, setActiveList] = useState(0);
   const [editNote, setEditNote] = useState(null);
   let token = localStorage.getItem("auth-token");
@@ -94,29 +96,27 @@ export default function App() {
     setLists((prevLists) => {
       return [...prevLists, newList];
     });
-    console.log(lists);
   }
 
   function addNote(newNote) {
-    newNote._id = lists[activeList].notes.length;
-    setLists((prevLists) => {
-      let newLists = Array.from(prevLists);
-      newLists[activeList] = {
-        ...prevLists[activeList],
-        notes: [...prevLists[activeList].notes, newNote],
+    newNote._id = notes[activeList].length;
+    setNotes((prevNotes) => {
+      return {
+        ...prevNotes,
+        [activeList]: [...prevNotes[activeList], newNote],
       };
-      return newLists;
     });
-
-    console.log(lists);
   }
 
   function updateNote(updatedNote) {
     const id = updatedNote._id;
-    setLists((prevLists) => {
-      let newLists = Array.from(prevLists);
-      newLists[activeList].notes[id] = updatedNote;
-      return newLists;
+    setNotes((prevNotes) => {
+      let newNotes = Array.from(prevNotes[activeList]);
+      newNotes[id] = updatedNote;
+      return {
+        ...prevNotes,
+        [activeList]: newNotes,
+      };
     });
   }
 
@@ -133,43 +133,36 @@ export default function App() {
     }
 
     // Delete from frontend
-    setLists((prevLists) => {
-      let newLists = Array.from(prevLists);
-      newLists[activeList] = {
-        ...prevLists[activeList],
-        notes: prevLists[activeList].notes.filter(
+    setNotes((prevNotes) => {
+      return {
+        ...prevNotes,
+        [activeList]: prevNotes[activeList].filter(
           (note) => note._id !== noteId
         ),
       };
-      return newLists;
     });
   }
 
   function setComplete(taskId, completed) {
-    setLists((prevLists) => {
-      let newLists = Array.from(prevLists);
-      newLists[activeList] = {
-        ...prevLists[activeList],
-        notes: prevLists[activeList].notes.map((note) => {
+    setNotes((prevNotes) => {
+      return {
+        ...prevNotes,
+        [activeList]: prevNotes[activeList].map((note) => {
           if (note._id === taskId) note.completed = !completed;
           return note;
         }),
       };
-      return newLists;
     });
   }
 
   function clearCompleted() {
-    setLists((prevLists) => {
-      console.log(prevLists);
-      let newLists = Array.from(prevLists);
-      newLists[activeList] = {
-        ...prevLists[activeList],
-        notes: prevLists[activeList].notes.filter(
+    setNotes((prevNotes) => {
+      return {
+        ...prevNotes,
+        [activeList]: prevNotes[activeList].filter(
           (note) => note.completed === false
         ),
       };
-      return newLists;
     });
   }
 
@@ -192,7 +185,6 @@ export default function App() {
           {
             id: 0,
             title: "Default List",
-            notes: [],
           },
         ];
       });
@@ -208,7 +200,6 @@ export default function App() {
 
   function sortNotes(e) {
     const sortType = e.target.value;
-    console.log(sortType);
 
     if (sortType === "priority") {
       setLists((prevLists) => {
@@ -269,7 +260,8 @@ export default function App() {
         <Main
           lists={lists}
           activeList={activeList}
-          notes={lists[activeList].notes}
+          notes={notes[activeList]}
+          setNotes={setNotes}
           addNote={addNote}
           deleteNote={deleteNote}
           setComplete={setComplete}
@@ -283,7 +275,7 @@ export default function App() {
         />
         <NewTaskForm onAdd={addNote} />
         <EditTaskForm
-          noteData={lists[activeList].notes[editNote]}
+          noteData={notes[activeList][editNote]}
           updateNote={updateNote}
         />
         <DeleteListModal deleteList={deleteList} />
@@ -294,7 +286,7 @@ export default function App() {
         />
         <RegisterModal />
         <LoginModal />
-        <LogoutModal />
+        <LogoutModal setNotes={setNotes} setLists={setLists} />
         <Footer clearCompleted={clearCompleted} />
       </UserContext.Provider>
     </div>

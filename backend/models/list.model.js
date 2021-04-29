@@ -7,7 +7,6 @@ const listSchema = new Schema({
   userId: { type: String, required: true },
   listId: { type: String, required: true },
   title: { type: String },
-  notes: { type: Note },
 });
 
 const List = mongoose.model("List", listSchema);

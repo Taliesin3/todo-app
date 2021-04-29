@@ -11,6 +11,15 @@ function LogoutModal(props) {
       user: undefined,
       isLoggedIn: false,
     });
+    props.setNotes({
+      0: [],
+    });
+    props.setLists([
+      {
+        id: 0,
+        title: "Default List",
+      },
+    ]);
   }
 
   return (

@@ -8,7 +8,6 @@ import UserContext from "../context/UserContext";
 function Main(props) {
   const { userData } = useContext(UserContext);
   const token = localStorage.getItem("auth-token");
-  const [notes, setNotes] = useState(props.notes);
 
   // Load all notes from DB on mount + when notes/token update
   useEffect(() => {
@@ -22,14 +21,12 @@ function Main(props) {
             headers: { "x-auth-token": token },
           });
           if (isUnmounted === false) {
-            setNotes(dbNotes.data);
+            props.setNotes(dbNotes.data);
           }
         } catch (err) {
           console.log("Error: " + err);
         }
       })();
-    } else {
-      setNotes([]);
     }
 
     return () => {
@@ -77,8 +74,8 @@ function Main(props) {
         {/* CONTAINER FOR CURRENT LISTS */}
         <div className="current-list-container">
           {/* Display notes if they exist, else display empty notes message */}
-          {notes.length > 0 ? (
-            notes.map((note) => {
+          {props.notes.length > 0 ? (
+            props.notes.map((note) => {
               return (
                 <TaskCard
                   key={note._id}
