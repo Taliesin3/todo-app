@@ -28,14 +28,13 @@ function LoginModal(props) {
 
     try {
       const loginRes = await axios.post("/api/user/login", loginForm);
+      localStorage.setItem("auth-token", loginRes.data.token);
 
       setUserData({
         token: loginRes.data.token,
         user: loginRes.data.user,
         isLoggedIn: true,
       });
-
-      localStorage.setItem("auth-token", loginRes.data.token);
 
       setLoginForm({
         username: "",

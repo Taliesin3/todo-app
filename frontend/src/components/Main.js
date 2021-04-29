@@ -1,36 +1,41 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 
 import $ from "jquery";
 import TaskCard from "./TaskCard";
+import UserContext from "../context/UserContext";
 
 function Main(props) {
+  const { userData } = useContext(UserContext);
   const token = localStorage.getItem("auth-token");
+  const [notes, setNotes] = useState(props.notes);
 
   // Load all notes from DB on mount + when notes/token update
   useEffect(() => {
     let isUnmounted = false;
     // Using an IIFE to carry out an async func within useEffect
 
-    if (token !== "") {
+    if (userData.isLoggedIn === true) {
       (async function getNotes() {
         try {
           const dbNotes = await axios.get("/api/notes/", {
             headers: { "x-auth-token": token },
           });
           if (isUnmounted === false) {
-            //setNotes(dbNotes.data);
+            setNotes(dbNotes.data);
           }
         } catch (err) {
           console.log("Error: " + err);
         }
       })();
+    } else {
+      setNotes([]);
     }
 
     return () => {
       isUnmounted = true;
     };
-  }, [token]);
+  }, [token, props, userData]);
 
   return (
     <>
@@ -45,12 +50,12 @@ function Main(props) {
         >
           <i className="fas fa-plus text-muted" />
         </button>
+
         {
           /* search button to search tasks */
           // TODO: Implement search functionality - remove display: none style
-        }
-
-        <div style={{ display: "none" }} className="search-box border-muted">
+          /*
+        <div className="search-box border-muted">
           <input
             onFocus={() => $(".search-box").toggleClass("focus-border")}
             onBlur={() => $(".search-box").toggleClass("focus-border")}
@@ -65,12 +70,15 @@ function Main(props) {
             />
           </button>
         </div>
+        
+        */
+        }
 
         {/* CONTAINER FOR CURRENT LISTS */}
         <div className="current-list-container">
           {/* Display notes if they exist, else display empty notes message */}
-          {props.notes.length > 0 ? (
-            props.notes.map((note) => {
+          {notes.length > 0 ? (
+            notes.map((note) => {
               return (
                 <TaskCard
                   key={note._id}

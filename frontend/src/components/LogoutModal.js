@@ -5,12 +5,12 @@ function LogoutModal(props) {
   const { userData, setUserData } = useContext(UserContext);
 
   function confirmLogout() {
+    localStorage.setItem("auth-token", "");
     setUserData({
       token: undefined,
       user: undefined,
       isLoggedIn: false,
     });
-    localStorage.setItem("auth-token", "");
   }
 
   return (
