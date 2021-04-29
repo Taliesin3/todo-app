@@ -33,8 +33,7 @@ function NewTaskForm(props) {
     e.preventDefault();
 
     // Set created time
-    const d = new Date();
-    newNote.created = d.getTime();
+    newNote.created = Date.now();
 
     // Submit note to database if logged in
     if (token !== "") {

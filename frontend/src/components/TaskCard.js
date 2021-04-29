@@ -33,7 +33,7 @@ function TaskCard(props) {
         ></i>
       </button>
       <p className="date-deadline text-muted text-center">
-        {props.date !== "0000-00-00" && `Due by ${props.date}`}
+        {props.date !== "0000-00-00" && `Due by ${props.deadline}`}
       </p>
 
       {/* Content */}

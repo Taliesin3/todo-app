@@ -36,6 +36,13 @@ function LoginModal(props) {
       });
 
       localStorage.setItem("auth-token", loginRes.data.token);
+
+      setLoginForm({
+        username: "",
+        password: "",
+      });
+
+      console.log("Login Successful!");
     } catch (err) {
       console.log(err.response.data.msg);
     }

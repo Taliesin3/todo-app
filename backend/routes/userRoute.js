@@ -86,6 +86,8 @@ router.post("/login", async (req, res) => {
     // create JWT token
     const token = jwt.sign({ id: user._id }, process.env.JWT_TOKEN);
 
+    console.log("User exists in database, password OK!");
+
     // respond to login
     res.json({
       token,

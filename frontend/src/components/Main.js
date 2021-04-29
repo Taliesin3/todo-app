@@ -77,7 +77,7 @@ function Main(props) {
                   id={note._id}
                   title={note.title}
                   content={note.content}
-                  date={note.date}
+                  deadline={note.deadline}
                   priority={note.priority}
                   onDelete={props.deleteNote}
                   completed={note.completed}
