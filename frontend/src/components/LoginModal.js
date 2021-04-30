@@ -31,8 +31,9 @@ function LoginModal(props) {
       localStorage.setItem("auth-token", loginRes.data.token);
 
       setUserData({
+        id: loginRes.data.user.id,
         token: loginRes.data.token,
-        user: loginRes.data.user,
+        username: loginRes.data.user.username,
         isLoggedIn: true,
       });
 

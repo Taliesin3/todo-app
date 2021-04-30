@@ -530,6 +530,13 @@ button:focus {
   display: block !important;
 }
 
+#icons-credit {
+  font-size: 0.7rem;
+  position: absolute;
+  bottom: 10px;
+  text-transform: none;
+}
+
 /* Media queries for mobile devices */
 @media (max-width: 360px) {
   #navbar-buttons > .account-buttons {

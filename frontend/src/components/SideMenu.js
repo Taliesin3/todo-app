@@ -80,11 +80,11 @@ function SideMenu(props) {
             props.lists.map((list, index) => {
               return (
                 <li
-                  onClick={() => props.setActiveList(index)}
+                  onClick={() => props.setActiveListId(index)}
                   key={index}
                   id={`list-${index}`}
                 >
-                  {index === props.activeList ? (
+                  {index === props.activeListId ? (
                     <strong>{list.title}</strong>
                   ) : (
                     <>{list.title}</>
@@ -117,6 +117,13 @@ function SideMenu(props) {
           </small>
         </form>
       </div>
+      <a
+        id="icons-credit"
+        className="text-muted"
+        href="https://icons8.com/icon/WC5A99NaaqzR/list-is-empty"
+      >
+        Icons by Icons8
+      </a>
     </div>
   );
 }

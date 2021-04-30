@@ -38,17 +38,6 @@ function NewTaskForm(props) {
       newNote.deadline = Date.parse(newNote.deadline);
     console.log(newNote);
 
-    // Submit note to database if logged in
-    if (token !== "") {
-      try {
-        const addedNote = Axios.post("api/notes/add", newNote, {
-          headers: { "x-auth-token": token },
-        });
-      } catch (err) {
-        console.log(err);
-      }
-    }
-
     // Add to frontend
     props.onAdd(newNote);
 
@@ -72,6 +61,21 @@ function NewTaskForm(props) {
     }
   }
 
+  function clearForm() {
+    setTimeout(
+      () =>
+        setNewNote({
+          title: "",
+          content: "",
+          deadline: "",
+          created: "",
+          priority: "4",
+          completed: false,
+        }),
+      1000
+    );
+  }
+
   return (
     <div className="modal fade" id="modal">
       <div className="modal-dialog modal-dialog-centered">
@@ -85,7 +89,9 @@ function NewTaskForm(props) {
               data-dismiss="modal"
               aria-label="Close"
             >
-              <span aria-hidden="true">&times;</span>
+              <span onClick={clearForm} aria-hidden="true">
+                &times;
+              </span>
             </button>
           </div>
 
@@ -210,20 +216,7 @@ function NewTaskForm(props) {
             </div>
             <div className="modal-footer">
               <button
-                onClick={() =>
-                  setTimeout(
-                    () =>
-                      setNewNote({
-                        title: "",
-                        content: "",
-                        deadline: "",
-                        created: "",
-                        priority: "4",
-                        completed: false,
-                      }),
-                    1000
-                  )
-                }
+                onClick={clearForm}
                 type="button"
                 className="btn btn-danger"
                 data-dismiss="modal"

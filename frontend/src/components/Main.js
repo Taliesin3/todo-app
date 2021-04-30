@@ -24,7 +24,7 @@ function Main(props) {
             props.setNotes((prevNotes) => {
               return {
                 ...prevNotes,
-                [props.activeList]: dbNotes.data,
+                [props.activeListId]: dbNotes.data,
               };
             });
           }
@@ -102,7 +102,7 @@ function Main(props) {
               data-empty-message-container
             >
               <img
-                src="https://img.icons8.com/ios/100/000000/empty-box.png"
+                src="https://img.icons8.com/cotton/100/000000/empty-box.png"
                 alt="Empty box icon"
               />
               <p data-message-paragraph>

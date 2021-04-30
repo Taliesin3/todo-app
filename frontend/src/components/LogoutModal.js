@@ -7,8 +7,9 @@ function LogoutModal(props) {
   function confirmLogout() {
     localStorage.setItem("auth-token", "");
     setUserData({
+      id: undefined,
       token: undefined,
-      user: undefined,
+      username: undefined,
       isLoggedIn: false,
     });
     props.setNotes({

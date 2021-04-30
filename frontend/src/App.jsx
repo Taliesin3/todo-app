@@ -22,8 +22,9 @@ import LogoutModal from "./components/LogoutModal";
 export default function App() {
   // user state, passed to context below
   const [userData, setUserData] = useState({
+    id: undefined,
     token: undefined,
-    user: undefined,
+    username: undefined,
     isLoggedIn: false,
   });
 
@@ -36,7 +37,7 @@ export default function App() {
   const [notes, setNotes] = useState({
     0: [],
   });
-  const [activeList, setActiveList] = useState(0);
+  const [activeListId, setActiveListId] = useState(0);
   const [editNoteId, setEditNoteId] = useState(null);
   let token = localStorage.getItem("auth-token");
 
@@ -73,7 +74,8 @@ export default function App() {
             // set state as logged in user data, which is passed to context
             setUserData({
               token,
-              user: userRes.data,
+              username: userRes.data.username,
+              id: userRes.data.id,
               isLoggedIn: true,
             });
           }
@@ -91,7 +93,7 @@ export default function App() {
     };
   }, []);
 
-  function addList(newList) {
+  function submitNewList(newList) {
     setLists((prevLists) => {
       return [...prevLists, newList];
     });
@@ -104,11 +106,26 @@ export default function App() {
   }
 
   function addNote(newNote) {
-    newNote._id = notes[activeList].length;
+    newNote._id = notes[activeListId].length;
+    newNote["listId"] = [activeListId];
+
+    // Submit note to database if logged in
+    if (userData.isLoggedIn === true) {
+      newNote["userId"] = userData.id;
+
+      try {
+        const addedNote = axios.post("api/notes/add", newNote, {
+          headers: { "x-auth-token": token },
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeList]: [...prevNotes[activeList], newNote],
+        [activeListId]: [...prevNotes[activeListId], newNote],
       };
     });
   }
@@ -116,11 +133,11 @@ export default function App() {
   function updateNote(updatedNote) {
     const id = updatedNote._id;
     setNotes((prevNotes) => {
-      let newNotes = Array.from(prevNotes[activeList]);
+      let newNotes = Array.from(prevNotes[activeListId]);
       newNotes[id] = updatedNote;
       return {
         ...prevNotes,
-        [activeList]: newNotes,
+        [activeListId]: newNotes,
       };
     });
   }
@@ -141,7 +158,7 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeList]: prevNotes[activeList].filter(
+        [activeListId]: prevNotes[activeListId].filter(
           (note) => note._id !== noteId
         ),
       };
@@ -152,7 +169,7 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeList]: prevNotes[activeList].map((note) => {
+        [activeListId]: prevNotes[activeListId].map((note) => {
           if (note._id === taskId) note.completed = !completed;
           return note;
         }),
@@ -164,7 +181,7 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeList]: prevNotes[activeList].filter(
+        [activeListId]: prevNotes[activeListId].filter(
           (note) => note.completed === false
         ),
       };
@@ -174,8 +191,8 @@ export default function App() {
   function editListName(newName) {
     setLists((prevLists) => {
       let newLists = Array.from(prevLists);
-      newLists[activeList] = {
-        ...prevLists[activeList],
+      newLists[activeListId] = {
+        ...prevLists[activeListId],
         title: newName,
       };
       return newLists;
@@ -197,10 +214,10 @@ export default function App() {
       // Delete current list, and set active list to the first list
     } else {
       setLists((prevLists) => {
-        return prevLists.filter((list) => list.id !== activeList);
+        return prevLists.filter((list) => list.id !== activeListId);
       });
     }
-    setActiveList(0);
+    setActiveListId(0);
   }
 
   function sortNotes(e) {
@@ -210,26 +227,26 @@ export default function App() {
       setNotes((prevNotes) => {
         return {
           ...prevNotes,
-          [activeList]: prevNotes[activeList].sort(
+          [activeListId]: prevNotes[activeListId].sort(
             (a, b) => parseInt(a.priority) - parseInt(b.priority)
           ),
         };
       });
     } else if (sortType === "deadline") {
       setNotes((prevNotes) => {
-        let newNotes = prevNotes[activeList].sort((a, b) => {
+        let newNotes = prevNotes[activeListId].sort((a, b) => {
           return a.deadline - b.deadline;
         });
         return {
           ...prevNotes,
-          [activeList]: newNotes,
+          [activeListId]: newNotes,
         };
       });
     } else if (sortType === "title") {
       setNotes((prevNotes) => {
         return {
           ...prevNotes,
-          [activeList]: prevNotes[activeList].sort((a, b) => {
+          [activeListId]: prevNotes[activeListId].sort((a, b) => {
             const aTitle = a.title.toUpperCase();
             const bTitle = b.title.toUpperCase();
 
@@ -243,7 +260,7 @@ export default function App() {
       setNotes((prevNotes) => {
         return {
           ...prevNotes,
-          [activeList]: prevNotes[activeList].sort(
+          [activeListId]: prevNotes[activeListId].sort(
             (a, b) => a.created - b.created
           ),
         };
@@ -258,15 +275,15 @@ export default function App() {
         <header>
           <Navbar />
           <SubNavbar
-            listTitle={lists[activeList].title}
-            activeList={activeList}
+            listTitle={lists[activeListId].title}
+            activeListId={activeListId}
             sortNotes={sortNotes}
           />
         </header>
         <Main
           lists={lists}
-          activeList={activeList}
-          notes={notes[activeList]}
+          activeListId={activeListId}
+          notes={notes[activeListId]}
           setNotes={setNotes}
           addNote={addNote}
           deleteNote={deleteNote}
@@ -275,20 +292,20 @@ export default function App() {
         />
         <SideMenu
           lists={lists}
-          submitNewList={addList}
-          activeList={activeList}
-          setActiveList={setActiveList}
+          submitNewList={submitNewList}
+          activeListId={activeListId}
+          setActiveListId={setActiveListId}
         />
         <NewTaskForm onAdd={addNote} />
         <EditTaskForm
-          noteData={notes[activeList][editNoteId]}
+          noteData={notes[activeListId][editNoteId]}
           updateNote={updateNote}
         />
         <DeleteListModal deleteList={deleteList} />
         <EditListNameModal
           editListName={editListName}
-          activeList={activeList}
-          listName={lists[activeList].title}
+          activeListId={activeListId}
+          listName={lists[activeListId].title}
         />
         <RegisterModal />
         <LoginModal />

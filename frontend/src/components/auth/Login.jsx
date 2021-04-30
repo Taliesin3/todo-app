@@ -1,5 +1,5 @@
-import React, {useState, useContext} from 'react';
-import {useHistory} from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { useHistory } from "react-router-dom";
 import UserContext from "../../context/UserContext";
 import {
   Avatar,
@@ -10,20 +10,20 @@ import {
   Checkbox,
   Link,
   Grid,
-  Paper
-} from '@material-ui/core/';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import Axios from 'axios';
+  Paper,
+} from "@material-ui/core/";
+import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
+import Typography from "@material-ui/core/Typography";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+import Axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
     padding: theme.spacing(2),
   },
   avatar: {
@@ -31,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.secondary.main,
   },
   form: {
-    width: '100%', // Fix IE 11 issue.
+    width: "100%", // Fix IE 11 issue.
     marginTop: theme.spacing(1),
   },
   submit: {
@@ -43,7 +43,7 @@ export default function Login() {
   // State hooks
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
-  const { userData, setUserData } = useContext(UserContext);  
+  const { userData, setUserData } = useContext(UserContext);
 
   // Other hooks
   const classes = useStyles();
@@ -52,34 +52,28 @@ export default function Login() {
   // Login form submit function
   const submitLogin = async (e) => {
     e.preventDefault();
-    
+
     try {
-      const loginUser = {email, password}
-      const loginRes = await Axios.post(
-        "/api/user/login",
-        loginUser
-      );
-    
+      const loginUser = { email, password };
+      const loginRes = await Axios.post("/api/user/login", loginUser);
+
       setUserData({
         token: loginRes.data.token,
-        user: loginRes.data.user,
+        username: loginRes.data.user.username,
+        id: loginRes.data.user.id,
         isLoggedIn: true,
       });
 
       localStorage.setItem("auth-token", loginRes.data.token);
 
-      history.push("/")
-
+      history.push("/");
     } catch (err) {
       console.log(err.response.data.msg);
     }
-  }
-
-  
+  };
 
   return (
     <Container component="main" maxWidth="xs">
-      
       <Paper className={classes.paper}>
         <Avatar className={classes.avatar}>
           <LockOutlinedIcon />
@@ -98,7 +92,9 @@ export default function Login() {
             name="email"
             autoComplete="email"
             autoFocus
-            onChange={(e) => {setEmail(e.target.value)}}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
           />
           <TextField
             variant="outlined"
@@ -110,7 +106,9 @@ export default function Login() {
             type="password"
             id="password"
             autoComplete="current-password"
-            onChange={(e) => {setPassword(e.target.value)}}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
           />
           <Box display="none">
             <FormControlLabel
@@ -134,7 +132,7 @@ export default function Login() {
               </Link>
             </Grid>
           </Grid>
-          <br/>
+          <br />
           <Grid container>
             <Grid item>
               <Link href="/notes" variant="body2">

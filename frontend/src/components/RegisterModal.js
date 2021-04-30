@@ -31,7 +31,8 @@ function Register(props) {
       });
       setUserData({
         token: loginRes.data.token,
-        user: loginRes.data.user,
+        username: loginRes.data.user.username,
+        id: loginRes.data.user.id,
         isLoggedIn: true,
       });
       localStorage.setItem("auth-token", loginRes.data.token);
