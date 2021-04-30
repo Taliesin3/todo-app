@@ -21,7 +21,12 @@ function Main(props) {
             headers: { "x-auth-token": token },
           });
           if (isUnmounted === false) {
-            props.setNotes(dbNotes.data);
+            props.setNotes((prevNotes) => {
+              return {
+                ...prevNotes,
+                [props.activeList]: dbNotes.data,
+              };
+            });
           }
         } catch (err) {
           console.log("Error: " + err);

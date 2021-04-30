@@ -6,7 +6,6 @@ import Axios from "axios";
 function NewTaskForm(props) {
   const { userData } = useContext(UserContext);
 
-  // TODO: handle date more intelligently, currently just storing as a string - use date-fns?
   const [newNote, setNewNote] = useState({
     title: "",
     content: "",
@@ -26,6 +25,7 @@ function NewTaskForm(props) {
         [name]: value,
       };
     });
+    console.log(newNote);
   }
 
   // Submit task form and create new task
@@ -216,8 +216,10 @@ function NewTaskForm(props) {
                       setNewNote({
                         title: "",
                         content: "",
-                        deadline: "0000-00-00",
-                        priority: "0",
+                        deadline: "",
+                        created: "",
+                        priority: "4",
+                        completed: false,
                       }),
                     1000
                   )
