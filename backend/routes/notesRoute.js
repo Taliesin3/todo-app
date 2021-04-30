@@ -19,16 +19,18 @@ router.get("/", auth, async (req, res) => {
 // Add a note
 router.post("/add", auth, async (req, res) => {
   try {
-    const userId = req.userId;
+    const userId = req.body.userId;
+    const listId = req.body.listId;
     const title = req.body.title;
     const content = req.body.content;
-    const deadline = Date.parse(req.body.deadline); // body content is String by default
+    const deadline = new Date(req.body.deadline); // parse javascript msec date to full date
     const created = new Date(req.body.created);
     const priority = Number.parseInt(req.body.priority);
     const completed = req.body.completed;
 
     const newNote = new Note({
       userId,
+      listId,
       title,
       content,
       deadline,

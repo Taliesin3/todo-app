@@ -107,7 +107,7 @@ export default function App() {
 
   function addNote(newNote) {
     newNote._id = notes[activeListId].length;
-    newNote["listId"] = [activeListId];
+    newNote["listId"] = activeListId;
 
     // Submit note to database if logged in
     if (userData.isLoggedIn === true) {
