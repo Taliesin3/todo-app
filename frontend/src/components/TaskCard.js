@@ -23,7 +23,7 @@ function TaskCard(props) {
       {/* Header - Title & Date */}
       <div className="task-card-header text-center mt-3">{props.title}</div>
       <button
-        onClick={() => props.setEditNote(props.id)}
+        onClick={() => props.setEditNoteId(props.id)}
         className="editBtn"
         data-noteid={props.id}
       >

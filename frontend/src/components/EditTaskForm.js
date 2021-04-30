@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import $ from "jquery";
 
 function EditTaskForm(props) {
-  const [editNote, setEditNote] = useState({
+  const [editModal, setEditModal] = useState({
     _id: "",
     title: "",
     content: "",
@@ -12,8 +12,8 @@ function EditTaskForm(props) {
   });
 
   useEffect(() => {
-    if (props.noteData !== undefined && editNote._id !== props.noteData._id) {
-      setEditNote({
+    if (props.noteData !== undefined && editModal._id !== props.noteData._id) {
+      setEditModal({
         _id: props.noteData._id,
         title: props.noteData.title,
         content: props.noteData.content,
@@ -27,11 +27,11 @@ function EditTaskForm(props) {
         .find(`.radio-edit[value="${props.noteData.priority}"]`)
         .attr("checked", "checked");
     }
-  }, [editNote._id, props.noteData]);
+  }, [editModal._id, props.noteData]);
 
   function handleChange(e) {
     const { name, value } = e.target;
-    setEditNote((prevNote) => {
+    setEditModal((prevNote) => {
       return {
         ...prevNote,
         [name]: value,
@@ -41,7 +41,7 @@ function EditTaskForm(props) {
 
   function submitUpdate(e) {
     e.preventDefault();
-    props.updateNote(editNote);
+    props.updateNote(editModal);
   }
 
   // Allow user to press Enter instead of clicking submit button
@@ -86,7 +86,7 @@ function EditTaskForm(props) {
                   placeholder="Task Title"
                   id="task-title-edit"
                   maxLength="15"
-                  value={editNote.title}
+                  value={editModal.title}
                   onChange={handleChange}
                   autoComplete="off"
                 />
@@ -104,7 +104,7 @@ function EditTaskForm(props) {
                   cols="30"
                   rows="3"
                   placeholder="Notes"
-                  value={editNote.content}
+                  value={editModal.content}
                   onChange={handleChange}
                 ></textarea>
                 <div className="invalid-feedback">
@@ -122,7 +122,7 @@ function EditTaskForm(props) {
                   type="date"
                   name="deadline"
                   id="task-deadline-edit"
-                  value={editNote.deadline}
+                  value={editModal.deadline}
                   onChange={handleChange}
                 />
               </div>
@@ -189,7 +189,7 @@ function EditTaskForm(props) {
                 className="btn btn-danger"
                 data-dismiss="modal"
                 onClick={() => {
-                  setEditNote({
+                  setEditModal({
                     _id: props.noteData._id,
                     title: props.noteData.title,
                     content: props.noteData.content,

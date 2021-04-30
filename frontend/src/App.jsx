@@ -27,7 +27,6 @@ export default function App() {
     isLoggedIn: false,
   });
 
-  // TODO: separate notes into own state, just use id to link lists to notes?
   const [lists, setLists] = useState([
     {
       id: 0,
@@ -38,7 +37,7 @@ export default function App() {
     0: [],
   });
   const [activeList, setActiveList] = useState(0);
-  const [editNote, setEditNote] = useState(null);
+  const [editNoteId, setEditNoteId] = useState(null);
   let token = localStorage.getItem("auth-token");
 
   // Check if user is logged in
@@ -95,6 +94,12 @@ export default function App() {
   function addList(newList) {
     setLists((prevLists) => {
       return [...prevLists, newList];
+    });
+    setNotes((prevNotes) => {
+      return {
+        ...prevNotes,
+        [newList.id]: [],
+      };
     });
   }
 
@@ -266,7 +271,7 @@ export default function App() {
           addNote={addNote}
           deleteNote={deleteNote}
           setComplete={setComplete}
-          setEditNote={setEditNote}
+          setEditNoteId={setEditNoteId}
         />
         <SideMenu
           lists={lists}
@@ -276,7 +281,7 @@ export default function App() {
         />
         <NewTaskForm onAdd={addNote} />
         <EditTaskForm
-          noteData={notes[activeList][editNote]}
+          noteData={notes[activeList][editNoteId]}
           updateNote={updateNote}
         />
         <DeleteListModal deleteList={deleteList} />

@@ -95,7 +95,7 @@ function SideMenu(props) {
         </ul>
 
         {/* Form to create a new list */}
-        <form onSubmit={(e) => addNewList(e)} className="new-list-form">
+        <form onSubmit={addNewList} className="new-list-form">
           <div className="form-group">
             <input
               onChange={handleChange}

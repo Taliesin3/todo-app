@@ -92,7 +92,7 @@ function Main(props) {
                   onDelete={props.deleteNote}
                   completed={note.completed}
                   setComplete={props.setComplete}
-                  setEditNote={props.setEditNote}
+                  setEditNoteId={props.setEditNoteId}
                 />
               );
             })
