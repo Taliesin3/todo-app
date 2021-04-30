@@ -6,6 +6,7 @@ const Note = require("../models/note.model");
 router.get("/", auth, async (req, res) => {
   try {
     // Get all current user's notes, most recent first
+    // TODO: only get notes for current list
     const userNotes = await Note.find({ userId: req.userId }).sort({
       createdAt: -1,
     });
