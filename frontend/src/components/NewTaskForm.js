@@ -10,7 +10,7 @@ function NewTaskForm(props) {
   const [newNote, setNewNote] = useState({
     title: "",
     content: "",
-    deadline: "0000-00-00",
+    deadline: "",
     created: "",
     priority: "4",
     completed: false,
@@ -34,6 +34,8 @@ function NewTaskForm(props) {
 
     // Set created time
     newNote.created = Date.now();
+    newNote.deadline = Date.parse(newNote.deadline);
+    console.log(newNote);
 
     // Submit note to database if logged in
     if (token !== "") {
@@ -53,7 +55,7 @@ function NewTaskForm(props) {
     setNewNote({
       title: "",
       content: "",
-      deadline: "0000-00-00",
+      deadline: "",
       created: "",
       priority: "4",
       completed: false,

@@ -213,7 +213,7 @@ export default function App() {
     } else if (sortType === "deadline") {
       setNotes((prevNotes) => {
         let newNotes = prevNotes[activeList].sort((a, b) => {
-          return Date.parse(a.date) - Date.parse(b.date);
+          return a.deadline - b.deadline;
         });
         return {
           ...prevNotes,
@@ -231,27 +231,27 @@ export default function App() {
       //   return newLists;
       // });
     } else if (sortType === "title") {
-      setLists((prevLists) => {
-        let newLists = Array.from(prevLists);
-        newLists[activeList].notes = prevLists[activeList].notes.sort(
-          (a, b) => {
+      setNotes((prevNotes) => {
+        return {
+          ...prevNotes,
+          [activeList]: prevNotes[activeList].sort((a, b) => {
             const aTitle = a.title.toUpperCase();
             const bTitle = b.title.toUpperCase();
 
             if (aTitle > bTitle) return 1;
             else if (bTitle > aTitle) return -1;
             else return 0;
-          }
-        );
-        return newLists;
+          }),
+        };
       });
     } else if (sortType === "created") {
-      setLists((prevLists) => {
-        let newLists = Array.from(prevLists);
-        newLists[activeList].notes = prevLists[activeList].notes.sort(
-          (a, b) => a.created - b.created
-        );
-        return newLists;
+      setNotes((prevNotes) => {
+        return {
+          ...prevNotes,
+          [activeList]: prevNotes[activeList].sort(
+            (a, b) => a.created - b.created
+          ),
+        };
       });
     }
   }
