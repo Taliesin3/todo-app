@@ -8,17 +8,7 @@ function SideMenu(props) {
   const [newList, setNewList] = useState({
     id: props.lists.length,
     title: "",
-    notes: [],
   });
-
-  function logout() {
-    setUserData({
-      token: undefined,
-      user: undefined,
-      isLoggedIn: false,
-    });
-    localStorage.setItem("auth-token", "");
-  }
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -37,7 +27,6 @@ function SideMenu(props) {
     setNewList({
       id: newId,
       title: "",
-      notes: [],
     });
   }
 
@@ -48,20 +37,20 @@ function SideMenu(props) {
         className="close-btn text-muted"
         id="sidemenu-header"
       >
-        <div>
+        <div id="sidemenu-buttons">
           {userData.isLoggedIn === true ? (
-            // TODO: Create a logout modal to confirm the user wants to logout?
             <button
               id="sidemenu-logout"
-              className="text-muted"
-              onClick={logout}
+              className="text-muted account-buttons"
+              data-toggle="modal"
+              data-target="#logoutModal"
             >
               logout
             </button>
           ) : (
             <>
               <button
-                className="text-muted"
+                className="text-muted account-buttons"
                 id="sidemenu-register"
                 data-toggle="modal"
                 data-target="#registerModal"
@@ -70,7 +59,7 @@ function SideMenu(props) {
               </button>
               <button
                 id="sidemenu-login"
-                className="text-muted"
+                className="text-muted account-buttons"
                 data-toggle="modal"
                 data-target="#loginModal"
               >

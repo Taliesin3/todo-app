@@ -220,16 +220,6 @@ export default function App() {
           [activeList]: newNotes,
         };
       });
-
-      // setLists((prevLists) => {
-      //   let newLists = Array.from(prevLists);
-      //   newLists[activeList].notes = prevLists[activeList].notes.sort(
-      //     (a, b) => {
-      //       return Date.parse(a.date) - Date.parse(b.date);
-      //     }
-      //   );
-      //   return newLists;
-      // });
     } else if (sortType === "title") {
       setNotes((prevNotes) => {
         return {

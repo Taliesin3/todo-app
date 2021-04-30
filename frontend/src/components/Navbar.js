@@ -16,10 +16,9 @@ function Navbar() {
       </p>
       <div id="navbar-buttons">
         {userData.isLoggedIn === true ? (
-          // TODO: Create a logout modal to confirm the user wants to logout?
           <button
             id="navbar-logout"
-            className="text-muted"
+            className="text-muted account-buttons"
             data-toggle="modal"
             data-target="#logoutModal"
           >
@@ -28,7 +27,7 @@ function Navbar() {
         ) : (
           <>
             <button
-              className="text-muted"
+              className="text-muted account-buttons"
               id="navbar-register"
               data-toggle="modal"
               data-target="#registerModal"
@@ -37,7 +36,7 @@ function Navbar() {
             </button>
             <button
               id="navbar-login"
-              className="text-muted"
+              className="text-muted account-buttons"
               data-toggle="modal"
               data-target="#loginModal"
             >

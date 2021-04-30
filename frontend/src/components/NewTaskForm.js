@@ -34,7 +34,8 @@ function NewTaskForm(props) {
 
     // Set created time
     newNote.created = Date.now();
-    newNote.deadline = Date.parse(newNote.deadline);
+    if (newNote.deadline !== "")
+      newNote.deadline = Date.parse(newNote.deadline);
     console.log(newNote);
 
     // Submit note to database if logged in

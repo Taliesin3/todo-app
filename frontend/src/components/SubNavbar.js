@@ -2,7 +2,7 @@ import React from "react";
 
 function SubNavbar(props) {
   return (
-    <div className="sort-container py-2">
+    <div id="subnavbar" className="py-2">
       <div className="d-flex">
         <p className="list-name text-capitalize lead p-0 m-0">
           {props.listTitle}
@@ -14,7 +14,7 @@ function SubNavbar(props) {
         ></i>
       </div>
 
-      <div>
+      <div className="d-flex" id="sort-container">
         <label className="m-0 py-0 px-2" htmlFor="sort">
           Sort by:
         </label>

@@ -117,8 +117,7 @@ button:focus {
   font-weight: 500;
 }
 
-#sidemenu-register,
-#sidemenu-login {
+#sidemenu-buttons > .account-buttons {
   display: none;
 }
 
@@ -169,7 +168,7 @@ button:focus {
 }
 
 /* sort and current list name container */
-.sort-container {
+#subnavbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -177,6 +176,9 @@ button:focus {
   background: var(--primary-bg-color);
   border-bottom: 1px solid var(--border-color);
   font-size: 0.8rem;
+}
+
+#sort-container {
 }
 
 .sort-dropdown {
@@ -530,13 +532,14 @@ button:focus {
 
 /* Media queries for mobile devices */
 @media (max-width: 360px) {
-  #navbar-register,
-  #navbar-login {
+  #navbar-buttons > .account-buttons {
     display: none;
   }
 
-  #sidemenu-register,
-  #sidemenu-login {
+  #sidemenu-buttons > .account-buttons {
     display: inline-block;
+  }
+  #sort-container {
+    flex-direction: column;
   }
 }
