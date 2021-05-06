@@ -9,7 +9,7 @@ function NewTaskForm(props) {
   const [newNote, setNewNote] = useState({
     title: "",
     content: "",
-    deadline: "",
+    deadline: null,
     created: "",
     priority: "4",
     completed: false,
@@ -44,7 +44,7 @@ function NewTaskForm(props) {
     setNewNote({
       title: "",
       content: "",
-      deadline: "",
+      deadline: null,
       created: "",
       priority: "4",
       completed: false,
@@ -66,7 +66,7 @@ function NewTaskForm(props) {
         setNewNote({
           title: "",
           content: "",
-          deadline: "",
+          deadline: null,
           created: "",
           priority: "4",
           completed: false,
@@ -144,7 +144,7 @@ function NewTaskForm(props) {
                     type="date"
                     name="deadline"
                     id="task-deadline"
-                    value={newNote.deadline}
+                    value={newNote.deadline === null ? "" : newNote.deadline}
                   />
                 </label>
                 <div className="invalid-feedback">
