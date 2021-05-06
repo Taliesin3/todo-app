@@ -53,6 +53,8 @@
     <script>
       // Get the current year for the copyright
       $("#year").text(new Date().getFullYear());
+      // Clear local storage on unload
+      window.onbeforeunload(localStorage.removeItem("auth-token"));
     </script>
   </body>
 </html>

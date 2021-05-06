@@ -45,7 +45,7 @@ export default function App() {
   useEffect(() => {
     // useEffect cannot be asynchronous, so we must define our
     // async function here and then call it at the end of our effect
-    const checkLoggedIn = async () => {
+    async function checkLoggedIn() {
       try {
         let token = localStorage.getItem("auth-token");
 
@@ -83,14 +83,9 @@ export default function App() {
       } catch (err) {
         console.log(err);
       }
-    };
+    }
 
     checkLoggedIn();
-
-    // Cleanup local storage on unmount
-    return () => {
-      localStorage.removeItem("auth-token");
-    };
   }, []);
 
   function submitNewList(newList) {
@@ -126,8 +121,6 @@ export default function App() {
   }
 
   function addNote(newNote) {
-    // TODO: dont think this is handling note id correctly
-    newNote._id = notes[lists[activeListIndex].listId].length;
     newNote["listId"] = lists[activeListIndex].listId;
 
     // Submit note to database if logged in
@@ -143,6 +136,7 @@ export default function App() {
       }
     }
 
+    // Add note to frontend state
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
@@ -231,6 +225,9 @@ export default function App() {
   }
 
   function clearCompleted() {
+    // TODO: Delete completed notes from current list from databse
+
+    // Remove completed notes from frontend
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
