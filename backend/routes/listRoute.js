@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const auth = require("../middleware/auth");
 const List = require("../models/list.model");
+const Note = require("../models/note.model");
 
 // GET all lists
 router.get("/", auth, async (req, res) => {
@@ -41,14 +42,18 @@ router.post("/add", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
   try {
     const deleteList = await List.findOne({
-      _id: req.params.id,
+      listId: req.params.id,
       userId: req.userId,
     });
     if (!deleteList)
       return res.status(400).json({
         msg: "Could not match list/user ids to any existing list.",
       });
-    await List.findByIdAndDelete(req.params.id);
+    // Delete all notes related to deleted list
+    await Note.deleteMany({ listId: req.params.id });
+
+    // Delete list
+    await List.deleteOne({ listId: req.params.id });
     res.json("List deleted.");
   } catch (err) {
     console.log(err);

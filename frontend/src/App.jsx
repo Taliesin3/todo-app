@@ -146,7 +146,10 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeListIndex]: [...prevNotes[activeListIndex], newNote],
+        [activeListIndex]: [
+          ...prevNotes[lists[activeListIndex].listId],
+          newNote,
+        ],
       };
     });
   }
@@ -154,7 +157,7 @@ export default function App() {
   function updateNote(updatedNote) {
     const id = updatedNote._id;
     setNotes((prevNotes) => {
-      let newNotes = Array.from(prevNotes[activeListIndex]);
+      let newNotes = Array.from(prevNotes[lists[activeListIndex].listId]);
       newNotes[id] = updatedNote;
       return {
         ...prevNotes,
@@ -179,7 +182,7 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeListIndex]: prevNotes[activeListIndex].filter(
+        [activeListIndex]: prevNotes[lists[activeListIndex].listId].filter(
           (note) => note._id !== noteId
         ),
       };
@@ -190,10 +193,12 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeListIndex]: prevNotes[activeListIndex].map((note) => {
-          if (note._id === taskId) note.completed = !completed;
-          return note;
-        }),
+        [activeListIndex]: prevNotes[lists[activeListIndex].listId].map(
+          (note) => {
+            if (note._id === taskId) note.completed = !completed;
+            return note;
+          }
+        ),
       };
     });
   }
@@ -202,7 +207,7 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeListIndex]: prevNotes[activeListIndex].filter(
+        [activeListIndex]: prevNotes[lists[activeListIndex].listId].filter(
           (note) => note.completed === false
         ),
       };
@@ -235,15 +240,22 @@ export default function App() {
       // Delete current list, and set active list to the first list
     } else {
       setLists((prevLists) => {
-        return prevLists.filter((list) => list.id !== activeListIndex);
+        return prevLists.filter(
+          (list) => list.listId !== lists[activeListIndex].listId
+        );
       });
     }
     // TODO: delete all notes related to that list
 
     // Delete list and related notes from database
-    try {
-    } catch (err) {
-      console.log(err);
+    if (userData.isLoggedIn === true) {
+      try {
+        axios.delete(`/api/lists/${lists[activeListIndex].listId}`, {
+          headers: { "x-auth-token": token },
+        });
+      } catch (err) {
+        console.log(err);
+      }
     }
 
     setActiveListIndex(0);
@@ -256,14 +268,14 @@ export default function App() {
       setNotes((prevNotes) => {
         return {
           ...prevNotes,
-          [activeListIndex]: prevNotes[activeListIndex].sort(
+          [activeListIndex]: prevNotes[lists[activeListIndex].listId].sort(
             (a, b) => parseInt(a.priority) - parseInt(b.priority)
           ),
         };
       });
     } else if (sortType === "deadline") {
       setNotes((prevNotes) => {
-        let newNotes = prevNotes[activeListIndex].sort((a, b) => {
+        let newNotes = prevNotes[lists[activeListIndex].listId].sort((a, b) => {
           return a.deadline - b.deadline;
         });
         return {
@@ -275,21 +287,23 @@ export default function App() {
       setNotes((prevNotes) => {
         return {
           ...prevNotes,
-          [activeListIndex]: prevNotes[activeListIndex].sort((a, b) => {
-            const aTitle = a.title.toUpperCase();
-            const bTitle = b.title.toUpperCase();
+          [activeListIndex]: prevNotes[lists[activeListIndex].listId].sort(
+            (a, b) => {
+              const aTitle = a.title.toUpperCase();
+              const bTitle = b.title.toUpperCase();
 
-            if (aTitle > bTitle) return 1;
-            else if (bTitle > aTitle) return -1;
-            else return 0;
-          }),
+              if (aTitle > bTitle) return 1;
+              else if (bTitle > aTitle) return -1;
+              else return 0;
+            }
+          ),
         };
       });
     } else if (sortType === "created") {
       setNotes((prevNotes) => {
         return {
           ...prevNotes,
-          [activeListIndex]: prevNotes[activeListIndex].sort(
+          [activeListIndex]: prevNotes[lists[activeListIndex].listId].sort(
             (a, b) => a.created - b.created
           ),
         };
