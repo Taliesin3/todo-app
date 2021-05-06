@@ -12,8 +12,6 @@ function TaskCard(props) {
 
   const deadline = new Date(props.deadline);
 
-  useEffect(() => {}, []);
-
   return (
     <div
       data-id={props.id}
@@ -25,7 +23,7 @@ function TaskCard(props) {
       {/* Header - Title & Date */}
       <div className="task-card-header text-center mt-3">{props.title}</div>
       <button
-        onClick={() => props.setEditNoteId(props.id)}
+        onClick={() => props.setEditNoteId(props.index)}
         className="editBtn"
         data-noteid={props.id}
       >
@@ -37,7 +35,7 @@ function TaskCard(props) {
         ></i>
       </button>
       <p className="date-deadline text-muted text-center">
-        {props.deadline !== "" && `Due by ${deadline.toDateString()}`}
+        {props.deadline !== null && `Due by ${deadline.toDateString()}`}
       </p>
 
       {/* Content */}

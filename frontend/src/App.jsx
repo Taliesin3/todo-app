@@ -146,7 +146,7 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeListIndex]: [
+        [lists[activeListIndex].listId]: [
           ...prevNotes[lists[activeListIndex].listId],
           newNote,
         ],
@@ -155,13 +155,24 @@ export default function App() {
   }
 
   function updateNote(updatedNote) {
-    const id = updatedNote._id;
+    // Update backend if logged in
+    if (userData.isLoggedIn === true) {
+      try {
+        axios.post(`/api/notes/update/${updatedNote._id}`, updatedNote, {
+          headers: { "x-auth-token": token },
+        });
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    // Update frontend
     setNotes((prevNotes) => {
       let newNotes = Array.from(prevNotes[lists[activeListIndex].listId]);
-      newNotes[id] = updatedNote;
+      newNotes[editNoteId] = updatedNote;
       return {
         ...prevNotes,
-        [activeListIndex]: newNotes,
+        [lists[activeListIndex].listId]: newNotes,
       };
     });
   }
@@ -182,23 +193,39 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeListIndex]: prevNotes[lists[activeListIndex].listId].filter(
-          (note) => note._id !== noteId
-        ),
+        [lists[activeListIndex].listId]: prevNotes[
+          lists[activeListIndex].listId
+        ].filter((note) => note._id !== noteId),
       };
     });
   }
 
   function setComplete(taskId, completed) {
+    // Update backend if logged in
+    if (userData.isLoggedIn === true) {
+      try {
+        axios.post(
+          `/api/notes/update/${taskId}`,
+          { completed: !completed },
+          {
+            headers: { "x-auth-token": token },
+          }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    // Update frontend
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeListIndex]: prevNotes[lists[activeListIndex].listId].map(
-          (note) => {
-            if (note._id === taskId) note.completed = !completed;
-            return note;
-          }
-        ),
+        [lists[activeListIndex].listId]: prevNotes[
+          lists[activeListIndex].listId
+        ].map((note) => {
+          if (note._id === taskId) note.completed = !completed;
+          return note;
+        }),
       };
     });
   }
@@ -207,9 +234,9 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeListIndex]: prevNotes[lists[activeListIndex].listId].filter(
-          (note) => note.completed === false
-        ),
+        [lists[activeListIndex].listId]: prevNotes[
+          lists[activeListIndex].listId
+        ].filter((note) => note.completed === false),
       };
     });
   }
@@ -245,7 +272,6 @@ export default function App() {
         );
       });
     }
-    // TODO: delete all notes related to that list
 
     // Delete list and related notes from database
     if (userData.isLoggedIn === true) {
@@ -268,9 +294,9 @@ export default function App() {
       setNotes((prevNotes) => {
         return {
           ...prevNotes,
-          [activeListIndex]: prevNotes[lists[activeListIndex].listId].sort(
-            (a, b) => parseInt(a.priority) - parseInt(b.priority)
-          ),
+          [lists[activeListIndex].listId]: prevNotes[
+            lists[activeListIndex].listId
+          ].sort((a, b) => parseInt(a.priority) - parseInt(b.priority)),
         };
       });
     } else if (sortType === "deadline") {
@@ -280,32 +306,32 @@ export default function App() {
         });
         return {
           ...prevNotes,
-          [activeListIndex]: newNotes,
+          [lists[activeListIndex].listId]: newNotes,
         };
       });
     } else if (sortType === "title") {
       setNotes((prevNotes) => {
         return {
           ...prevNotes,
-          [activeListIndex]: prevNotes[lists[activeListIndex].listId].sort(
-            (a, b) => {
-              const aTitle = a.title.toUpperCase();
-              const bTitle = b.title.toUpperCase();
+          [lists[activeListIndex].listId]: prevNotes[
+            lists[activeListIndex].listId
+          ].sort((a, b) => {
+            const aTitle = a.title.toUpperCase();
+            const bTitle = b.title.toUpperCase();
 
-              if (aTitle > bTitle) return 1;
-              else if (bTitle > aTitle) return -1;
-              else return 0;
-            }
-          ),
+            if (aTitle > bTitle) return 1;
+            else if (bTitle > aTitle) return -1;
+            else return 0;
+          }),
         };
       });
     } else if (sortType === "created") {
       setNotes((prevNotes) => {
         return {
           ...prevNotes,
-          [activeListIndex]: prevNotes[lists[activeListIndex].listId].sort(
-            (a, b) => a.created - b.created
-          ),
+          [lists[activeListIndex].listId]: prevNotes[
+            lists[activeListIndex].listId
+          ].sort((a, b) => a.created - b.created),
         };
       });
     }

@@ -94,10 +94,11 @@ router.post("/update/:id", auth, async (req, res) => {
       _id: req.params.id,
       userId: req.userId,
     });
-    updatedNote.username = req.body.username;
-    updatedNote.title = req.body.title;
-    updatedNote.content = req.body.content;
-    updatedNote.date = Date.parse(req.body.date);
+
+    // Apply the updates for all fields in the request, otherwise leave the note as is
+    for (let key in req.body) {
+      updatedNote[key] = req.body[key];
+    }
 
     await updatedNote.save();
     res.json("Note updated!");

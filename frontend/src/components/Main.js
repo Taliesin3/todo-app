@@ -67,7 +67,7 @@ function Main(props) {
 
         {
           /* search button to search tasks */
-          // TODO: Implement search functionality - remove display: none style
+          // TODO: Implement search functionality
           /*
         <div className="search-box border-muted">
           <input
@@ -92,11 +92,12 @@ function Main(props) {
         <div className="current-list-container">
           {/* Display notes if they exist, else display empty notes message */}
           {props.notes.length > 0 ? (
-            props.notes.map((note) => {
+            props.notes.map((note, index) => {
               return (
                 <TaskCard
                   key={note._id}
                   id={note._id}
+                  index={index}
                   title={note.title}
                   content={note.content}
                   deadline={note.deadline}
