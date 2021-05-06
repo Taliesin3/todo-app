@@ -312,8 +312,13 @@ export default function App() {
     } else if (sortType === "deadline") {
       setNotes((prevNotes) => {
         let newNotes = prevNotes[lists[activeListIndex].listId].sort((a, b) => {
-          return a.deadline - b.deadline;
+          if (isNaN(Date.parse(a.deadline))) return 1;
+          else if (isNaN(Date.parse(b.deadline))) return -1;
+          else if (Date.parse(a.deadline) > Date.parse(b.deadline)) return 1;
+          else if (Date.parse(b.deadline) > Date.parse(a.deadline)) return -1;
+          else return 0;
         });
+        console.log(newNotes);
         return {
           ...prevNotes,
           [lists[activeListIndex].listId]: newNotes,
@@ -341,7 +346,7 @@ export default function App() {
           ...prevNotes,
           [lists[activeListIndex].listId]: prevNotes[
             lists[activeListIndex].listId
-          ].sort((a, b) => a.created - b.created),
+          ].sort((a, b) => Date.parse(a.created) - Date.parse(b.created)),
         };
       });
     }

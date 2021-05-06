@@ -75,7 +75,7 @@ function Main(props) {
             props.notes.map((note, index) => {
               return (
                 <TaskCard
-                  key={note._id}
+                  key={index}
                   id={note._id}
                   index={index}
                   title={note.title}

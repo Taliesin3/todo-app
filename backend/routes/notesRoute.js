@@ -25,7 +25,7 @@ router.post("/add", auth, async (req, res) => {
     const title = req.body.title;
     const content = req.body.content;
     let deadline = "";
-    if (req.body.deadline !== "") deadline = new Date(req.body.deadline); // parse javascript msec date to full date
+    if (req.body.deadline !== null) deadline = new Date(req.body.deadline); // parse javascript msec date to full date
     const created = new Date(req.body.created);
     const priority = Number.parseInt(req.body.priority);
     const completed = req.body.completed;
