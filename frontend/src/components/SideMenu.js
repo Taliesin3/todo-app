@@ -10,7 +10,14 @@ function SideMenu(props) {
     title: "",
   });
   const token = localStorage.getItem("auth-token");
-  const { lists, setLists, setActiveListIndex, setNotes } = props;
+  const {
+    notes,
+    lists,
+    setLists,
+    activeListIndex,
+    setActiveListIndex,
+    setNotes,
+  } = props;
 
   // Load all notes from DB on mount + when notes/token update
   useEffect(() => {
@@ -26,12 +33,14 @@ function SideMenu(props) {
           if (isUnmounted === false) {
             setLists(dbLists.data);
             for (let list of dbLists.data) {
-              setNotes((prevNotes) => {
-                return {
-                  ...prevNotes,
-                  [list.listId]: [],
-                };
-              });
+              if (!notes[list.listId]) {
+                setNotes((prevNotes) => {
+                  return {
+                    ...prevNotes,
+                    [list.listId]: [],
+                  };
+                });
+              }
             }
           }
         } catch (err) {
@@ -43,7 +52,7 @@ function SideMenu(props) {
     return () => {
       isUnmounted = true;
     };
-  }, [token, setLists, setNotes, userData]);
+  }, [token, setLists, notes, setNotes, userData]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -118,7 +127,7 @@ function SideMenu(props) {
                   key={list.listId}
                   id={`list-${list.listId}`}
                 >
-                  {list.listId === props.activeListIndex ? (
+                  {index === activeListIndex ? (
                     <strong>{list.title}</strong>
                   ) : (
                     <>{list.title}</>

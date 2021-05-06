@@ -24,12 +24,14 @@ function Main(props) {
     if (userData.isLoggedIn === true) {
       (async function getNotes() {
         try {
+          // Get notes for the specific list currently being viewed
           const dbNotes = await axios.get(
             `/api/notes/${lists[activeListIndex].listId}`,
             {
               headers: { "x-auth-token": token },
             }
           );
+          // Set the notes state for the current list
           if (isUnmounted === false) {
             setNotes((prevNotes) => {
               return {
@@ -47,7 +49,7 @@ function Main(props) {
     return () => {
       isUnmounted = true;
     };
-  }, [token, setNotes, activeListIndex, userData]);
+  }, [token, lists, setNotes, activeListIndex, userData]);
 
   return (
     <>

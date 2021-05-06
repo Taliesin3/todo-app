@@ -322,6 +322,7 @@ export default function App() {
         <SideMenu
           lists={lists}
           setLists={setLists}
+          notes={notes}
           setNotes={setNotes}
           submitNewList={submitNewList}
           activeListIndex={activeListIndex}
