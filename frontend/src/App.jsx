@@ -171,11 +171,11 @@ export default function App() {
     });
   }
 
-  async function deleteNote(noteId) {
+  function deleteNote(noteId) {
     // Delete from backend if logged in
-    if (token !== "") {
+    if (userData.isLoggedIn === true) {
       try {
-        await axios.delete(`/api/notes/${noteId}`, {
+        axios.delete(`/api/notes/${noteId}`, {
           headers: { "x-auth-token": token },
         });
       } catch (err) {
@@ -225,7 +225,20 @@ export default function App() {
   }
 
   function clearCompleted() {
-    // TODO: Delete completed notes from current list from databse
+    // Delete completed notes from current list from databse
+    if (userData.isLoggedIn === true) {
+      try {
+        for (let note of notes[lists[activeListIndex].listId]) {
+          if (note.completed === true) {
+            axios.delete(`/api/notes/${note._id}`, {
+              headers: { "x-auth-token": token },
+            });
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    }
 
     // Remove completed notes from frontend
     setNotes((prevNotes) => {

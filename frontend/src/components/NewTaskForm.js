@@ -33,7 +33,7 @@ function NewTaskForm(props) {
 
     // Set created time
     newNote.created = Date.now();
-    if (newNote.deadline !== "") {
+    if (newNote.deadline !== null) {
       newNote.deadline = Date.parse(newNote.deadline);
     }
 
