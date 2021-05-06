@@ -8,23 +8,33 @@ import UserContext from "../context/UserContext";
 function Main(props) {
   const { userData } = useContext(UserContext);
   const token = localStorage.getItem("auth-token");
+  const {
+    lists,
+    setLists,
+    setNotes,
+    activeListIndex,
+    setActiveListIndex,
+  } = props;
 
   // Load all notes from DB on mount + when notes/token update
   useEffect(() => {
     let isUnmounted = false;
-    // Using an IIFE to carry out an async func within useEffect
 
+    // Using an IIFE to carry out an async func within useEffect
     if (userData.isLoggedIn === true) {
       (async function getNotes() {
         try {
-          const dbNotes = await axios.get("/api/notes/", {
-            headers: { "x-auth-token": token },
-          });
+          const dbNotes = await axios.get(
+            `/api/notes/${lists[activeListIndex].listId}`,
+            {
+              headers: { "x-auth-token": token },
+            }
+          );
           if (isUnmounted === false) {
-            props.setNotes((prevNotes) => {
+            setNotes((prevNotes) => {
               return {
                 ...prevNotes,
-                [props.activeListId]: dbNotes.data,
+                [lists[activeListIndex].listId]: dbNotes.data,
               };
             });
           }
@@ -37,7 +47,7 @@ function Main(props) {
     return () => {
       isUnmounted = true;
     };
-  }, [token, props, userData]);
+  }, [token, setNotes, activeListIndex, userData]);
 
   return (
     <>

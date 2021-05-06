@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import $ from "jquery";
 
 function TaskCard(props) {
@@ -11,6 +11,8 @@ function TaskCard(props) {
   };
 
   const deadline = new Date(props.deadline);
+
+  useEffect(() => {}, []);
 
   return (
     <div

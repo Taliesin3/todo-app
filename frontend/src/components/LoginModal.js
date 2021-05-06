@@ -9,8 +9,8 @@ function LoginModal(props) {
     username: "",
     password: "",
   });
-
   const { userData, setUserData } = useContext(UserContext);
+  const { setLists, setNotes, setActiveListIndex } = props;
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -37,6 +37,9 @@ function LoginModal(props) {
         isLoggedIn: true,
       });
 
+      // Set the current active list to whichever list is first
+      setActiveListIndex(0);
+
       setLoginForm({
         username: "",
         password: "",
@@ -44,7 +47,7 @@ function LoginModal(props) {
 
       console.log("Login Successful!");
     } catch (err) {
-      console.log(err.response.data.msg);
+      console.log(err);
     }
   }
 

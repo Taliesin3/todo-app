@@ -63,7 +63,6 @@ router.post("/update/:id", auth, async (req, res) => {
       _id: req.params.id,
       userId: req.userId,
     });
-    updatedList.username = req.body.username;
     updatedList.title = req.body.title;
 
     await updatedList.save();

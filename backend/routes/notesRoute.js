@@ -7,8 +7,8 @@ router.get("/", auth, async (req, res) => {
   try {
     // Get all current user's notes, most recent first
     // TODO: only get notes for current list
-    const userNotes = await Note.find({ userId: req.userId }).sort({
-      createdAt: -1,
+    const userNotes = await Note.find({
+      userId: req.userId,
     });
     res.json(userNotes);
   } catch (err) {
@@ -24,7 +24,8 @@ router.post("/add", auth, async (req, res) => {
     const listId = req.body.listId;
     const title = req.body.title;
     const content = req.body.content;
-    const deadline = new Date(req.body.deadline); // parse javascript msec date to full date
+    let deadline = "";
+    if (req.body.deadline !== "") deadline = new Date(req.body.deadline); // parse javascript msec date to full date
     const created = new Date(req.body.created);
     const priority = Number.parseInt(req.body.priority);
     const completed = req.body.completed;
@@ -48,22 +49,22 @@ router.post("/add", auth, async (req, res) => {
   }
 });
 
-// GET specific note
-router.get("/:id", auth, async (req, res) => {
+// GET notes for specific list
+router.get("/:listId", auth, async (req, res) => {
   // :id is Mongo's auto-made object id
   try {
-    const getNote = await Note.findOne({
-      _id: req.params.id,
+    const listNotes = await Note.find({
+      listId: req.params.listId,
       userId: req.userId,
     });
-    if (!getNote)
+    if (!listNotes)
       return res
         .status(400)
-        .json({ msg: "Could not match note/user id to an existing note." });
-    res.json(getNote);
+        .json({ msg: "Could not match list/user id to an existing note." });
+    res.json(listNotes);
   } catch (err) {
     console.log(err);
-    res.status(400).json({ msg: "Could not get that note." });
+    res.status(400).json({ msg: "Could not get the notes for that list." });
   }
 });
 

@@ -10,6 +10,7 @@ function Register(props) {
     password: "",
     passwordCheck: "",
   });
+  const { defaultList } = props;
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -24,17 +25,44 @@ function Register(props) {
   async function submitRegister(e) {
     e.preventDefault();
     try {
+      // Register user in database
       await Axios.post("api/user/register", registerForm);
+
+      // Log user in
       const loginRes = await Axios.post("api/user/login", {
         username: registerForm.username,
         password: registerForm.password,
       });
+
+      // Set tup the default list for new user
+      Axios.post(
+        "api/lists/add",
+        {
+          userId: loginRes.data.user.id,
+          listId: defaultList.id,
+          title: defaultList.title,
+        },
+        {
+          headers: { "x-auth-token": loginRes.data.token },
+        }
+      );
+
+      // Update user state
       setUserData({
         token: loginRes.data.token,
         username: loginRes.data.user.username,
         id: loginRes.data.user.id,
         isLoggedIn: true,
       });
+
+      // Reset form values
+      setRegisterForm({
+        username: "",
+        password: "",
+        passwordCheck: "",
+      });
+
+      // Set token
       localStorage.setItem("auth-token", loginRes.data.token);
     } catch (err) {
       console.log(err);

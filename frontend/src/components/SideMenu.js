@@ -1,14 +1,49 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import helper from "../helper";
 import $ from "jquery";
 import UserContext from "../context/UserContext";
+import axios from "axios";
 
 function SideMenu(props) {
   const { userData, setUserData } = useContext(UserContext);
   const [newList, setNewList] = useState({
-    id: props.lists.length,
     title: "",
   });
+  const token = localStorage.getItem("auth-token");
+  const { lists, setLists, setActiveListIndex, setNotes } = props;
+
+  // Load all notes from DB on mount + when notes/token update
+  useEffect(() => {
+    let isUnmounted = false;
+    // Using an IIFE to carry out an async func within useEffect
+
+    if (userData.isLoggedIn === true) {
+      (async function getLists() {
+        try {
+          const dbLists = await axios.get("/api/lists/", {
+            headers: { "x-auth-token": token },
+          });
+          if (isUnmounted === false) {
+            setLists(dbLists.data);
+            for (let list of dbLists.data) {
+              setNotes((prevNotes) => {
+                return {
+                  ...prevNotes,
+                  [list.listId]: [],
+                };
+              });
+            }
+          }
+        } catch (err) {
+          console.log("Error: " + err);
+        }
+      })();
+    }
+
+    return () => {
+      isUnmounted = true;
+    };
+  }, [token, setLists, setNotes, userData]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -22,10 +57,9 @@ function SideMenu(props) {
 
   function addNewList(e) {
     e.preventDefault();
-    const newId = newList.id + 1;
+    newList["listId"] = Date.now();
     props.submitNewList(newList);
     setNewList({
-      id: newId,
       title: "",
     });
   }
@@ -76,15 +110,15 @@ function SideMenu(props) {
         <h4>My Lists</h4>
         <ul className="lists">
           {/* List all of the list titles, with the active list shown in bold */}
-          {props.lists.length > 0 &&
-            props.lists.map((list, index) => {
+          {lists.length > 0 &&
+            lists.map((list, index) => {
               return (
                 <li
-                  onClick={() => props.setActiveListId(index)}
-                  key={index}
-                  id={`list-${index}`}
+                  onClick={() => setActiveListIndex(index)}
+                  key={list.listId}
+                  id={`list-${list.listId}`}
                 >
-                  {index === props.activeListId ? (
+                  {list.listId === props.activeListIndex ? (
                     <strong>{list.title}</strong>
                   ) : (
                     <>{list.title}</>

@@ -3,6 +3,7 @@ import UserContext from "../context/UserContext";
 
 function LogoutModal(props) {
   const { userData, setUserData } = useContext(UserContext);
+  const { setNotes, setLists, setActiveListIndex } = props;
 
   function confirmLogout() {
     localStorage.setItem("auth-token", "");
@@ -12,15 +13,16 @@ function LogoutModal(props) {
       username: undefined,
       isLoggedIn: false,
     });
-    props.setNotes({
+    setNotes({
       0: [],
     });
-    props.setLists([
+    setLists([
       {
-        id: 0,
+        listId: 0,
         title: "Default List",
       },
     ]);
+    setActiveListIndex(0);
   }
 
   return (

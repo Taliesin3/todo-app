@@ -28,16 +28,16 @@ export default function App() {
     isLoggedIn: false,
   });
 
-  const [lists, setLists] = useState([
-    {
-      id: 0,
-      title: "Default List",
-    },
-  ]);
+  const DEFAULT_LIST = {
+    listId: 0,
+    title: "Default List",
+  };
+
+  const [lists, setLists] = useState([DEFAULT_LIST]);
   const [notes, setNotes] = useState({
     0: [],
   });
-  const [activeListId, setActiveListId] = useState(0);
+  const [activeListIndex, setActiveListIndex] = useState(0);
   const [editNoteId, setEditNoteId] = useState(null);
   let token = localStorage.getItem("auth-token");
 
@@ -94,27 +94,48 @@ export default function App() {
   }, []);
 
   function submitNewList(newList) {
+    // Update frontend lists/notes
     setLists((prevLists) => {
       return [...prevLists, newList];
     });
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [newList.id]: [],
+        [newList.listId]: [],
       };
     });
+
+    // Update database if logged in
+    if (userData.isLoggedIn === true) {
+      try {
+        axios.post(
+          "api/lists/add",
+          {
+            userId: userData.id,
+            listId: newList.listId,
+            title: newList.title,
+          },
+          {
+            headers: { "x-auth-token": token },
+          }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    }
   }
 
   function addNote(newNote) {
-    newNote._id = notes[activeListId].length;
-    newNote["listId"] = activeListId;
+    // TODO: dont think this is handling note id correctly
+    newNote._id = notes[lists[activeListIndex].listId].length;
+    newNote["listId"] = lists[activeListIndex].listId;
 
     // Submit note to database if logged in
     if (userData.isLoggedIn === true) {
       newNote["userId"] = userData.id;
 
       try {
-        const addedNote = axios.post("api/notes/add", newNote, {
+        axios.post("api/notes/add", newNote, {
           headers: { "x-auth-token": token },
         });
       } catch (err) {
@@ -125,7 +146,7 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeListId]: [...prevNotes[activeListId], newNote],
+        [activeListIndex]: [...prevNotes[activeListIndex], newNote],
       };
     });
   }
@@ -133,11 +154,11 @@ export default function App() {
   function updateNote(updatedNote) {
     const id = updatedNote._id;
     setNotes((prevNotes) => {
-      let newNotes = Array.from(prevNotes[activeListId]);
+      let newNotes = Array.from(prevNotes[activeListIndex]);
       newNotes[id] = updatedNote;
       return {
         ...prevNotes,
-        [activeListId]: newNotes,
+        [activeListIndex]: newNotes,
       };
     });
   }
@@ -158,7 +179,7 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeListId]: prevNotes[activeListId].filter(
+        [activeListIndex]: prevNotes[activeListIndex].filter(
           (note) => note._id !== noteId
         ),
       };
@@ -169,7 +190,7 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeListId]: prevNotes[activeListId].map((note) => {
+        [activeListIndex]: prevNotes[activeListIndex].map((note) => {
           if (note._id === taskId) note.completed = !completed;
           return note;
         }),
@@ -181,7 +202,7 @@ export default function App() {
     setNotes((prevNotes) => {
       return {
         ...prevNotes,
-        [activeListId]: prevNotes[activeListId].filter(
+        [activeListIndex]: prevNotes[activeListIndex].filter(
           (note) => note.completed === false
         ),
       };
@@ -191,8 +212,8 @@ export default function App() {
   function editListName(newName) {
     setLists((prevLists) => {
       let newLists = Array.from(prevLists);
-      newLists[activeListId] = {
-        ...prevLists[activeListId],
+      newLists[activeListIndex] = {
+        ...prevLists[activeListIndex],
         title: newName,
       };
       return newLists;
@@ -214,10 +235,18 @@ export default function App() {
       // Delete current list, and set active list to the first list
     } else {
       setLists((prevLists) => {
-        return prevLists.filter((list) => list.id !== activeListId);
+        return prevLists.filter((list) => list.id !== activeListIndex);
       });
     }
-    setActiveListId(0);
+    // TODO: delete all notes related to that list
+
+    // Delete list and related notes from database
+    try {
+    } catch (err) {
+      console.log(err);
+    }
+
+    setActiveListIndex(0);
   }
 
   function sortNotes(e) {
@@ -227,26 +256,26 @@ export default function App() {
       setNotes((prevNotes) => {
         return {
           ...prevNotes,
-          [activeListId]: prevNotes[activeListId].sort(
+          [activeListIndex]: prevNotes[activeListIndex].sort(
             (a, b) => parseInt(a.priority) - parseInt(b.priority)
           ),
         };
       });
     } else if (sortType === "deadline") {
       setNotes((prevNotes) => {
-        let newNotes = prevNotes[activeListId].sort((a, b) => {
+        let newNotes = prevNotes[activeListIndex].sort((a, b) => {
           return a.deadline - b.deadline;
         });
         return {
           ...prevNotes,
-          [activeListId]: newNotes,
+          [activeListIndex]: newNotes,
         };
       });
     } else if (sortType === "title") {
       setNotes((prevNotes) => {
         return {
           ...prevNotes,
-          [activeListId]: prevNotes[activeListId].sort((a, b) => {
+          [activeListIndex]: prevNotes[activeListIndex].sort((a, b) => {
             const aTitle = a.title.toUpperCase();
             const bTitle = b.title.toUpperCase();
 
@@ -260,7 +289,7 @@ export default function App() {
       setNotes((prevNotes) => {
         return {
           ...prevNotes,
-          [activeListId]: prevNotes[activeListId].sort(
+          [activeListIndex]: prevNotes[activeListIndex].sort(
             (a, b) => a.created - b.created
           ),
         };
@@ -275,15 +304,15 @@ export default function App() {
         <header>
           <Navbar />
           <SubNavbar
-            listTitle={lists[activeListId].title}
-            activeListId={activeListId}
+            listTitle={lists[activeListIndex].title}
+            activeListIndex={activeListIndex}
             sortNotes={sortNotes}
           />
         </header>
         <Main
           lists={lists}
-          activeListId={activeListId}
-          notes={notes[activeListId]}
+          activeListIndex={activeListIndex}
+          notes={notes[lists[activeListIndex].listId]}
           setNotes={setNotes}
           addNote={addNote}
           deleteNote={deleteNote}
@@ -292,24 +321,34 @@ export default function App() {
         />
         <SideMenu
           lists={lists}
+          setLists={setLists}
+          setNotes={setNotes}
           submitNewList={submitNewList}
-          activeListId={activeListId}
-          setActiveListId={setActiveListId}
+          activeListIndex={activeListIndex}
+          setActiveListIndex={setActiveListIndex}
         />
         <NewTaskForm onAdd={addNote} />
         <EditTaskForm
-          noteData={notes[activeListId][editNoteId]}
+          noteData={notes[lists[activeListIndex].listId][editNoteId]}
           updateNote={updateNote}
         />
         <DeleteListModal deleteList={deleteList} />
         <EditListNameModal
           editListName={editListName}
-          activeListId={activeListId}
-          listName={lists[activeListId].title}
+          activeListIndex={activeListIndex}
+          listName={lists[activeListIndex].title}
         />
-        <RegisterModal />
-        <LoginModal />
-        <LogoutModal setNotes={setNotes} setLists={setLists} />
+        <RegisterModal defaultList={DEFAULT_LIST} />
+        <LoginModal
+          setLists={setLists}
+          setNotes={setNotes}
+          setActiveListIndex={setActiveListIndex}
+        />
+        <LogoutModal
+          setNotes={setNotes}
+          setLists={setLists}
+          setActiveListIndex={setActiveListIndex}
+        />
         <Footer clearCompleted={clearCompleted} />
       </UserContext.Provider>
     </div>

@@ -25,7 +25,6 @@ function NewTaskForm(props) {
         [name]: value,
       };
     });
-    console.log(newNote);
   }
 
   // Submit task form and create new task
@@ -34,9 +33,9 @@ function NewTaskForm(props) {
 
     // Set created time
     newNote.created = Date.now();
-    if (newNote.deadline !== "")
+    if (newNote.deadline !== "") {
       newNote.deadline = Date.parse(newNote.deadline);
-    console.log(newNote);
+    }
 
     // Add to frontend
     props.onAdd(newNote);
