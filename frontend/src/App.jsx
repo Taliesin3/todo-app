@@ -378,8 +378,10 @@ export default function App() {
         />
         <RegisterModal defaultList={DEFAULT_LIST} />
         <LoginModal
+          lists={lists}
           setLists={setLists}
           setNotes={setNotes}
+          activeListIndex={activeListIndex}
           setActiveListIndex={setActiveListIndex}
         />
         <LogoutModal

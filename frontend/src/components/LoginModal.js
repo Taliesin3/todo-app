@@ -10,7 +10,13 @@ function LoginModal(props) {
     password: "",
   });
   const { userData, setUserData } = useContext(UserContext);
-  const { setLists, setNotes, setActiveListIndex } = props;
+  const {
+    lists,
+    setLists,
+    setNotes,
+    activeListIndex,
+    setActiveListIndex,
+  } = props;
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -40,6 +46,28 @@ function LoginModal(props) {
       // Set the current active list to whichever list is first
       setActiveListIndex(0);
 
+      // Get lists from database and updated state
+      const dbLists = await axios.get("/api/lists/", {
+        headers: { "x-auth-token": loginRes.data.token },
+      });
+      setLists(dbLists.data);
+
+      // For each list, get their notes from the database and update state
+      for (let list of dbLists.data) {
+        // Get notes for the specific list currently being viewed
+        const dbNotes = await axios.get(`/api/notes/${list.listId}`, {
+          headers: { "x-auth-token": loginRes.data.token },
+        });
+
+        setNotes((prevNotes) => {
+          return {
+            ...prevNotes,
+            [list.listId]: dbNotes.data,
+          };
+        });
+      }
+
+      // Reset login form
       setLoginForm({
         username: "",
         password: "",

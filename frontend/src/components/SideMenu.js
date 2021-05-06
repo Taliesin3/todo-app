@@ -19,40 +19,25 @@ function SideMenu(props) {
     setNotes,
   } = props;
 
-  // Load all notes from DB on mount + when notes/token update
-  useEffect(() => {
-    let isUnmounted = false;
-    // Using an IIFE to carry out an async func within useEffect
+  // // Load all notes from DB on mount + when notes/token update
+  // useEffect(() => {
+  //   let isUnmounted = false;
+  //   // Using an IIFE to carry out an async func within useEffect
 
-    if (userData.isLoggedIn === true) {
-      (async function getLists() {
-        try {
-          const dbLists = await axios.get("/api/lists/", {
-            headers: { "x-auth-token": token },
-          });
-          if (isUnmounted === false) {
-            setLists(dbLists.data);
-            for (let list of dbLists.data) {
-              if (!notes[list.listId]) {
-                setNotes((prevNotes) => {
-                  return {
-                    ...prevNotes,
-                    [list.listId]: [],
-                  };
-                });
-              }
-            }
-          }
-        } catch (err) {
-          console.log("Error: " + err);
-        }
-      })();
-    }
+  //   if (userData.isLoggedIn === true) {
+  //     (async function getLists() {
+  //       try {
+  //         c
+  //       } catch (err) {
+  //         console.log("Error: " + err);
+  //       }
+  //     })();
+  //   }
 
-    return () => {
-      isUnmounted = true;
-    };
-  }, [token, setLists, notes, setNotes, userData]);
+  //   return () => {
+  //     isUnmounted = true;
+  //   };
+  // }, [token, setLists, notes, setNotes, userData]);
 
   function handleChange(e) {
     const { name, value } = e.target;

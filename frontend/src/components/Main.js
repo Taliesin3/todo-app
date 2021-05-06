@@ -16,40 +16,20 @@ function Main(props) {
     setActiveListIndex,
   } = props;
 
-  // Load all notes from DB on mount + when notes/token update
-  useEffect(() => {
-    let isUnmounted = false;
+  // // Load all notes from DB on mount + when notes/token update
+  // useEffect(() => {
+  //   let isUnmounted = false;
 
-    // Using an IIFE to carry out an async func within useEffect
-    if (userData.isLoggedIn === true) {
-      (async function getNotes() {
-        try {
-          // Get notes for the specific list currently being viewed
-          const dbNotes = await axios.get(
-            `/api/notes/${lists[activeListIndex].listId}`,
-            {
-              headers: { "x-auth-token": token },
-            }
-          );
-          // Set the notes state for the current list
-          if (isUnmounted === false) {
-            setNotes((prevNotes) => {
-              return {
-                ...prevNotes,
-                [lists[activeListIndex].listId]: dbNotes.data,
-              };
-            });
-          }
-        } catch (err) {
-          console.log("Error: " + err);
-        }
-      })();
-    }
+  //       } catch (err) {
+  //         console.log("Error: " + err);
+  //       }
+  //     })();
+  //   }
 
-    return () => {
-      isUnmounted = true;
-    };
-  }, [token, lists, setNotes, activeListIndex, userData]);
+  //   return () => {
+  //     isUnmounted = true;
+  //   };
+  // }, [token, lists, setNotes, activeListIndex, userData]);
 
   return (
     <>
