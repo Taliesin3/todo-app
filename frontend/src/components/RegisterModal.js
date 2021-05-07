@@ -39,7 +39,7 @@ function Register(props) {
         "api/lists/add",
         {
           userId: loginRes.data.user.id,
-          listId: defaultList.id,
+          listId: defaultList.listId,
           title: defaultList.title,
         },
         {
