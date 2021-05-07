@@ -252,6 +252,22 @@ export default function App() {
   }
 
   function editListName(newName) {
+    // Update backend if logged in
+    if (userData.isLoggedIn === true) {
+      try {
+        axios.post(
+          `/api/lists/update/${lists[activeListIndex].listId}`,
+          { title: newName },
+          {
+            headers: { "x-auth-token": token },
+          }
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    }
+
+    // Update frontend
     setLists((prevLists) => {
       let newLists = Array.from(prevLists);
       newLists[activeListIndex] = {

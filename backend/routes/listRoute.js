@@ -65,7 +65,7 @@ router.delete("/:id", auth, async (req, res) => {
 router.post("/update/:id", auth, async (req, res) => {
   try {
     const updatedList = await List.findOne({
-      _id: req.params.id,
+      listId: req.params.id,
       userId: req.userId,
     });
     updatedList.title = req.body.title;
