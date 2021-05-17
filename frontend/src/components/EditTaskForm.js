@@ -49,11 +49,11 @@ function EditTaskForm(props) {
 
   // Allow user to press Enter instead of clicking submit button
   function pressEnterSubmit(e) {
-    const key = e.charCode || e.keyCode || 0;
-    if (key === 13) {
-      e.preventDefault();
-      document.querySelector("#submit-task-btn-edit").click();
-    }
+    // const key = e.charCode || e.keyCode || 0;
+    // if (key === 13) {
+    //   e.preventDefault();
+    //   document.querySelector("#submit-task-btn-edit").click();
+    // }
   }
 
   return (
@@ -88,7 +88,6 @@ function EditTaskForm(props) {
                   name="title"
                   placeholder="Task Title"
                   id="task-title-edit"
-                  maxLength="15"
                   value={editModal.title}
                   onChange={handleChange}
                   autoComplete="off"
