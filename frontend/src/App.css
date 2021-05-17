@@ -371,7 +371,6 @@ button:focus {
 }
 
 .task-notes {
-  max-height: 75%;
   overflow: auto;
 }
 
@@ -380,7 +379,6 @@ button:focus {
   justify-content: space-between;
   align-items: center;
   padding: 0 0.8rem;
-  position: absolute;
   bottom: 0;
   width: 100%;
 }
