@@ -24,49 +24,59 @@ function Register(props) {
 
   async function submitRegister(e) {
     e.preventDefault();
-    try {
-      // Register user in database
-      await Axios.post("api/user/register", registerForm);
+    const form = e.target;
+    console.log(form);
 
-      // Log user in
-      const loginRes = await Axios.post("api/user/login", {
-        username: registerForm.username,
-        password: registerForm.password,
-      });
+    if (form.checkValidity() === false) {
+      e.preventDefault();
+      e.stopPropagation();
+    } else {
+      try {
+        // Register user in database
+        await Axios.post("api/user/register", registerForm);
 
-      // Set tup the default list for new user
-      Axios.post(
-        "api/lists/add",
-        {
-          userId: loginRes.data.user.id,
-          listId: defaultList.listId,
-          title: defaultList.title,
-        },
-        {
-          headers: { "x-auth-token": loginRes.data.token },
-        }
-      );
+        // Log user in
+        const loginRes = await Axios.post("api/user/login", {
+          username: registerForm.username,
+          password: registerForm.password,
+        });
 
-      // Update user state
-      setUserData({
-        token: loginRes.data.token,
-        username: loginRes.data.user.username,
-        id: loginRes.data.user.id,
-        isLoggedIn: true,
-      });
+        // Set tup the default list for new user
+        Axios.post(
+          "api/lists/add",
+          {
+            userId: loginRes.data.user.id,
+            listId: defaultList.listId,
+            title: defaultList.title,
+          },
+          {
+            headers: { "x-auth-token": loginRes.data.token },
+          }
+        );
 
-      // Reset form values
-      setRegisterForm({
-        username: "",
-        password: "",
-        passwordCheck: "",
-      });
+        // Update user state
+        setUserData({
+          token: loginRes.data.token,
+          username: loginRes.data.user.username,
+          id: loginRes.data.user.id,
+          isLoggedIn: true,
+        });
 
-      // Set token
-      localStorage.setItem("auth-token", loginRes.data.token);
-    } catch (err) {
-      console.log(err);
+        // Reset form values
+        setRegisterForm({
+          username: "",
+          password: "",
+          passwordCheck: "",
+        });
+
+        // Set token
+        localStorage.setItem("auth-token", loginRes.data.token);
+      } catch (err) {
+        console.log(err);
+      }
     }
+
+    form.classList.add("was-validated");
   }
 
   // Allow user to press Enter instead of clicking submit button
@@ -99,7 +109,8 @@ function Register(props) {
           <form
             onSubmit={submitRegister}
             onKeyPress={pressEnterSubmit}
-            className="register-form"
+            className="register-form needs-validation"
+            noValidate
           >
             <div className="modal-body">
               <p>
@@ -138,6 +149,9 @@ function Register(props) {
                   onChange={handleChange}
                   autoComplete="off"
                 />
+                <div class="invalid-feedback">
+                  Password must be at least 8 characters long.
+                </div>
               </div>
 
               {/* Password Check */}
@@ -154,6 +168,7 @@ function Register(props) {
                   autoComplete="off"
                 />
               </div>
+              <div class="invalid-feedback">Passwords must match.</div>
             </div>
 
             {/* Footer & buttons */}

@@ -371,7 +371,8 @@ button:focus {
 }
 
 .task-notes {
-  max-height: 60%;
+  max-height: 75%;
+  overflow: auto;
 }
 
 .task-card-footer {

@@ -53,11 +53,11 @@ function NewTaskForm(props) {
 
   // Allow user to press Enter instead of clicking submit button
   function pressEnterSubmit(e) {
-    const key = e.charCode || e.keyCode || 0;
-    if (key === 13) {
-      e.preventDefault();
-      document.querySelector("#submit-task-btn").click();
-    }
+    // const key = e.charCode || e.keyCode || 0;
+    // if (key === 13) {
+    //   e.preventDefault();
+    //   document.querySelector("#submit-task-btn").click();
+    // }
   }
 
   function clearForm() {
