@@ -53,6 +53,7 @@ function TaskCard(props) {
               onClick={() => props.setComplete(props.id, props.completed)}
               className="checkbox checkmark"
               type="checkbox"
+              checked={props.completed ? true : false}
             />
             <span className="checkmark"></span>
           </label>
