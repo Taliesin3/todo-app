@@ -11,7 +11,15 @@ function EditTaskForm(props) {
     completed: false,
   });
 
+  // Update edit task form
   useEffect(() => {
+    if (props.noteData)
+      console.log(
+        new Date(props.noteData.deadline)
+          .toISOString()
+          .replace("T", " ")
+          .substr(0, 10)
+      );
     if (
       props.noteData !== undefined &&
       editModal.noteId !== props.noteData.noteId
@@ -20,7 +28,10 @@ function EditTaskForm(props) {
         noteId: props.noteData.noteId,
         title: props.noteData.title,
         content: props.noteData.content,
-        deadline: props.noteData.deadline,
+        deadline: new Date(props.noteData.deadline)
+          .toISOString()
+          .replace("T", " ")
+          .substr(0, 10),
         priority: props.noteData.priority,
         completed: props.noteData.completed,
       });
@@ -195,7 +206,10 @@ function EditTaskForm(props) {
                     noteId: props.noteData.noteId,
                     title: props.noteData.title,
                     content: props.noteData.content,
-                    deadline: props.noteData.deadline,
+                    deadline: new Date(props.noteData.deadline)
+                      .toISOString()
+                      .replace("T", " ")
+                      .substr(0, 10),
                     priority: props.noteData.priority,
                   });
                 }}

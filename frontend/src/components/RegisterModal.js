@@ -25,7 +25,6 @@ function Register(props) {
   async function submitRegister(e) {
     e.preventDefault();
     const form = e.target;
-    console.log(form);
 
     if (form.checkValidity() === false) {
       e.preventDefault();

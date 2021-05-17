@@ -317,8 +317,6 @@ export default function App() {
   function sortNotes(e) {
     const sortType = e.target.value;
 
-    console.log("sorting!");
-
     if (sortType === "priority") {
       setNotes((prevNotes) => {
         return {

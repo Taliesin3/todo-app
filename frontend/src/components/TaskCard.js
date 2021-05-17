@@ -14,7 +14,6 @@ function TaskCard(props) {
   if (!(props.deadline === null || props.deadline === "")) {
     deadline = new Date(props.deadline);
   }
-  console.log(props.deadline);
 
   return (
     <div
