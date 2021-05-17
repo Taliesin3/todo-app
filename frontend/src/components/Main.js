@@ -8,13 +8,8 @@ import UserContext from "../context/UserContext";
 function Main(props) {
   const { userData } = useContext(UserContext);
   const token = localStorage.getItem("auth-token");
-  const {
-    lists,
-    setLists,
-    setNotes,
-    activeListIndex,
-    setActiveListIndex,
-  } = props;
+  const { lists, setLists, setNotes, activeListIndex, setActiveListIndex } =
+    props;
 
   // // Load all notes from DB on mount + when notes/token update
   // useEffect(() => {
@@ -76,7 +71,7 @@ function Main(props) {
               return (
                 <TaskCard
                   key={index}
-                  id={note._id}
+                  id={note.noteId}
                   index={index}
                   title={note.title}
                   content={note.content}
@@ -97,6 +92,7 @@ function Main(props) {
               <img
                 src="https://img.icons8.com/cotton/100/000000/empty-box.png"
                 alt="Empty box icon"
+                draggable="false"
               />
               <p data-message-paragraph>
                 No tasks created.

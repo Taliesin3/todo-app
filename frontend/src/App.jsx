@@ -121,6 +121,7 @@ export default function App() {
   }
 
   function addNote(newNote) {
+    newNote["noteId"] = Date.now();
     newNote["listId"] = lists[activeListIndex].listId;
 
     // Submit note to database if logged in
@@ -152,7 +153,7 @@ export default function App() {
     // Update backend if logged in
     if (userData.isLoggedIn === true) {
       try {
-        axios.post(`/api/notes/update/${updatedNote._id}`, updatedNote, {
+        axios.post(`/api/notes/update/${updatedNote.noteId}`, updatedNote, {
           headers: { "x-auth-token": token },
         });
       } catch (err) {
@@ -189,17 +190,17 @@ export default function App() {
         ...prevNotes,
         [lists[activeListIndex].listId]: prevNotes[
           lists[activeListIndex].listId
-        ].filter((note) => note._id !== noteId),
+        ].filter((note) => note.noteId !== noteId),
       };
     });
   }
 
-  function setComplete(taskId, completed) {
+  function setComplete(completedNoteId, completed) {
     // Update backend if logged in
     if (userData.isLoggedIn === true) {
       try {
         axios.post(
-          `/api/notes/update/${taskId}`,
+          `/api/notes/update/${completedNoteId}`,
           { completed: !completed },
           {
             headers: { "x-auth-token": token },
@@ -217,7 +218,7 @@ export default function App() {
         [lists[activeListIndex].listId]: prevNotes[
           lists[activeListIndex].listId
         ].map((note) => {
-          if (note._id === taskId) note.completed = !completed;
+          if (note.noteId === completedNoteId) note.completed = !completed;
           return note;
         }),
       };
@@ -230,7 +231,7 @@ export default function App() {
       try {
         for (let note of notes[lists[activeListIndex].listId]) {
           if (note.completed === true) {
-            axios.delete(`/api/notes/${note._id}`, {
+            axios.delete(`/api/notes/${note.noteId}`, {
               headers: { "x-auth-token": token },
             });
           }

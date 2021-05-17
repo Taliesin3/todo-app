@@ -149,7 +149,7 @@ function Register(props) {
                   onChange={handleChange}
                   autoComplete="off"
                 />
-                <div class="invalid-feedback">
+                <div className="invalid-feedback">
                   Password must be at least 8 characters long.
                 </div>
               </div>
@@ -168,7 +168,7 @@ function Register(props) {
                   autoComplete="off"
                 />
               </div>
-              <div class="invalid-feedback">Passwords must match.</div>
+              <div className="invalid-feedback">Passwords must match.</div>
             </div>
 
             {/* Footer & buttons */}

@@ -20,6 +20,7 @@ router.get("/", auth, async (req, res) => {
 // Add a note
 router.post("/add", auth, async (req, res) => {
   try {
+    const noteId = req.body.noteId;
     const userId = req.body.userId;
     const listId = req.body.listId;
     const title = req.body.title;
@@ -31,6 +32,7 @@ router.post("/add", auth, async (req, res) => {
     const completed = req.body.completed;
 
     const newNote = new Note({
+      noteId,
       userId,
       listId,
       title,
@@ -72,7 +74,7 @@ router.get("/:listId", auth, async (req, res) => {
 router.delete("/:id", auth, async (req, res) => {
   try {
     const deleteNote = await Note.findOne({
-      _id: req.params.id,
+      noteId: req.params.id,
       userId: req.userId,
     });
     if (!deleteNote)
@@ -88,10 +90,10 @@ router.delete("/:id", auth, async (req, res) => {
 });
 
 // Update specific note using id
-router.post("/update/:id", auth, async (req, res) => {
+router.post("/update/:noteId", auth, async (req, res) => {
   try {
     const updatedNote = await Note.findOne({
-      _id: req.params.id,
+      noteId: req.params.noteId,
       userId: req.userId,
     });
 

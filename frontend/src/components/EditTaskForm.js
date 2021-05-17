@@ -3,7 +3,7 @@ import $ from "jquery";
 
 function EditTaskForm(props) {
   const [editModal, setEditModal] = useState({
-    _id: "",
+    noteId: "",
     title: "",
     content: "",
     deadline: "",
@@ -12,9 +12,12 @@ function EditTaskForm(props) {
   });
 
   useEffect(() => {
-    if (props.noteData !== undefined && editModal._id !== props.noteData._id) {
+    if (
+      props.noteData !== undefined &&
+      editModal.noteId !== props.noteData.noteId
+    ) {
       setEditModal({
-        _id: props.noteData._id,
+        noteId: props.noteData.noteId,
         title: props.noteData.title,
         content: props.noteData.content,
         deadline: props.noteData.deadline,
@@ -27,7 +30,7 @@ function EditTaskForm(props) {
         .find(`.radio-edit[value="${props.noteData.priority}"]`)
         .attr("checked", "checked");
     }
-  }, [editModal._id, props.noteData]);
+  }, [editModal.noteId, props.noteData]);
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -190,7 +193,7 @@ function EditTaskForm(props) {
                 data-dismiss="modal"
                 onClick={() => {
                   setEditModal({
-                    _id: props.noteData._id,
+                    noteId: props.noteData.noteId,
                     title: props.noteData.title,
                     content: props.noteData.content,
                     deadline: props.noteData.deadline,
