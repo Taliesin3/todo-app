@@ -10,13 +10,8 @@ function LoginModal(props) {
     password: "",
   });
   const { userData, setUserData } = useContext(UserContext);
-  const {
-    lists,
-    setLists,
-    setNotes,
-    activeListIndex,
-    setActiveListIndex,
-  } = props;
+  const { lists, setLists, setNotes, activeListIndex, setActiveListIndex } =
+    props;
 
   function handleChange(e) {
     const { name, value } = e.target;
@@ -165,6 +160,11 @@ function LoginModal(props) {
                 id="submit-login-form"
                 data-toggle="modal"
                 data-target="#loginModal"
+                disabled={
+                  loginForm.username.length > 0 && loginForm.password.length > 0
+                    ? false
+                    : true
+                }
               >
                 Submit
               </button>
