@@ -26,7 +26,7 @@ router.post("/add", auth, async (req, res) => {
     const title = req.body.title;
     const content = req.body.content;
     let deadline = "";
-    if (req.body.deadline !== null) deadline = new Date(req.body.deadline); // parse javascript msec date to full date
+    if (req.body.deadline !== "") deadline = new Date(req.body.deadline); // parse javascript msec date to full date
     const created = new Date(req.body.created);
     const priority = Number.parseInt(req.body.priority);
     const completed = req.body.completed;
@@ -71,17 +71,17 @@ router.get("/:listId", auth, async (req, res) => {
 });
 
 // Delete specific note using id
-router.delete("/:id", auth, async (req, res) => {
+router.delete("/:noteId", auth, async (req, res) => {
   try {
     const deleteNote = await Note.findOne({
-      noteId: req.params.id,
+      noteId: req.params.noteId,
       userId: req.userId,
     });
     if (!deleteNote)
       return res.status(400).json({
         msg: "Could not match note/user ids to any existing note.",
       });
-    await Note.findByIdAndDelete(req.params.id);
+    await Note.findOneAndDelete({ noteId: req.params.noteId });
     res.json("Note deleted.");
   } catch (err) {
     console.log(err);
