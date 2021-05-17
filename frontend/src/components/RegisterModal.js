@@ -141,7 +141,7 @@ function Register(props) {
                   className="form-control task-field"
                   type="password"
                   name="password"
-                  placeholder="Password"
+                  placeholder="Password (8 characters minimum)"
                   id="register-password"
                   minLength="8"
                   value={registerForm.password}
@@ -192,6 +192,12 @@ function Register(props) {
                 id="submit-register-form"
                 data-toggle="modal"
                 data-target="#registerModal"
+                disabled={
+                  registerForm.password.length > 7 &&
+                  registerForm.passwordCheck.length > 7
+                    ? false
+                    : true
+                }
               >
                 Submit
               </button>
