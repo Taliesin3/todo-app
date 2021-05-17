@@ -193,6 +193,7 @@ function Register(props) {
                 data-toggle="modal"
                 data-target="#registerModal"
                 disabled={
+                  registerForm.username.length > 0 &&
                   registerForm.password.length > 7 &&
                   registerForm.passwordCheck.length > 7
                     ? false
