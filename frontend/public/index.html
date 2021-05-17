@@ -32,7 +32,10 @@
     <meta name="author" content="Nathan H Miles" />
     <title>Taski</title>
   </head>
-  <body className="text-muted">
+  <body
+    className="text-muted"
+    onbeforeunload="localStorage.removeItem('auth-token')"
+  >
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
     <script
@@ -53,8 +56,6 @@
     <script>
       // Get the current year for the copyright
       $("#year").text(new Date().getFullYear());
-      // Clear local storage on unload
-      window.onbeforeunload(localStorage.removeItem("auth-token"));
     </script>
   </body>
 </html>
