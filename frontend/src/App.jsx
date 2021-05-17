@@ -317,6 +317,8 @@ export default function App() {
   function sortNotes(e) {
     const sortType = e.target.value;
 
+    console.log("sorting!");
+
     if (sortType === "priority") {
       setNotes((prevNotes) => {
         return {
@@ -359,11 +361,15 @@ export default function App() {
       });
     } else if (sortType === "created") {
       setNotes((prevNotes) => {
+        let newNotes = prevNotes[lists[activeListIndex].listId].sort((a, b) => {
+          if (a.created > b.created) return 1;
+          else if (b.created > a.created) return -1;
+          else return 0;
+        });
+        console.log(newNotes);
         return {
           ...prevNotes,
-          [lists[activeListIndex].listId]: prevNotes[
-            lists[activeListIndex].listId
-          ].sort((a, b) => Date.parse(a.created) - Date.parse(b.created)),
+          [lists[activeListIndex].listId]: newNotes,
         };
       });
     }
