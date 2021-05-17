@@ -1,1 +1,1 @@
-This project is a MERN stack To Do List application.
+Taski - a MERN stack note taking app.

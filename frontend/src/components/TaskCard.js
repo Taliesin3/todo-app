@@ -10,7 +10,11 @@ function TaskCard(props) {
     4: "",
   };
 
-  const deadline = new Date(props.deadline);
+  let deadline = null;
+  if (!(props.deadline === null || props.deadline === "")) {
+    deadline = new Date(props.deadline);
+  }
+  console.log(props.deadline);
 
   return (
     <div
@@ -35,7 +39,7 @@ function TaskCard(props) {
         ></i>
       </button>
       <p className="date-deadline text-muted text-center">
-        {props.deadline !== "" && `Due by ${deadline.toDateString()}`}
+        {deadline !== null && `Due by ${deadline.toDateString()}`}
       </p>
 
       {/* Content */}

@@ -20,28 +20,13 @@ router.get("/", auth, async (req, res) => {
 // Add a note
 router.post("/add", auth, async (req, res) => {
   try {
-    const noteId = req.body.noteId;
-    const userId = req.body.userId;
-    const listId = req.body.listId;
-    const title = req.body.title;
-    const content = req.body.content;
-    let deadline = "";
-    if (req.body.deadline !== "") deadline = new Date(req.body.deadline); // parse javascript msec date to full date
-    const created = new Date(req.body.created);
-    const priority = Number.parseInt(req.body.priority);
-    const completed = req.body.completed;
+    const newNoteDetails = {};
 
-    const newNote = new Note({
-      noteId,
-      userId,
-      listId,
-      title,
-      content,
-      deadline,
-      created,
-      priority,
-      completed,
-    });
+    for (key in req.body) {
+      newNoteDetails[key] = req.body[key];
+    }
+
+    const newNote = new Note(newNoteDetails);
 
     const savedNote = await newNote.save();
     res.json(savedNote); // TODO: userId is also returned, filter that out?
