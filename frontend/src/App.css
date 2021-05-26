@@ -219,6 +219,7 @@ button:focus {
   width: 100%;
   transition: all 2s linear;
   padding-top: 3.1rem;
+  overflow: auto;
 }
 
 /* alert div */

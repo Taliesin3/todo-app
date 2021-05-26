@@ -2,7 +2,7 @@
 
 **Frontend**: React, JavaScript, jQuery, CSS
 
-**Backend**: Node, Express, Mongoose, bcrypt, jwt
+**Backend**: Node, Express, Mongoose, Bcrypt, JWT
 
 **Database**: MongoDB
 
