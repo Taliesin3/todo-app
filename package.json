@@ -1,60 +1,59 @@
 {
-  "name": "root",
-  "version": "1.0.0",
-  "description": "This project is a MERN stack To Do List application.",
-  "private": "true",
-  "dependencies": {
-    "@material-ui/core": "^4.11.0",
-    "@material-ui/icons": "^4.9.1",
-    "@material-ui/lab": "^4.0.0-alpha.56",
-    "@testing-library/jest-dom": "^4.2.4",
-    "@testing-library/react": "^9.5.0",
-    "@testing-library/user-event": "^7.2.1",
-    "axios": "^0.21.0",
-    "bcryptjs": "^2.4.3",
-    "body-parser": "^1.19.0",
-    "cors": "^2.8.5",
-    "concurrently": "^5.0.2",
-    "dotenv": "^8.2.0",
-    "express": "^4.17.1",
-    "http-proxy-middleware": "^2.0.6",
-    "jquery": "^3.6.0",
-    "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.10.15",
-    "nodemon": "^2.0.6",
-    "react": "^17.0.1",
-    "react-dom": "^17.0.1",
-    "react-router-dom": "^5.2.0",
-    "react-scripts": "3.4.4"
-  },
-  "scripts": {
-    "start": "npm run development",
-    "development": "NODE_ENV=development concurrently --kill-others \"npm run client\" \"npm run server\"",
-    "production": "npm run build && NODE_ENV=production npm run server",
-    "server": "node server/server.js",
-    "client": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "engines": {
-    "node": "12.x"
-  },
-  "eslintConfig": {
-    "extends": "react-app"
-  },
-  "browserslist": {
-    "production": [
-      ">0.2%",
-      "not dead",
-      "not op_mini all"
-    ],
-    "development": [
-      "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
-    ]
-  },
-  "license": "ISC",
-  "homepage": "https://github.com/nathanhmiles/todo-app#readme"
-}
+    "name": "taski-todo-app",
+    "version": "1.0.0",
+    "private": true,
+    "dependencies": {
+      "@material-ui/core": "^4.11.0",
+      "@material-ui/icons": "^4.9.1",
+      "@material-ui/lab": "^4.0.0-alpha.56",
+      "@testing-library/jest-dom": "^4.2.4",
+      "@testing-library/react": "^9.5.0",
+      "@testing-library/user-event": "^7.2.1",
+      "axios": "^0.21.0",
+      "bcryptjs": "^2.4.3",
+      "body-parser": "^1.19.0",
+      "cors": "^2.8.5",
+      "concurrently": "^5.0.2",
+      "dotenv": "^8.2.0",
+      "express": "^4.17.1",
+      "http-proxy-middleware": "^2.0.6",
+      "jquery": "^3.6.0",
+      "jsonwebtoken": "^8.5.1",
+      "mongoose": "^5.10.15",
+      "nodemon": "^2.0.6",
+      "react": "^17.0.1",
+      "react-dom": "^17.0.1",
+      "react-router-dom": "^5.2.0",
+      "react-scripts": "3.4.4"
+    },
+    "scripts": {
+      "start": "npm run development",
+      "development": "NODE_ENV=development concurrently --kill-others \"npm run client\" \"npm run server\"",
+      "production": "npm run build && NODE_ENV=production npm run server",
+      "server": "node server/server.js",
+      "client": "react-scripts start",
+      "build": "react-scripts build",
+      "test": "react-scripts test",
+      "eject": "react-scripts eject"
+    },
+    "engines": {
+      "node": "10.x"
+    },
+    "eslintConfig": {
+      "extends": "react-app"
+    },
+    "browserslist": {
+      "production": [
+        ">0.2%",
+        "not dead",
+        "not op_mini all"
+      ],
+      "development": [
+        "last 1 chrome version",
+        "last 1 firefox version",
+        "last 1 safari version"
+      ]
+    },
+    "license": "MIT"
+  }
+  

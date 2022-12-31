@@ -1,12 +1,10 @@
-// Requires
-const express = require('express');
+const express = require("express");
+const path = require("path");
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const path = require('path'); // need proxy front-backend requests for Heroku
 require('dotenv').config({ path: path.resolve(__dirname, '../.env') }); // allows us to use a .env file
 require('./database');
 
-// Create express server
 const app = express();
 
 // Middleware
@@ -22,33 +20,43 @@ app.use('/api/user', userRoute);
 app.use('/api/notes', notesRoute);
 app.use('/api/lists', listsRoute);
 
-let port;
-// Depending on development/production build, send static files from approp place
-if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
-    port = 3001;
-    console.log('⚠️ Not seeing your changes as you develop?');
-    console.log(
-        "⚠️ Do you need to set 'start': 'npm run development' in package.json?"
-    );
-    // Serve static files from the React frontend
-    app.use(express.static(path.join(__dirname, '../public')));
-    // Anything that doesn't match the above, send back index.html
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname + '/../public/index.html'));
-    });
-} else {
-    port = process.env.PORT || 3000;
-    // Same as above, with build pathname instead due to production build
-    app.use(express.static(path.join(__dirname, '../build')));
-    app.get('*', (req, res) => {
-        res.sendFile(path.join(__dirname + '/../build/index.html'));
-    });
+// PWAs want HTTPS!
+function checkHttps(request, response, next) {
+  // Check the protocol — if http, redirect to https.
+  if (request.get("X-Forwarded-Proto").indexOf("https") != -1) {
+    return next();
+  } else {
+    response.redirect("https://" + request.hostname + request.url);
+  }
 }
 
-// Start server
+app.all("*", checkHttps);
+
+// A test route to make sure the server is up.
+// TODO: Remove this and ensure routes are configured correctly
+app.get("/api/ping", (request, response) => {
+  console.log("❇️ Received GET request to /api/ping");
+  response.send("pong!");
+});
+
+// Express port-switching logic
+let port;
+console.log("❇️ NODE_ENV is", process.env.NODE_ENV);
+if (process.env.NODE_ENV === "production") {
+  port = process.env.PORT || 3000;
+  app.use(express.static(path.join(__dirname, "../build")));
+  app.get("*", (request, response) => {
+    response.sendFile(path.join(__dirname, "../build", "index.html"));
+  });
+} else {
+  port = 3001;
+  console.log("⚠️ Not seeing your changes as you develop?");
+  console.log(
+    "⚠️ Do you need to set 'start': 'npm run development' in package.json?"
+  );
+}
+
+// Start the listener!
 const listener = app.listen(port, () => {
-    console.log(
-        '❇️ Express server is running on port',
-        listener.address().port
-    );
+  console.log("❇️ Express server is running on port", listener.address().port);
 });
