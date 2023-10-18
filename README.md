@@ -6,4 +6,4 @@
 
 **Database**: MongoDB
 
-**Hosting**: Heroku
+**Hosting**: Glitch
